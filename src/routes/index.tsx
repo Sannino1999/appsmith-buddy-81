@@ -5,9 +5,10 @@ import { useMemo, useState } from "react";
 import { Search, X, Globe } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
+import logoAsset from "@/assets/lubrano-logo-stacked.png.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getOverrides, translateCategory } from "@/lib/menu.functions";
-import { LANGUAGES, UI, type LangCode } from "@/lib/i18n";
+import { LANGUAGES, MENU_LABELS, UI, type LangCode } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,6 +53,7 @@ function MenuPage() {
   );
   const translations = translationQuery.data ?? {};
   const t = UI[lang];
+  const menuLabels = MENU_LABELS[lang];
 
   const categories = baseMenu.categories.filter((c) => c.macro === macro);
   const active: MenuCategory | undefined =
@@ -62,7 +64,7 @@ function MenuPage() {
     const q = query.trim().toLowerCase();
     return active.groups
       .map((g) => ({
-        name: g.name,
+        name: menuLabels.groups[g.name] ?? g.name,
         items: g.items
           .map((item) => {
             const o = overrides.get(item.key);
@@ -73,6 +75,7 @@ function MenuPage() {
               description: tr?.description ?? o?.description ?? item.description,
               price_eur: o?.price_eur ?? item.price_eur,
               available: o?.available ?? true,
+              tags: item.tags.map((tag) => menuLabels.tags[tag] ?? tag),
             };
           })
           .filter((item) =>
@@ -83,7 +86,7 @@ function MenuPage() {
           ),
       }))
       .filter((g) => g.items.length > 0);
-  }, [active, overrides, translations, query]);
+  }, [active, overrides, translations, query, menuLabels]);
 
   function pickMacro(id: string) {
     setMacro(id);
@@ -103,16 +106,15 @@ function MenuPage() {
 
       <div className="mx-auto w-full max-w-2xl px-5 pb-24 pt-6">
         <header className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="grid size-12 place-items-center rounded-xl border-2 border-primary bg-background/60 font-display text-2xl font-bold text-primary">
-              L
-            </div>
-            <div>
-              <p className="display-caps text-xl leading-none">{baseMenu.restaurant.name}</p>
-              <p className="text-xs tracking-wide text-muted-foreground">
-                {baseMenu.restaurant.subtitle} · {baseMenu.restaurant.locality}
-              </p>
-            </div>
+          <div className="min-w-0 flex-1">
+            <img
+              src={logoAsset.url}
+              alt={baseMenu.restaurant.name}
+              className="h-auto w-56 max-w-[64vw] rounded-md bg-logo-panel p-2"
+            />
+            <p className="mt-2 text-xs font-semibold tracking-wide text-brand">
+              {baseMenu.restaurant.subtitle} · {baseMenu.restaurant.locality}
+            </p>
           </div>
 
           <div className="flex items-center gap-2">
@@ -177,13 +179,13 @@ function MenuPage() {
               key={m.id}
               type="button"
               onClick={() => pickMacro(m.id)}
-              className={`display-caps pb-1 text-2xl transition-colors ${
+                className={`display-caps pb-1 text-2xl transition-colors ${
                 macro === m.id
-                  ? "border-b-4 border-primary text-foreground"
+                  ? "border-b-4 border-primary text-brand"
                   : "text-muted-foreground"
               }`}
             >
-              {m.label}
+              {menuLabels.macros[m.id] ?? m.label}
             </button>
           ))}
         </nav>
@@ -196,13 +198,15 @@ function MenuPage() {
               onClick={() => setCategoryId(c.id)}
               className={`pill ${c.id === active?.id ? "pill-active" : ""}`}
             >
-              {c.name}
+              {menuLabels.categories[c.id]?.name ?? c.name}
             </button>
           ))}
         </div>
 
         {active?.eyebrow && (
-          <p className="mt-5 text-center text-sm italic text-muted-foreground">{active.eyebrow}</p>
+          <p className="mt-5 text-center text-sm italic text-muted-foreground">
+            {menuLabels.categories[active.id]?.eyebrow ?? active.eyebrow}
+          </p>
         )}
 
         {lang !== "it" && translationQuery.isFetching && (
@@ -215,16 +219,18 @@ function MenuPage() {
           )}
           {groups.map((g) => (
             <section key={g.name}>
-              <h2 className="display-caps mb-5 inline-block border-b-4 border-accent text-xl text-foreground">
-                {g.name}
-              </h2>
+              {g.name && (
+                <h2 className="display-caps mb-5 inline-block border-b-4 border-accent text-xl text-brand">
+                  {g.name}
+                </h2>
+              )}
               <ul className="space-y-6">
                 {g.items.map((item) => (
                   <li key={item.key} className={item.available ? "" : "opacity-50"}>
                     <div className="flex items-end">
-                      <h3 className="display-caps text-lg leading-tight">{item.name}</h3>
+                      <h3 className="display-caps text-lg leading-tight text-brand">{item.name}</h3>
                       <span className="leader" />
-                      <span className="display-caps shrink-0 text-lg">
+                      <span className="display-caps shrink-0 text-lg text-brand">
                         {formatPrice(item.price_eur)}
                       </span>
                     </div>
@@ -256,7 +262,7 @@ function MenuPage() {
         </div>
 
         <footer className="mt-16 text-center text-xs text-muted-foreground">
-          <p className="display-caps text-sm text-foreground">
+          <p className="display-caps text-sm text-brand">
             {baseMenu.restaurant.name} · {baseMenu.restaurant.subtitle}
           </p>
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>

@@ -99,16 +99,22 @@ export type Database = {
         Row: {
           chat_id: number
           created_at: string
+          first_name: string | null
+          last_name: string | null
           username: string | null
         }
         Insert: {
           chat_id: number
           created_at?: string
+          first_name?: string | null
+          last_name?: string | null
           username?: string | null
         }
         Update: {
           chat_id?: number
           created_at?: string
+          first_name?: string | null
+          last_name?: string | null
           username?: string | null
         }
         Relationships: []

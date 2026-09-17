@@ -6,7 +6,7 @@
 
 /*
  * DigitGS — Lubrano Pub & Braceria
- * Dark photographic menu, mint pills, condensed display type.
+ * Dark photographic menu, bordeaux brand tone, condensed display type.
  */
 
 @theme inline {
@@ -33,6 +33,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-logo-panel: var(--logo-panel);
   --font-display: var(--font-display);
   --font-sans: var(--font-body);
 }
@@ -40,24 +42,26 @@
 :root {
   --radius: 0.75rem;
   --background: oklch(0.17 0.005 250);
-  --foreground: oklch(0.98 0.005 250);
+  --foreground: oklch(0.97 0.004 66);
   --card: oklch(0.21 0.008 250);
-  --card-foreground: oklch(0.98 0.005 250);
+  --card-foreground: oklch(0.97 0.004 66);
   --popover: oklch(0.21 0.008 250);
-  --popover-foreground: oklch(0.98 0.005 250);
-  --primary: oklch(0.88 0.115 166);
-  --primary-foreground: oklch(0.2 0.03 166);
+  --popover-foreground: oklch(0.97 0.004 66);
+  --brand: oklch(0.63 0.18 18);
+  --logo-panel: oklch(0.98 0.003 72);
+  --primary: var(--brand);
+  --primary-foreground: oklch(0.98 0.003 72);
   --secondary: oklch(0.28 0.01 250);
-  --secondary-foreground: oklch(0.98 0.005 250);
+  --secondary-foreground: oklch(0.97 0.004 66);
   --muted: oklch(0.28 0.01 250);
-  --muted-foreground: oklch(0.78 0.01 250);
+  --muted-foreground: oklch(0.8 0.011 66);
   --accent: oklch(0.92 0.13 101);
   --accent-foreground: oklch(0.2 0.03 101);
   --destructive: oklch(0.63 0.21 27);
-  --destructive-foreground: oklch(0.98 0.005 250);
+  --destructive-foreground: oklch(0.98 0.003 72);
   --border: oklch(1 0 0 / 22%);
   --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.88 0.115 166);
+  --ring: var(--brand);
 
   --font-display: "Oswald", "Arial Narrow", sans-serif;
   --font-body: "Nunito", ui-sans-serif, system-ui, sans-serif;
@@ -106,7 +110,7 @@
 @utility leader {
   flex: 1 1 auto;
   margin: 0 0.5rem;
-  border-bottom: 2px dotted oklch(1 0 0 / 45%);
+  border-bottom: 2px dotted color-mix(in oklab, var(--color-brand) 56%, var(--color-foreground));
   transform: translateY(-0.28rem);
 }
 

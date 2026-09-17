@@ -96,7 +96,40 @@ const HELP = [
   "• cambia descrizione del Perfect Burger in ...",
   "• togli dal menù la focaccia al pomodoro",
   "• rimetti disponibile la focaccia al pomodoro",
+  "",
+  "Comandi operatori:",
+  "• /abilita 123456789 aggiunge un altro operatore",
+  "• /operatori mostra gli operatori autorizzati",
 ].join("\n");
+
+type TelegramUser = {
+  id?: number;
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+};
+
+type TelegramMessage = {
+  chat?: { id?: number };
+  from?: TelegramUser;
+  forward_from?: TelegramUser;
+  reply_to_message?: { from?: TelegramUser; chat?: { id?: number } };
+  text?: string;
+};
+
+function adminName(admin: { chat_id: number | string; username: string | null; first_name?: string | null; last_name?: string | null }) {
+  if (admin.username) return `@${admin.username}`;
+  const name = [admin.first_name, admin.last_name].filter(Boolean).join(" ").trim();
+  return name || String(admin.chat_id);
+}
+
+function targetFromMessage(message: TelegramMessage, text: string) {
+  const chatIdFromText = text.match(/^\/abilita(?:@\w+)?\s+(-?\d+)/i)?.[1];
+  if (chatIdFromText) return { chatId: Number(chatIdFromText), user: null };
+  const user = message.reply_to_message?.from ?? message.forward_from ?? null;
+  const chatId = message.reply_to_message?.chat?.id ?? user?.id;
+  return chatId ? { chatId, user } : null;
+}
 
 export const Route = createFileRoute("/api/public/telegram/webhook")({
   server: {
@@ -109,13 +142,7 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         const actual = request.headers.get("X-Telegram-Bot-Api-Secret-Token") ?? "";
         if (!safeEqual(actual, expected)) return new Response("Unauthorized", { status: 401 });
 
-        const update = (await request.json()) as {
-          message?: {
-            chat?: { id?: number };
-            from?: { username?: string };
-            text?: string;
-          };
-        };
+        const update = (await request.json()) as { message?: TelegramMessage; edited_message?: TelegramMessage };
         const message = update.message;
         const chatId = message?.chat?.id;
         const text = message?.text?.trim();
@@ -123,18 +150,62 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-        const { data: admins } = await supabaseAdmin.from("telegram_admins").select("chat_id");
+        const { data: admins } = await supabaseAdmin
+          .from("telegram_admins")
+          .select("chat_id, username, first_name, last_name");
         const isAdmin = (admins ?? []).some((a) => Number(a.chat_id) === chatId);
 
         if (!isAdmin) {
           if ((admins ?? []).length === 0) {
             await supabaseAdmin
               .from("telegram_admins")
-              .insert({ chat_id: chatId, username: message?.from?.username ?? null });
+              .insert({
+                chat_id: chatId,
+                username: message?.from?.username ?? null,
+                first_name: message?.from?.first_name ?? null,
+                last_name: message?.from?.last_name ?? null,
+              });
             await sendMessage(chatId, `Registrato come amministratore del menù.\n\n${HELP}`);
             return Response.json({ ok: true });
           }
-          await sendMessage(chatId, "Non sei autorizzato a modificare il menù.");
+          await sendMessage(
+            chatId,
+            `Non sei autorizzato a modificare il menù.\n\nIl tuo codice chat è ${chatId}: invialo a un operatore già autorizzato, che potrà scrivere /abilita ${chatId}.`,
+          );
+          return Response.json({ ok: true });
+        }
+
+        if (text.startsWith("/operatori")) {
+          const list = (admins ?? []).map((admin) => `• ${adminName(admin)} — ${admin.chat_id}`).join("\n");
+          await sendMessage(chatId, list ? `Operatori autorizzati:\n${list}` : "Nessun operatore autorizzato.");
+          return Response.json({ ok: true });
+        }
+
+        if (text.startsWith("/abilita")) {
+          const target = targetFromMessage(message, text);
+          if (!target || Number.isNaN(target.chatId)) {
+            await sendMessage(
+              chatId,
+              "Mandami /abilita seguito dal codice chat, oppure rispondi /abilita a un messaggio dell'operatore da abilitare.",
+            );
+            return Response.json({ ok: true });
+          }
+
+          const { error } = await supabaseAdmin.from("telegram_admins").upsert(
+            {
+              chat_id: target.chatId,
+              username: target.user?.username ?? null,
+              first_name: target.user?.first_name ?? null,
+              last_name: target.user?.last_name ?? null,
+            },
+            { onConflict: "chat_id" },
+          );
+          if (error) {
+            console.error(`Telegram admin upsert failed: ${error.message}`);
+            await sendMessage(chatId, "Non riesco ad abilitare l'operatore in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await sendMessage(chatId, `Operatore abilitato: ${target.chatId}`);
           return Response.json({ ok: true });
         }
 

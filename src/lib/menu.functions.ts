@@ -35,6 +35,8 @@ function hash(text: string) {
 
 export type TranslationMap = Record<string, { name: string; description: string | null }>;
 
+const TRANSLATION_BATCH_SIZE = 14;
+
 export const translateCategory = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z.object({ categoryId: z.string(), lang: z.string().min(2).max(5) }).parse(data),
@@ -86,7 +88,17 @@ export const translateCategory = createServerFn({ method: "POST" })
     });
 
     if (missing.length > 0) {
-      const translated = await translateEntries(missing, LANG_NAMES[lang] ?? lang);
+      const translated = [];
+      for (let i = 0; i < missing.length; i += TRANSLATION_BATCH_SIZE) {
+        translated.push(
+          ...(await translateEntries(missing.slice(i, i + TRANSLATION_BATCH_SIZE), LANG_NAMES[lang] ?? lang)),
+        );
+      }
+      const translatedKeys = new Set(translated.map((t) => t.key));
+      const stillMissing = missing.filter((entry) => !translatedKeys.has(entry.key));
+      for (const entry of stillMissing) {
+        translated.push(...(await translateEntries([entry], LANG_NAMES[lang] ?? lang)));
+      }
       const rows = translated.map((t) => ({
         item_key: t.key,
         lang,
@@ -96,6 +108,11 @@ export const translateCategory = createServerFn({ method: "POST" })
       }));
       for (const t of translated) {
         result[t.key] = { name: t.name, description: t.description ?? null };
+      }
+      for (const entry of missing) {
+        if (!result[entry.key]) {
+          result[entry.key] = { name: entry.name, description: entry.description };
+        }
       }
       if (rows.length > 0) {
         await supabaseAdmin.from("menu_translations").upsert(rows, { onConflict: "item_key,lang" });
