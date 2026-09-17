@@ -99,7 +99,7 @@ function MenuPage() {
         style={{ backgroundImage: `url(${bgImage})` }}
         aria-hidden
       />
-      <div className="fixed inset-0 -z-10 bg-background/80" aria-hidden />
+      <div className="fixed inset-0 -z-10 bg-background/90" aria-hidden />
 
       <div className="mx-auto w-full max-w-2xl px-5 pb-24 pt-6">
         <header className="flex items-start justify-between gap-3">
