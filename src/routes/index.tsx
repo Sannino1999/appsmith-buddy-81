@@ -5,10 +5,11 @@ import { useMemo, useState } from "react";
 import { Search, X, Globe } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
-import logoAsset from "@/assets/lubrano-logo-stacked.png.asset.json";
+import logoUrl from "@/assets/lubrano-logo.svg";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getOverrides, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, type LangCode } from "@/lib/i18n";
+import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ function MenuPage() {
   const [lang, setLang] = useState<LangCode>("it");
   const [langOpen, setLangOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
   const [query, setQuery] = useState("");
 
   const overridesQuery = useQuery({ queryKey: ["overrides"], queryFn: () => getOverrides() });
@@ -108,9 +110,9 @@ function MenuPage() {
         <header className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <img
-              src={logoAsset.url}
+              src={logoUrl}
               alt={baseMenu.restaurant.name}
-              className="h-auto w-56 max-w-[64vw] rounded-md bg-logo-panel p-2"
+              className="h-auto w-56 max-w-[64vw]"
             />
             <p className="mt-2 text-xs font-semibold tracking-wide text-brand">
               {baseMenu.restaurant.subtitle} · {baseMenu.restaurant.locality}
@@ -118,6 +120,7 @@ function MenuPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <QrButton onClick={() => setQrOpen(true)} />
             <button
               type="button"
               aria-label={t.search}
@@ -268,6 +271,13 @@ function MenuPage() {
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
         </footer>
       </div>
+
+      <QrDialog
+        open={qrOpen}
+        onOpenChange={setQrOpen}
+        url={typeof window !== "undefined" ? window.location.href : ""}
+        restaurantName={baseMenu.restaurant.name}
+      />
     </div>
   );
 }
