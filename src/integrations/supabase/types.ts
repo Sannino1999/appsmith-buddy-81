@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      menu_edit_log: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string
+          details: Json
+          id: string
+          item_key: string | null
+        }
+        Insert: {
+          action: string
+          actor: string
+          created_at?: string
+          details?: Json
+          id?: string
+          item_key?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string
+          details?: Json
+          id?: string
+          item_key?: string | null
+        }
+        Relationships: []
+      }
+      menu_overrides: {
+        Row: {
+          available: boolean
+          description: string | null
+          item_key: string
+          name: string | null
+          price_eur: number | null
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          description?: string | null
+          item_key: string
+          name?: string | null
+          price_eur?: number | null
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          description?: string | null
+          item_key?: string
+          name?: string | null
+          price_eur?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      menu_translations: {
+        Row: {
+          created_at: string
+          description: string | null
+          item_key: string
+          lang: string
+          name: string | null
+          source_hash: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          item_key: string
+          lang: string
+          name?: string | null
+          source_hash: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          item_key?: string
+          lang?: string
+          name?: string | null
+          source_hash?: string
+        }
+        Relationships: []
+      }
+      telegram_admins: {
+        Row: {
+          chat_id: number
+          created_at: string
+          username: string | null
+        }
+        Insert: {
+          chat_id: number
+          created_at?: string
+          username?: string | null
+        }
+        Update: {
+          chat_id?: number
+          created_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
