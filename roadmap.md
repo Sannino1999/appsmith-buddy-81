@@ -1,0 +1,5 @@
+- [ ] Usare il logo caricato nel menù.
+- [ ] Applicare un tocco bordeaux ai testi principali.
+- [ ] Permettere a più operatori Telegram di modificare il menù.
+- [ ] Tradurre anche i nomi dei gruppi e correggere la traduzione parziale.
+- [ ] Verificare menù, traduzioni, logo e assenza di errori.
