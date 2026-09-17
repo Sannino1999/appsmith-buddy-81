@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none">
+  <title>Lubrano Pub &amp; Braceria</title>
+  <g fill="#F4EDE2">
+    <!-- burger emblem -->
+    <path d="M590 112h420c72 0 130 58 130 130v58H460v-58c0-72 58-130 130-130Zm-72 130c0-40 32-72 72-72h420c40 0 72 32 72 72v20H518v-20Z"/>
+    <rect x="495" y="332" width="610" height="30" rx="15"/>
+    <rect x="495" y="380" width="610" height="30" rx="15"/>
+    <path d="M460 454h690v56c0 72-58 130-130 130H590c-72 0-130-58-130-130v-56Zm58 58c0 40 32 72 72 72h420c40 0 72-32 72-72v-8H518v8Z"/>
+    <rect x="575" y="170" width="34" height="54" rx="17"/>
+    <rect x="722" y="144" width="34" height="62" rx="17"/>
+    <rect x="870" y="144" width="34" height="62" rx="17"/>
+    <rect x="1017" y="170" width="34" height="54" rx="17"/>
+
+    <!-- LUBRANO -->
+    <text x="800" y="575" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="190" font-weight="900" letter-spacing="-7">LUBRANO</text>
+
+    <!-- fork -->
+    <path d="M155 684h365v-19c0-11 9-20 20-20h170c11 0 20 9 20 20v19h30v30h-30v19h30v30h-30v19h30v30h-30v19h30v30h-30v19c0 11-9 20-20 20H540c-11 0-20-9-20-20v-19H155c-28 0-50-22-50-50v-28c0-28 22-50 50-50Zm420-9v169l139-14V689l-139-14Z"/>
+    <path d="M716 689h45v168h-45z"/>
+    <!-- knife -->
+    <path d="M1180 655c0-13 11-24 24-24h104c13 0 24 11 24 24v123c0 24-19 43-43 43h-85v87h-58V798c0-13 11-24 24-24h34V655Z"/>
+    <path d="M1289 631h155c28 0 50 22 50 50v28c0 28-22 50-50 50h-155V631Z"/>
+
+    <!-- stars -->
+    <path fill="#98002E" d="m825 700 16 49h52l-42 30 16 50-42-30-42 30 16-50-42-30h52l16-49Z"/>
+    <path fill="#98002E" d="m945 700 16 49h52l-42 30 16 50-42-30-42 30 16-50-42-30h52l16-49Z"/>
+    <path fill="#98002E" d="m1065 700 16 49h52l-42 30 16 50-42-30-42 30 16-50-42-30h52l16-49Z"/>
+    <path fill="#98002E" d="m1185 700 16 49h52l-42 30 16 50-42-30-42 30 16-50-42-30h52l16-49Z"/>
+    <path fill="#98002E" d="m1305 700 16 49h52l-42 30 16 50-42-30-42 30 16-50-42-30h52l16-49Z"/>
+  </g>
+
+  <!-- subtitle -->
+  <g fill="#F4EDE2">
+    <circle cx="295" cy="929" r="17" fill="#98002E"/>
+    <circle cx="1305" cy="929" r="17" fill="#98002E"/>
+    <text x="800" y="968" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="91" font-weight="900" letter-spacing="-3">PUB <tspan fill="#98002E">&amp;</tspan> BRACERIA</text>
+  </g>
+</svg>
