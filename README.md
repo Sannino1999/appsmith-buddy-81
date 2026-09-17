@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Your App Companion
+
+Crea un'app per i miei utenti. Se non l'ho detto, chiedi cosa deve fare e chi la userà, poi realizza la prima versione. ti indico con un prompt e alcuni file come bozza generati, inoltre c'è il menu e un' altro esempio di menu sviluppato da un consulente
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://appsmith-buddy-81.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c77c69af-fcae-4387-baa6-957599b8e7af).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
