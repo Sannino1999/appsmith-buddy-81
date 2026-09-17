@@ -107,12 +107,12 @@ function MenuPage() {
       <div className="fixed inset-0 -z-10 bg-background/90" aria-hidden />
 
       <div className="mx-auto w-full max-w-2xl px-5 pb-24 pt-6">
-        <header className="flex items-start justify-between gap-3">
+        <header className="anim-fade-up flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <img
               src={logoUrl}
               alt={`${baseMenu.restaurant.name} ${baseMenu.restaurant.subtitle}`}
-              className="h-auto w-64 max-w-[72vw] drop-shadow-[0_8px_24px_rgba(0,0,0,0.22)] sm:w-72"
+              className="h-auto w-52 max-w-[68vw] drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-transform duration-300 hover:scale-[1.02] sm:w-60"
             />
           </div>
 
@@ -125,7 +125,7 @@ function MenuPage() {
                 setSearchOpen((v) => !v);
                 setQuery("");
               }}
-              className="grid size-10 place-items-center rounded-lg border border-border bg-background/60 text-foreground"
+              className="grid size-10 place-items-center rounded-lg border border-border bg-background/60 text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
             >
               {searchOpen ? <X className="size-4" /> : <Search className="size-4" />}
             </button>
@@ -133,13 +133,13 @@ function MenuPage() {
               <button
                 type="button"
                 onClick={() => setLangOpen((v) => !v)}
-                className="flex h-10 items-center gap-1 rounded-lg border border-border bg-background/60 px-3 text-sm"
+                className="flex h-10 items-center gap-1 rounded-lg border border-border bg-background/60 px-3 text-sm transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
               >
                 <Globe className="size-4" />
                 {lang.toUpperCase()}
               </button>
               {langOpen && (
-                <ul className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
+                <ul className="anim-scale absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
                   {LANGUAGES.map((l) => (
                     <li key={l.code}>
                       <button
@@ -148,7 +148,7 @@ function MenuPage() {
                           setLang(l.code);
                           setLangOpen(false);
                         }}
-                        className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm hover:bg-secondary ${
+                        className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-secondary ${
                           l.code === lang ? "text-primary" : ""
                         }`}
                       >
@@ -169,20 +169,20 @@ function MenuPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t.search}
-            className="mt-4 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-base outline-none focus:border-primary"
+            className="anim-fade mt-4 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-base outline-none transition-colors duration-200 focus:border-primary"
           />
         )}
 
-        <nav className="mt-7 flex items-center justify-center gap-10">
+        <nav className="anim-fade-up stagger-1 mt-7 flex items-center justify-center gap-10">
           {baseMenu.macros.map((m) => (
             <button
               key={m.id}
               type="button"
               onClick={() => pickMacro(m.id)}
-                className={`display-caps pb-1 text-2xl transition-colors ${
+                className={`display-caps pb-1 text-2xl transition-all duration-250 ${
                 macro === m.id
                   ? "border-b-4 border-primary text-brand"
-                  : "text-muted-foreground"
+                  : "border-b-4 border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               {menuLabels.macros[m.id] ?? m.label}
@@ -190,13 +190,13 @@ function MenuPage() {
           ))}
         </nav>
 
-        <div className="mt-6 flex flex-wrap justify-center gap-2.5">
+        <div className="anim-fade-up stagger-2 mt-6 flex flex-wrap justify-center gap-2.5">
           {categories.map((c) => (
             <button
               key={c.id}
               type="button"
               onClick={() => setCategoryId(c.id)}
-              className={`pill ${c.id === active?.id ? "pill-active" : ""}`}
+              className={`pill ${c.id === active?.id ? "pill-active" : ""} transition-all duration-200 hover:scale-105 active:scale-95`}
             >
               {menuLabels.categories[c.id]?.name ?? c.name}
             </button>
@@ -204,21 +204,21 @@ function MenuPage() {
         </div>
 
         {active?.eyebrow && (
-          <p className="mt-5 text-center text-sm italic text-muted-foreground">
+          <p className="anim-fade mt-5 text-center text-sm italic text-muted-foreground">
             {menuLabels.categories[active.id]?.eyebrow ?? active.eyebrow}
           </p>
         )}
 
         {lang !== "it" && translationQuery.isFetching && (
-          <p className="mt-5 text-center text-sm text-primary">…</p>
+          <p className="anim-fade mt-5 text-center text-sm text-primary">…</p>
         )}
 
-        <div className="mt-8 space-y-10">
+        <div key={active?.id ?? "empty"} className="mt-8 space-y-10">
           {groups.length === 0 && (
             <p className="text-center text-muted-foreground">{t.noResults}</p>
           )}
-          {groups.map((g) => (
-            <section key={g.name}>
+          {groups.map((g, gi) => (
+            <section key={g.name} className={`anim-fade-up stagger-${Math.min(gi + 1, 6)}`}>
               {g.name && (
                 <h2 className="display-caps mb-5 inline-block border-b-4 border-accent text-xl text-brand">
                   {g.name}
@@ -226,11 +226,11 @@ function MenuPage() {
               )}
               <ul className="space-y-6">
                 {g.items.map((item) => (
-                  <li key={item.key} className={item.available ? "" : "opacity-50"}>
+                  <li key={item.key} className={`group transition-opacity duration-200 ${item.available ? "" : "opacity-50"}`}>
                     <div className="flex items-end">
-                      <h3 className="display-caps text-lg leading-tight text-brand">{item.name}</h3>
+                      <h3 className="display-caps text-lg leading-tight text-brand transition-colors duration-200 group-hover:text-primary">{item.name}</h3>
                       <span className="leader" />
-                      <span className="display-caps shrink-0 text-lg text-brand">
+                      <span className="display-caps shrink-0 text-lg text-brand transition-colors duration-200 group-hover:text-primary">
                         {formatPrice(item.price_eur)}
                       </span>
                     </div>
@@ -248,7 +248,7 @@ function MenuPage() {
                       {item.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground"
+                          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground transition-colors duration-200 hover:bg-secondary/70"
                         >
                           {tag}
                         </span>
@@ -261,7 +261,7 @@ function MenuPage() {
           ))}
         </div>
 
-        <footer className="mt-16 text-center text-xs text-muted-foreground">
+        <footer className="anim-fade-up mt-16 text-center text-xs text-muted-foreground">
           <p className="display-caps text-sm text-brand">
             {baseMenu.restaurant.name} · {baseMenu.restaurant.subtitle}
           </p>
