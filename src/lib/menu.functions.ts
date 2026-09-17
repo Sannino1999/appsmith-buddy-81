@@ -88,24 +88,31 @@ export const translateCategory = createServerFn({ method: "POST" })
     });
 
     if (missing.length > 0) {
-      const translated = [];
-      for (let i = 0; i < missing.length; i += TRANSLATION_BATCH_SIZE) {
-        translated.push(
-          ...(await translateEntries(missing.slice(i, i + TRANSLATION_BATCH_SIZE), LANG_NAMES[lang] ?? lang)),
-        );
+      const translated: { key: string; name: string; description: string | null }[] = [];
+      try {
+        for (let i = 0; i < missing.length; i += TRANSLATION_BATCH_SIZE) {
+          translated.push(
+            ...(await translateEntries(missing.slice(i, i + TRANSLATION_BATCH_SIZE), LANG_NAMES[lang] ?? lang)),
+          );
+        }
+        const translatedKeys = new Set(translated.map((t) => t.key));
+        const stillMissing = missing.filter((entry) => !translatedKeys.has(entry.key));
+        for (const entry of stillMissing) {
+          translated.push(...(await translateEntries([entry], LANG_NAMES[lang] ?? lang)));
+        }
+        const rows = translated.map((t) => ({
+          item_key: t.key,
+          lang,
+          name: t.name,
+          description: t.description ?? null,
+          source_hash: hashes.get(t.key) ?? "",
+        }));
+        if (rows.length > 0) {
+          await supabaseAdmin.from("menu_translations").upsert(rows, { onConflict: "item_key,lang" });
+        }
+      } catch (err) {
+        console.error(`Translation AI call failed for lang=${lang}:`, err);
       }
-      const translatedKeys = new Set(translated.map((t) => t.key));
-      const stillMissing = missing.filter((entry) => !translatedKeys.has(entry.key));
-      for (const entry of stillMissing) {
-        translated.push(...(await translateEntries([entry], LANG_NAMES[lang] ?? lang)));
-      }
-      const rows = translated.map((t) => ({
-        item_key: t.key,
-        lang,
-        name: t.name,
-        description: t.description ?? null,
-        source_hash: hashes.get(t.key) ?? "",
-      }));
       for (const t of translated) {
         result[t.key] = { name: t.name, description: t.description ?? null };
       }
@@ -113,9 +120,6 @@ export const translateCategory = createServerFn({ method: "POST" })
         if (!result[entry.key]) {
           result[entry.key] = { name: entry.name, description: entry.description };
         }
-      }
-      if (rows.length > 0) {
-        await supabaseAdmin.from("menu_translations").upsert(rows, { onConflict: "item_key,lang" });
       }
     }
 

@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Search, X, Globe } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
-import logoUrl from "@/assets/lubrano-logo.svg";
+import logoAsset from "@/assets/lubrano-logo-stacked.png.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getOverrides, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, type LangCode } from "@/lib/i18n";
@@ -110,7 +110,7 @@ function MenuPage() {
         <header className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <img
-              src={logoUrl}
+              src={logoAsset.url}
               alt={baseMenu.restaurant.name}
               className="h-auto w-56 max-w-[64vw]"
             />
@@ -269,6 +269,9 @@ function MenuPage() {
             {baseMenu.restaurant.name} · {baseMenu.restaurant.subtitle}
           </p>
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
+          <p className="mt-3 text-[0.7rem] text-muted-foreground/70">
+            Powered by <span className="font-semibold text-brand/80">DigitaGS</span>
+          </p>
         </footer>
       </div>
 
