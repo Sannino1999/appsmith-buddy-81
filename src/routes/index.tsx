@@ -41,10 +41,21 @@ function MenuPage() {
   const [qrOpen, setQrOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const overridesQuery = useQuery({ queryKey: ["overrides"], queryFn: () => getOverrides() });
+  const overridesQuery = useQuery({
+    queryKey: ["overrides"],
+    queryFn: () => getOverrides(),
+    staleTime: 0,
+    refetchInterval: 20_000,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: "always",
+  });
   const translateFn = useServerFn(translateCategory);
+  const overridesVersion = (overridesQuery.data ?? [])
+    .map((o) => `${o.item_key}:${o.name ?? ""}:${o.description ?? ""}`)
+    .join("|");
   const translationQuery = useQuery({
-    queryKey: ["translations", categoryId, lang],
+    queryKey: ["translations", categoryId, lang, overridesVersion],
     queryFn: () => translateFn({ data: { categoryId, lang } }),
     enabled: lang !== "it",
   });
