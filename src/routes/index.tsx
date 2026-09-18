@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Search, X, Globe } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
-import logoUrl from "@/assets/lubrano-logo.svg";
+import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getOverrides, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, type LangCode } from "@/lib/i18n";
@@ -107,16 +107,9 @@ function MenuPage() {
       <div className="fixed inset-0 -z-10 bg-background/90" aria-hidden />
 
       <div className="mx-auto w-full max-w-2xl px-5 pb-24 pt-6">
-        <header className="anim-fade-up flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <img
-              src={logoUrl}
-              alt={`${baseMenu.restaurant.name} ${baseMenu.restaurant.subtitle}`}
-              className="h-auto w-52 max-w-[68vw] drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-transform duration-300 hover:scale-[1.02] sm:w-60"
-            />
-          </div>
+        <header className="anim-fade-up flex flex-col items-center gap-5">
+          <div className="flex w-full items-center justify-end gap-2">
 
-          <div className="flex items-center gap-2">
             <QrButton onClick={() => setQrOpen(true)} />
             <button
               type="button"
@@ -161,6 +154,12 @@ function MenuPage() {
               )}
             </div>
           </div>
+
+          <img
+            src={logoVertical.url}
+            alt={`${baseMenu.restaurant.name} ${baseMenu.restaurant.subtitle}`}
+            className="h-auto w-64 max-w-[80vw] drop-shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-[1.02] sm:w-80"
+          />
         </header>
 
         {searchOpen && (
@@ -267,7 +266,7 @@ function MenuPage() {
           </p>
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
           <p className="mt-3 text-[0.7rem] text-muted-foreground/70">
-            Powered by <span className="font-semibold text-brand/80">DigitaGS</span>
+            Realizzato da <span className="font-semibold text-brand/80">DigitGS</span>
           </p>
         </footer>
       </div>
