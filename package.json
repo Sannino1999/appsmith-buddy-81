@@ -1,6 +1,9 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "lubrano-pub-menu",
   "private": true,
+  "version": "1.0.0",
+  "description": "Menu digitale multilingua di Lubrano Pub & Braceria \u2014 sviluppato da DigitGS",
+  "author": "DigitGS",
   "sideEffects": false,
   "type": "module",
   "scripts": {

@@ -1,26 +1,38 @@
-# Your App Companion
+# Lubrano Pub & Braceria — Menù digitale
 
-Crea un'app per i miei utenti. Se non l'ho detto, chiedi cosa deve fare e chi la userà, poi realizza la prima versione. ti indico con un prompt e alcuni file come bozza generati, inoltre c'è il menu e un' altro esempio di menu sviluppato da un consulente
+Menù digitale multilingua di **Lubrano Pub & Braceria** (Napoli): birre artigianali, burger, focacce e cucina di brace.
 
-This project was built with [Lovable](https://lovable.dev).
+Prodotto e realizzato da **DigitGS**.
 
-**Live app**: https://appsmith-buddy-81.lovable.app
+**App online**: https://lubranopub.lovable.app
 
-## Build with Lovable
+## Cosa contiene
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c77c69af-fcae-4387-baa6-957599b8e7af).
+- Menù completo (Birre e Food) con categorie, gruppi, prezzi, descrizioni e allergeni.
+- Traduzione automatica in 7 lingue (it, en, es, fr, de, pt, zh) con salvataggio delle traduzioni.
+- Ricerca rapida e codice QR da esporre in sala.
+- Bot Telegram per gli operatori: modifica prezzi, descrizioni e disponibilità in linguaggio naturale, con registro delle modifiche.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+## Struttura del progetto
 
-## Development
+```
+src/
+  assets/     logo e immagini Lubrano
+  components/ componenti dell'interfaccia (QR, UI)
+  data/       menu-data.json — menù di base
+  lib/        menù, traduzioni, lingue, utilità
+  routes/     pagina del menù e webhook Telegram
+```
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Sviluppo
+
+Richiede Node.js.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm install
 npm run dev
 ```
+
+## Contatti
+
+DigitGS — produttore e manutentore dell'applicazione.
