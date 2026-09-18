@@ -59,7 +59,8 @@ async function interpret(text: string): Promise<Command> {
           role: "system",
           content:
             "Sei l'assistente del menù di un pub. Ricevi un comando in italiano e il catalogo delle voci. " +
-            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"unknown","item_key":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"unknown","item_key":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            "Usa reset_item quando l'utente chiede di ripristinare/annullare le modifiche di una voce e tornare all'originale. " +
             "Scegli item_key dal catalogo con il match migliore sul nome. Se non trovi la voce o il comando non è chiaro usa action unknown con reason in italiano.",
         },
         { role: "user", content: `Catalogo: ${JSON.stringify(catalog)}\n\nComando: ${text}` },
