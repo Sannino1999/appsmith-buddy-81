@@ -229,6 +229,56 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
+        if (text.startsWith("/modifiche")) {
+          const { data: rows } = await supabaseAdmin.from("menu_overrides").select("*");
+          if (!rows || rows.length === 0) {
+            await sendMessage(chatId, "Nessuna modifica attiva: il menù è identico all'originale.");
+            return Response.json({ ok: true });
+          }
+          const lines = rows.map((r) => {
+            const base = baseItem(String(r.item_key));
+            const parts: string[] = [];
+            if (r.price_eur != null && base && Number(r.price_eur) !== base.price_eur)
+              parts.push(`prezzo ${formatPrice(base.price_eur)} → ${formatPrice(Number(r.price_eur))}`);
+            if (r.description) parts.push("descrizione modificata");
+            if (r.available === false) parts.push("tolta dal menù");
+            return `• ${itemName(String(r.item_key))}${parts.length ? ` — ${parts.join(", ")}` : ""}`;
+          });
+          await sendMessage(chatId, `Modifiche attive (${rows.length}):\n${lines.join("\n")}`);
+          return Response.json({ ok: true });
+        }
+
+        if (text.startsWith("/ripristina-tutto") || text.startsWith("/ripristina_tutto")) {
+          if (!/conferma/i.test(text)) {
+            const { count } = await supabaseAdmin
+              .from("menu_overrides")
+              .select("item_key", { count: "exact", head: true });
+            await sendMessage(
+              chatId,
+              `⚠️ Stai per annullare ${count ?? 0} modifiche e riportare tutto il menù come all'inizio.\n\nSe sei sicuro scrivi:\n/ripristina-tutto CONFERMA`,
+            );
+            return Response.json({ ok: true });
+          }
+          const { error: delErr } = await supabaseAdmin
+            .from("menu_overrides")
+            .delete()
+            .not("item_key", "is", null);
+          if (delErr) {
+            console.error(`Reset all failed: ${delErr.message}`);
+            await sendMessage(chatId, "Non riesco a ripristinare il menù in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await supabaseAdmin.from("menu_edit_log").insert({
+            actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
+            action: "reset_all",
+            item_key: null,
+            details: { command: text },
+          });
+          await sendMessage(chatId, "✅ Fatto: prezzi, descrizioni e disponibilità sono tornati come all'inizio.");
+          return Response.json({ ok: true });
+        }
+
+
         let command: Command;
         try {
           command = await interpret(text);
