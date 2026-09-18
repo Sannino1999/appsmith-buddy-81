@@ -91,17 +91,30 @@ function baseItem(key: string) {
 }
 
 const HELP = [
-  "Ciao! Sono il bot del menù Lubrano.",
+  "👋 Ciao! Sono il bot del menù Lubrano Pub & Braceria.",
+  "Scrivimi normalmente, in italiano: penso io a trovare la voce giusta.",
   "",
-  "Scrivimi in linguaggio naturale, per esempio:",
-  "• modifica il prezzo delle alette di pollo a 7,50",
-  "• cambia descrizione del Perfect Burger in ...",
+  "💶 CAMBIARE UN PREZZO",
+  "• alette di pollo 7,50",
+  "• metti il Perfect Burger a 12",
+  "",
+  "📝 CAMBIARE UNA DESCRIZIONE",
+  "• descrizione Perfect Burger: manzo, cheddar, bacon croccante",
+  "",
+  "🚫 TOGLIERE / RIMETTERE UNA VOCE",
   "• togli dal menù la focaccia al pomodoro",
-  "• rimetti disponibile la focaccia al pomodoro",
+  "• rimetti la focaccia al pomodoro",
   "",
-  "Comandi operatori:",
-  "• /abilita 123456789 aggiunge un altro operatore",
-  "• /operatori mostra gli operatori autorizzati",
+  "↩️ RIPRISTINARE COME ALL'INIZIO",
+  "• /ripristina alette di pollo — riporta una voce a prezzo e descrizione originali",
+  "• /ripristina-tutto — annulla TUTTE le modifiche (chiederò conferma)",
+  "• /modifiche — elenco delle modifiche attualmente attive",
+  "",
+  "👥 OPERATORI",
+  "• /abilita 123456789 — aggiunge un operatore (o rispondi /abilita a un suo messaggio)",
+  "• /operatori — elenco degli operatori autorizzati",
+  "",
+  "ℹ️ /help per rivedere questa guida. Ogni modifica compare sul sito entro pochi secondi.",
 ].join("\n");
 
 type TelegramUser = {
