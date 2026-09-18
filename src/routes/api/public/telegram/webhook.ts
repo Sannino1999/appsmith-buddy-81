@@ -36,6 +36,7 @@ type Command =
   | { action: "set_price"; item_key: string; price_eur: number }
   | { action: "set_description"; item_key: string; description: string }
   | { action: "set_available"; item_key: string; available: boolean }
+  | { action: "reset_item"; item_key: string }
   | { action: "unknown"; reason: string };
 
 async function interpret(text: string): Promise<Command> {
@@ -58,7 +59,8 @@ async function interpret(text: string): Promise<Command> {
           role: "system",
           content:
             "Sei l'assistente del menù di un pub. Ricevi un comando in italiano e il catalogo delle voci. " +
-            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"unknown","item_key":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"unknown","item_key":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            "Usa reset_item quando l'utente chiede di ripristinare/annullare le modifiche di una voce e tornare all'originale. " +
             "Scegli item_key dal catalogo con il match migliore sul nome. Se non trovi la voce o il comando non è chiaro usa action unknown con reason in italiano.",
         },
         { role: "user", content: `Catalogo: ${JSON.stringify(catalog)}\n\nComando: ${text}` },
@@ -89,17 +91,30 @@ function baseItem(key: string) {
 }
 
 const HELP = [
-  "Ciao! Sono il bot del menù Lubrano.",
+  "👋 Ciao! Sono il bot del menù Lubrano Pub & Braceria.",
+  "Scrivimi normalmente, in italiano: penso io a trovare la voce giusta.",
   "",
-  "Scrivimi in linguaggio naturale, per esempio:",
-  "• modifica il prezzo delle alette di pollo a 7,50",
-  "• cambia descrizione del Perfect Burger in ...",
+  "💶 CAMBIARE UN PREZZO",
+  "• alette di pollo 7,50",
+  "• metti il Perfect Burger a 12",
+  "",
+  "📝 CAMBIARE UNA DESCRIZIONE",
+  "• descrizione Perfect Burger: manzo, cheddar, bacon croccante",
+  "",
+  "🚫 TOGLIERE / RIMETTERE UNA VOCE",
   "• togli dal menù la focaccia al pomodoro",
-  "• rimetti disponibile la focaccia al pomodoro",
+  "• rimetti la focaccia al pomodoro",
   "",
-  "Comandi operatori:",
-  "• /abilita 123456789 aggiunge un altro operatore",
-  "• /operatori mostra gli operatori autorizzati",
+  "↩️ RIPRISTINARE COME ALL'INIZIO",
+  "• /ripristina alette di pollo — riporta una voce a prezzo e descrizione originali",
+  "• /ripristina-tutto — annulla TUTTE le modifiche (chiederò conferma)",
+  "• /modifiche — elenco delle modifiche attualmente attive",
+  "",
+  "👥 OPERATORI",
+  "• /abilita 123456789 — aggiunge un operatore (o rispondi /abilita a un suo messaggio)",
+  "• /operatori — elenco degli operatori autorizzati",
+  "",
+  "ℹ️ /help per rivedere questa guida. Ogni modifica compare sul sito entro pochi secondi.",
 ].join("\n");
 
 type TelegramUser = {
@@ -214,9 +229,72 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
+        if (text.startsWith("/modifiche")) {
+          const { data: rows } = await supabaseAdmin.from("menu_overrides").select("*");
+          if (!rows || rows.length === 0) {
+            await sendMessage(chatId, "Nessuna modifica attiva: il menù è identico all'originale.");
+            return Response.json({ ok: true });
+          }
+          const lines = rows.map((r) => {
+            const base = baseItem(String(r.item_key));
+            const parts: string[] = [];
+            if (r.price_eur != null && base && Number(r.price_eur) !== base.price_eur)
+              parts.push(`prezzo ${formatPrice(base.price_eur)} → ${formatPrice(Number(r.price_eur))}`);
+            if (r.description) parts.push("descrizione modificata");
+            if (r.available === false) parts.push("tolta dal menù");
+            return `• ${itemName(String(r.item_key))}${parts.length ? ` — ${parts.join(", ")}` : ""}`;
+          });
+          await sendMessage(chatId, `Modifiche attive (${rows.length}):\n${lines.join("\n")}`);
+          return Response.json({ ok: true });
+        }
+
+        if (text.startsWith("/ripristina-tutto") || text.startsWith("/ripristina_tutto")) {
+          if (!/conferma/i.test(text)) {
+            const { count } = await supabaseAdmin
+              .from("menu_overrides")
+              .select("item_key", { count: "exact", head: true });
+            await sendMessage(
+              chatId,
+              `⚠️ Stai per annullare ${count ?? 0} modifiche e riportare tutto il menù come all'inizio.\n\nSe sei sicuro scrivi:\n/ripristina-tutto CONFERMA`,
+            );
+            return Response.json({ ok: true });
+          }
+          const { error: delErr } = await supabaseAdmin
+            .from("menu_overrides")
+            .delete()
+            .not("item_key", "is", null);
+          if (delErr) {
+            console.error(`Reset all failed: ${delErr.message}`);
+            await sendMessage(chatId, "Non riesco a ripristinare il menù in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await supabaseAdmin.from("menu_edit_log").insert({
+            actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
+            action: "reset_all",
+            item_key: null,
+            details: { command: text },
+          });
+          await sendMessage(chatId, "✅ Fatto: prezzi, descrizioni e disponibilità sono tornati come all'inizio.");
+          return Response.json({ ok: true });
+        }
+
+
+        let prompt = text;
+        if (text.startsWith("/ripristina")) {
+          const rest = text.replace(/^\/ripristina(?:@\w+)?/i, "").trim();
+          if (!rest) {
+            await sendMessage(
+              chatId,
+              "Scrivi /ripristina seguito dal nome della voce, per esempio:\n/ripristina alette di pollo\n\nPer annullare tutto: /ripristina-tutto",
+            );
+            return Response.json({ ok: true });
+          }
+          prompt = `ripristina la voce originale: ${rest}`;
+        }
+
         let command: Command;
         try {
-          command = await interpret(text);
+          command = await interpret(prompt);
         } catch {
           await sendMessage(chatId, "Non riesco a elaborare il comando in questo momento. Riprova.");
           return Response.json({ ok: true });
@@ -233,6 +311,29 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         const existing = baseItem(command.item_key);
         if (!existing) {
           await sendMessage(chatId, "Voce del menù non trovata.");
+          return Response.json({ ok: true });
+        }
+
+        if (command.action === "reset_item") {
+          const { error: rErr } = await supabaseAdmin
+            .from("menu_overrides")
+            .delete()
+            .eq("item_key", command.item_key);
+          if (rErr) {
+            console.error(`Reset item failed: ${rErr.message}`);
+            await sendMessage(chatId, "Non riesco a ripristinare questa voce in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await supabaseAdmin.from("menu_edit_log").insert({
+            actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
+            action: "reset_item",
+            item_key: command.item_key,
+            details: { command: text },
+          });
+          await sendMessage(
+            chatId,
+            `↩️ ${itemName(command.item_key)} è tornata all'originale: ${formatPrice(existing.price_eur)}.`,
+          );
           return Response.json({ ok: true });
         }
 
