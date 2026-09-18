@@ -279,9 +279,22 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         }
 
 
+        let prompt = text;
+        if (text.startsWith("/ripristina")) {
+          const rest = text.replace(/^\/ripristina(?:@\w+)?/i, "").trim();
+          if (!rest) {
+            await sendMessage(
+              chatId,
+              "Scrivi /ripristina seguito dal nome della voce, per esempio:\n/ripristina alette di pollo\n\nPer annullare tutto: /ripristina-tutto",
+            );
+            return Response.json({ ok: true });
+          }
+          prompt = `ripristina la voce originale: ${rest}`;
+        }
+
         let command: Command;
         try {
-          command = await interpret(text);
+          command = await interpret(prompt);
         } catch {
           await sendMessage(chatId, "Non riesco a elaborare il comando in questo momento. Riprova.");
           return Response.json({ ok: true });
