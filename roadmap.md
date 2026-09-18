@@ -1,5 +1,7 @@
-- [ ] Usare il logo caricato nel menù.
-- [ ] Applicare un tocco bordeaux ai testi principali.
-- [ ] Permettere a più operatori Telegram di modificare il menù.
-- [ ] Tradurre anche i nomi dei gruppi e correggere la traduzione parziale.
-- [ ] Verificare menù, traduzioni, logo e assenza di errori.
+# Lubrano Pub & Braceria — Menù digitale (DigitGS)
+
+- [x] Logo Lubrano nel menù (versione verticale su sfondo scuro).
+- [x] Tocco bordeaux sui testi principali.
+- [x] Più operatori Telegram abilitati a modificare il menù.
+- [x] Traduzione completa di categorie, gruppi, voci e allergeni.
+- [x] Identità di progetto personalizzata (Lubrano Pub & Braceria, produttore DigitGS).

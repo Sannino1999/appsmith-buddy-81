@@ -83,6 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Menù digitale multilingua di Lubrano Pub & Braceria a Napoli.",
       },
       { name: "author", content: "Lubrano Pub & Braceria" },
+      { name: "generator", content: "DigitGS" },
       { property: "og:title", content: "Lubrano Pub & Braceria — Menù digitale" },
       {
         property: "og:description",
