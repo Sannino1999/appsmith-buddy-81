@@ -51,8 +51,11 @@ function MenuPage() {
     refetchOnMount: "always",
   });
   const translateFn = useServerFn(translateCategory);
+  const overridesVersion = (overridesQuery.data ?? [])
+    .map((o) => `${o.item_key}:${o.name ?? ""}:${o.description ?? ""}`)
+    .join("|");
   const translationQuery = useQuery({
-    queryKey: ["translations", categoryId, lang],
+    queryKey: ["translations", categoryId, lang, overridesVersion],
     queryFn: () => translateFn({ data: { categoryId, lang } }),
     enabled: lang !== "it",
   });
