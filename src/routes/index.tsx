@@ -41,7 +41,15 @@ function MenuPage() {
   const [qrOpen, setQrOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const overridesQuery = useQuery({ queryKey: ["overrides"], queryFn: () => getOverrides() });
+  const overridesQuery = useQuery({
+    queryKey: ["overrides"],
+    queryFn: () => getOverrides(),
+    staleTime: 0,
+    refetchInterval: 20_000,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: "always",
+  });
   const translateFn = useServerFn(translateCategory);
   const translationQuery = useQuery({
     queryKey: ["translations", categoryId, lang],
