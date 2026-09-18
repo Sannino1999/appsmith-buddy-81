@@ -314,6 +314,29 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
+        if (command.action === "reset_item") {
+          const { error: rErr } = await supabaseAdmin
+            .from("menu_overrides")
+            .delete()
+            .eq("item_key", command.item_key);
+          if (rErr) {
+            console.error(`Reset item failed: ${rErr.message}`);
+            await sendMessage(chatId, "Non riesco a ripristinare questa voce in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await supabaseAdmin.from("menu_edit_log").insert({
+            actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
+            action: "reset_item",
+            item_key: command.item_key,
+            details: { command: text },
+          });
+          await sendMessage(
+            chatId,
+            `↩️ ${itemName(command.item_key)} è tornata all'originale: ${formatPrice(existing.price_eur)}.`,
+          );
+          return Response.json({ ok: true });
+        }
+
         const { data: currentRows } = await supabaseAdmin
           .from("menu_overrides")
           .select("*")
