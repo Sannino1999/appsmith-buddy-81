@@ -50,6 +50,7 @@ async function interpret(text: string): Promise<Command> {
       g.items.map((i) => ({ key: i.key, name: i.name, category: c.name, price: i.price_eur })),
     ),
   );
+  const categories = baseMenu.categories.map((c) => ({ id: c.id, name: c.name, macro: c.macro }));
 
   const res = await fetch(AI_URL, {
     method: "POST",
@@ -60,12 +61,17 @@ async function interpret(text: string): Promise<Command> {
         {
           role: "system",
           content:
-            "Sei l'assistente del menù di un pub. Ricevi un comando in italiano e il catalogo delle voci. " +
-            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"unknown","item_key":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
-            "Usa reset_item quando l'utente chiede di ripristinare/annullare le modifiche di una voce e tornare all'originale. " +
-            "Scegli item_key dal catalogo con il match migliore sul nome. Se non trovi la voce o il comando non è chiaro usa action unknown con reason in italiano.",
+            "Sei l'assistente del menù di un pub. Ricevi un comando in italiano, il catalogo delle voci e l'elenco delle categorie. " +
+            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"set_category_available"|"reset_category"|"unknown","item_key":string,"category_id":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            "Usa reset_item quando l'utente chiede di ripristinare una singola voce. " +
+            "Usa set_category_available (con category_id e available) quando l'utente parla di un'INTERA categoria o sezione, per esempio 'togli tutte le focacce', 'nascondi i burger', 'rimetti gli hot dog'. " +
+            "Usa reset_category per riportare all'originale tutte le voci di una categoria. " +
+            "Scegli item_key dal catalogo o category_id dalle categorie con il match migliore sul nome. Se non trovi nulla o il comando non è chiaro usa action unknown con reason in italiano.",
         },
-        { role: "user", content: `Catalogo: ${JSON.stringify(catalog)}\n\nComando: ${text}` },
+        {
+          role: "user",
+          content: `Categorie: ${JSON.stringify(categories)}\n\nCatalogo: ${JSON.stringify(catalog)}\n\nComando: ${text}`,
+        },
       ],
       response_format: { type: "json_object" },
     }),
