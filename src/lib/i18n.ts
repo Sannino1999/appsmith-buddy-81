@@ -333,7 +333,7 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
 export const VENUE = {
   address: "Calata Trinità Maggiore 51, Napoli",
   phone: "081-18273748",
-  phoneHref: "tel:+390811827374 8".replace(" ", ""),
+  phoneHref: "tel:+3908118273748",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Calata+Trinit%C3%A0+Maggiore+51+Napoli",
 };
 
