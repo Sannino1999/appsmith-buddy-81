@@ -98,6 +98,13 @@ function baseItem(key: string) {
   return null;
 }
 
+function findCategory(id: string) {
+  const byId = baseMenu.categories.find((c) => c.id === id);
+  if (byId) return byId;
+  const needle = id.trim().toLowerCase();
+  return baseMenu.categories.find((c) => c.name.toLowerCase() === needle) ?? null;
+}
+
 const HELP = [
   "👋 Ciao! Sono il bot del menù Lubrano Pub & Braceria.",
   "Scrivimi normalmente, in italiano: penso io a trovare la voce giusta.",
@@ -112,6 +119,12 @@ const HELP = [
   "🚫 TOGLIERE / RIMETTERE UNA VOCE",
   "• togli dal menù la focaccia al pomodoro",
   "• rimetti la focaccia al pomodoro",
+  "",
+  "📂 TOGLIERE / RIMETTERE UNA CATEGORIA INTERA",
+  "• togli tutte le focacce",
+  "• nascondi i burger",
+  "• rimetti gli hot dog",
+  "• /ripristina-categoria focacce — riporta all'originale l'intera categoria",
   "",
   "↩️ RIPRISTINARE COME ALL'INIZIO",
   "• /ripristina alette di pollo — riporta una voce a prezzo e descrizione originali",
