@@ -37,6 +37,8 @@ type Command =
   | { action: "set_description"; item_key: string; description: string }
   | { action: "set_available"; item_key: string; available: boolean }
   | { action: "reset_item"; item_key: string }
+  | { action: "set_category_available"; category_id: string; available: boolean }
+  | { action: "reset_category"; category_id: string }
   | { action: "unknown"; reason: string };
 
 async function interpret(text: string): Promise<Command> {
