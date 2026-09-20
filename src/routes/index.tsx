@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
-import { Search, X, Globe } from "lucide-react";
+import { Search, X, Globe, Phone, MapPin } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getOverrides, translateCategory } from "@/lib/menu.functions";
-import { LANGUAGES, MENU_LABELS, UI, type LangCode } from "@/lib/i18n";
+import { LANGUAGES, MENU_LABELS, UI, INFO, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 export const Route = createFileRoute("/")({
@@ -66,6 +66,7 @@ function MenuPage() {
   );
   const translations = translationQuery.data ?? {};
   const t = UI[lang];
+  const info = INFO[lang];
   const menuLabels = MENU_LABELS[lang];
 
   const categories = baseMenu.categories.filter((c) => c.macro === macro);
