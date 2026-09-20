@@ -301,7 +301,14 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
 
         let prompt = text;
-        if (text.startsWith("/ripristina")) {
+        if (/^\/ripristina[-_]categoria/i.test(text)) {
+          const rest = text.replace(/^\/ripristina[-_]categoria(?:@\w+)?/i, "").trim();
+          if (!rest) {
+            await sendMessage(chatId, "Scrivi /ripristina-categoria seguito dal nome, per esempio:\n/ripristina-categoria focacce");
+            return Response.json({ ok: true });
+          }
+          prompt = `ripristina l'intera categoria all'originale: ${rest}`;
+        } else if (text.startsWith("/ripristina")) {
           const rest = text.replace(/^\/ripristina(?:@\w+)?/i, "").trim();
           if (!rest) {
             await sendMessage(
@@ -321,6 +328,74 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
+        const actor = message?.from?.username ? `@${message.from.username}` : String(chatId);
+
+        if (command.action === "set_category_available" || command.action === "reset_category") {
+          const category = findCategory(command.category_id ?? "");
+          if (!category) {
+            await sendMessage(chatId, "Categoria non trovata. Scrivi /help per vedere gli esempi.");
+            return Response.json({ ok: true });
+          }
+          const items = category.groups.flatMap((g) => g.items);
+          const keys = items.map((i) => i.key);
+
+          if (command.action === "reset_category") {
+            const { error: cErr } = await supabaseAdmin.from("menu_overrides").delete().in("item_key", keys);
+            if (cErr) {
+              console.error(`Reset category failed: ${cErr.message}`);
+              await sendMessage(chatId, "Non riesco a ripristinare la categoria in questo momento.");
+              return Response.json({ ok: false }, { status: 500 });
+            }
+            await supabaseAdmin.from("menu_edit_log").insert({
+              actor,
+              action: "reset_category",
+              item_key: category.id,
+              details: { command: text, items: keys.length },
+            });
+            await sendMessage(chatId, `↩️ Categoria ${category.name}: ${keys.length} voci tornate all'originale.`);
+            return Response.json({ ok: true });
+          }
+
+          const { data: existingRows } = await supabaseAdmin
+            .from("menu_overrides")
+            .select("*")
+            .in("item_key", keys);
+          const existingMap = new Map((existingRows ?? []).map((r) => [String(r.item_key), r]));
+          const now = new Date().toISOString();
+          const rows = items.map((item) => {
+            const prev = existingMap.get(item.key);
+            return {
+              item_key: item.key,
+              name: prev?.name ?? null,
+              description: prev?.description ?? null,
+              price_eur: prev?.price_eur ?? item.price_eur,
+              available: command.available,
+              updated_at: now,
+            };
+          });
+          const { error: upErr } = await supabaseAdmin
+            .from("menu_overrides")
+            .upsert(rows, { onConflict: "item_key" });
+          if (upErr) {
+            console.error(`Category availability update failed: ${upErr.message}`);
+            await sendMessage(chatId, "Non riesco ad aggiornare la categoria in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await supabaseAdmin.from("menu_edit_log").insert({
+            actor,
+            action: "set_category_available",
+            item_key: category.id,
+            details: { command: text, available: command.available, items: keys.length },
+          });
+          await sendMessage(
+            chatId,
+            `${command.available ? "✅" : "🚫"} Categoria ${category.name}: ${keys.length} voci ${
+              command.available ? "di nuovo disponibili" : "tolte dal menù"
+            }.`,
+          );
+          return Response.json({ ok: true });
+        }
+
         if (command.action === "unknown" || !("item_key" in command) || !command.item_key) {
           await sendMessage(
             chatId,
@@ -328,6 +403,7 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           );
           return Response.json({ ok: true });
         }
+
 
         const existing = baseItem(command.item_key);
         if (!existing) {
