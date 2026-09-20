@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { baseMenu } from "./menu";
-import { LANG_NAMES, type LangCode } from "./i18n";
+import { LANGUAGES, LANG_NAMES, type LangCode } from "./i18n";
 
 export type Override = {
   item_key: string;
@@ -37,12 +37,14 @@ export type TranslationMap = Record<string, { name: string; description: string 
 
 const TRANSLATION_BATCH_SIZE = 14;
 
+const LANG_CODES = LANGUAGES.map((l) => l.code) as [LangCode, ...LangCode[]];
+
 export const translateCategory = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
-    z.object({ categoryId: z.string(), lang: z.string().min(2).max(5) }).parse(data),
+    z.object({ categoryId: z.string(), lang: z.enum(LANG_CODES) }).parse(data),
   )
   .handler(async ({ data }): Promise<TranslationMap> => {
-    const lang = data.lang as LangCode;
+    const lang: LangCode = data.lang;
     if (lang === "it") return {};
     const category = baseMenu.categories.find((c) => c.id === data.categoryId);
     if (!category) return {};

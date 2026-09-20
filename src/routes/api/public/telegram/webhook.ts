@@ -192,18 +192,25 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         const isAdmin = (admins ?? []).some((a) => Number(a.chat_id) === chatId);
 
         if (!isAdmin) {
-          if ((admins ?? []).length === 0) {
-            await supabaseAdmin
-              .from("telegram_admins")
-              .insert({
-                chat_id: chatId,
-                username: message?.from?.username ?? null,
-                first_name: message?.from?.first_name ?? null,
-                last_name: message?.from?.last_name ?? null,
-              });
+          const bootstrapCode = process.env["TELEGRAM_BOOTSTRAP_CODE"];
+          const providedCode = text.replace(/^\/start(?:@\w+)?/i, "").trim();
+          const canBootstrap =
+            (admins ?? []).length === 0 &&
+            !!bootstrapCode &&
+            providedCode.length === bootstrapCode.length &&
+            safeEqual(providedCode, bootstrapCode);
+
+          if (canBootstrap) {
+            await supabaseAdmin.from("telegram_admins").insert({
+              chat_id: chatId,
+              username: message?.from?.username ?? null,
+              first_name: message?.from?.first_name ?? null,
+              last_name: message?.from?.last_name ?? null,
+            });
             await sendMessage(chatId, `Registrato come amministratore del menù.\n\n${HELP}`);
             return Response.json({ ok: true });
           }
+
           await sendMessage(
             chatId,
             `Non sei autorizzato a modificare il menù.\n\nIl tuo codice chat è ${chatId}: invialo a un operatore già autorizzato, che potrà scrivere /abilita ${chatId}.`,
