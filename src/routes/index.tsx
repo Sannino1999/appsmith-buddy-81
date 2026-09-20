@@ -271,7 +271,33 @@ function MenuPage() {
           ))}
         </div>
 
-        <footer className="anim-fade-up mt-16 text-center text-xs text-muted-foreground">
+        <section className="anim-fade-up mt-16 rounded-2xl border border-border bg-background/60 p-6 text-center">
+          <h2 className="display-caps text-xl text-brand">{info.title}</h2>
+          <p className="mt-3 text-sm text-foreground">{VENUE.address}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{info.hours}</p>
+          <p className="text-sm text-muted-foreground">{info.closedMonday}</p>
+          <p className="text-sm text-muted-foreground">{info.open}</p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <a
+              href={VENUE.phoneHref}
+              className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-4 py-2 text-sm text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
+            >
+              <Phone className="size-4" />
+              {VENUE.phone}
+            </a>
+            <a
+              href={VENUE.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-4 py-2 text-sm text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
+            >
+              <MapPin className="size-4" />
+              {info.directions}
+            </a>
+          </div>
+        </section>
+
+        <footer className="anim-fade-up mt-10 text-center text-xs text-muted-foreground">
           <p className="display-caps text-sm text-brand">
             {baseMenu.restaurant.name} · {baseMenu.restaurant.subtitle}
           </p>
