@@ -329,3 +329,22 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
     },
   },
 };
+
+export const VENUE = {
+  address: "Calata Trinità Maggiore 51, Napoli",
+  phone: "081-18273748",
+  phoneHref: "tel:+3908118273748",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Calata+Trinit%C3%A0+Maggiore+51+Napoli",
+};
+
+type InfoStrings = { title: string; hours: string; closedMonday: string; open: string; directions: string; call: string };
+
+export const INFO: Record<LangCode, InfoStrings> = {
+  it: { title: "Dove siamo", hours: "Orari", closedMonday: "Lunedì chiuso", open: "Martedì – Domenica 19:00 – 01:30", directions: "Come arrivare", call: "Chiama" },
+  en: { title: "Find us", hours: "Opening hours", closedMonday: "Monday closed", open: "Tuesday – Sunday 7:00 pm – 1:30 am", directions: "Directions", call: "Call" },
+  es: { title: "Dónde estamos", hours: "Horario", closedMonday: "Lunes cerrado", open: "Martes – Domingo 19:00 – 01:30", directions: "Cómo llegar", call: "Llamar" },
+  fr: { title: "Nous trouver", hours: "Horaires", closedMonday: "Lundi fermé", open: "Mardi – Dimanche 19h00 – 01h30", directions: "Itinéraire", call: "Appeler" },
+  de: { title: "So finden Sie uns", hours: "Öffnungszeiten", closedMonday: "Montag geschlossen", open: "Dienstag – Sonntag 19:00 – 01:30", directions: "Route", call: "Anrufen" },
+  pt: { title: "Onde estamos", hours: "Horário", closedMonday: "Segunda-feira fechado", open: "Terça – Domingo 19:00 – 01:30", directions: "Como chegar", call: "Ligar" },
+  zh: { title: "地址", hours: "营业时间", closedMonday: "周一休息", open: "周二至周日 19:00 – 01:30", directions: "导航", call: "致电" },
+};

@@ -37,6 +37,8 @@ type Command =
   | { action: "set_description"; item_key: string; description: string }
   | { action: "set_available"; item_key: string; available: boolean }
   | { action: "reset_item"; item_key: string }
+  | { action: "set_category_available"; category_id: string; available: boolean }
+  | { action: "reset_category"; category_id: string }
   | { action: "unknown"; reason: string };
 
 async function interpret(text: string): Promise<Command> {
@@ -48,6 +50,7 @@ async function interpret(text: string): Promise<Command> {
       g.items.map((i) => ({ key: i.key, name: i.name, category: c.name, price: i.price_eur })),
     ),
   );
+  const categories = baseMenu.categories.map((c) => ({ id: c.id, name: c.name, macro: c.macro }));
 
   const res = await fetch(AI_URL, {
     method: "POST",
@@ -58,12 +61,17 @@ async function interpret(text: string): Promise<Command> {
         {
           role: "system",
           content:
-            "Sei l'assistente del menù di un pub. Ricevi un comando in italiano e il catalogo delle voci. " +
-            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"unknown","item_key":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
-            "Usa reset_item quando l'utente chiede di ripristinare/annullare le modifiche di una voce e tornare all'originale. " +
-            "Scegli item_key dal catalogo con il match migliore sul nome. Se non trovi la voce o il comando non è chiaro usa action unknown con reason in italiano.",
+            "Sei l'assistente del menù di un pub. Ricevi un comando in italiano, il catalogo delle voci e l'elenco delle categorie. " +
+            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"set_category_available"|"reset_category"|"unknown","item_key":string,"category_id":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            "Usa reset_item quando l'utente chiede di ripristinare una singola voce. " +
+            "Usa set_category_available (con category_id e available) quando l'utente parla di un'INTERA categoria o sezione, per esempio 'togli tutte le focacce', 'nascondi i burger', 'rimetti gli hot dog'. " +
+            "Usa reset_category per riportare all'originale tutte le voci di una categoria. " +
+            "Scegli item_key dal catalogo o category_id dalle categorie con il match migliore sul nome. Se non trovi nulla o il comando non è chiaro usa action unknown con reason in italiano.",
         },
-        { role: "user", content: `Catalogo: ${JSON.stringify(catalog)}\n\nComando: ${text}` },
+        {
+          role: "user",
+          content: `Categorie: ${JSON.stringify(categories)}\n\nCatalogo: ${JSON.stringify(catalog)}\n\nComando: ${text}`,
+        },
       ],
       response_format: { type: "json_object" },
     }),
@@ -90,6 +98,13 @@ function baseItem(key: string) {
   return null;
 }
 
+function findCategory(id: string) {
+  const byId = baseMenu.categories.find((c) => c.id === id);
+  if (byId) return byId;
+  const needle = id.trim().toLowerCase();
+  return baseMenu.categories.find((c) => c.name.toLowerCase() === needle) ?? null;
+}
+
 const HELP = [
   "👋 Ciao! Sono il bot del menù Lubrano Pub & Braceria.",
   "Scrivimi normalmente, in italiano: penso io a trovare la voce giusta.",
@@ -104,6 +119,12 @@ const HELP = [
   "🚫 TOGLIERE / RIMETTERE UNA VOCE",
   "• togli dal menù la focaccia al pomodoro",
   "• rimetti la focaccia al pomodoro",
+  "",
+  "📂 TOGLIERE / RIMETTERE UNA CATEGORIA INTERA",
+  "• togli tutte le focacce",
+  "• nascondi i burger",
+  "• rimetti gli hot dog",
+  "• /ripristina-categoria focacce — riporta all'originale l'intera categoria",
   "",
   "↩️ RIPRISTINARE COME ALL'INIZIO",
   "• /ripristina alette di pollo — riporta una voce a prezzo e descrizione originali",
@@ -280,7 +301,14 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
 
         let prompt = text;
-        if (text.startsWith("/ripristina")) {
+        if (/^\/ripristina[-_]categoria/i.test(text)) {
+          const rest = text.replace(/^\/ripristina[-_]categoria(?:@\w+)?/i, "").trim();
+          if (!rest) {
+            await sendMessage(chatId, "Scrivi /ripristina-categoria seguito dal nome, per esempio:\n/ripristina-categoria focacce");
+            return Response.json({ ok: true });
+          }
+          prompt = `ripristina l'intera categoria all'originale: ${rest}`;
+        } else if (text.startsWith("/ripristina")) {
           const rest = text.replace(/^\/ripristina(?:@\w+)?/i, "").trim();
           if (!rest) {
             await sendMessage(
@@ -300,6 +328,74 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
+        const actor = message?.from?.username ? `@${message.from.username}` : String(chatId);
+
+        if (command.action === "set_category_available" || command.action === "reset_category") {
+          const category = findCategory(command.category_id ?? "");
+          if (!category) {
+            await sendMessage(chatId, "Categoria non trovata. Scrivi /help per vedere gli esempi.");
+            return Response.json({ ok: true });
+          }
+          const items = category.groups.flatMap((g) => g.items);
+          const keys = items.map((i) => i.key);
+
+          if (command.action === "reset_category") {
+            const { error: cErr } = await supabaseAdmin.from("menu_overrides").delete().in("item_key", keys);
+            if (cErr) {
+              console.error(`Reset category failed: ${cErr.message}`);
+              await sendMessage(chatId, "Non riesco a ripristinare la categoria in questo momento.");
+              return Response.json({ ok: false }, { status: 500 });
+            }
+            await supabaseAdmin.from("menu_edit_log").insert({
+              actor,
+              action: "reset_category",
+              item_key: category.id,
+              details: { command: text, items: keys.length },
+            });
+            await sendMessage(chatId, `↩️ Categoria ${category.name}: ${keys.length} voci tornate all'originale.`);
+            return Response.json({ ok: true });
+          }
+
+          const { data: existingRows } = await supabaseAdmin
+            .from("menu_overrides")
+            .select("*")
+            .in("item_key", keys);
+          const existingMap = new Map((existingRows ?? []).map((r) => [String(r.item_key), r]));
+          const now = new Date().toISOString();
+          const rows = items.map((item) => {
+            const prev = existingMap.get(item.key);
+            return {
+              item_key: item.key,
+              name: prev?.name ?? null,
+              description: prev?.description ?? null,
+              price_eur: prev?.price_eur ?? item.price_eur,
+              available: command.available,
+              updated_at: now,
+            };
+          });
+          const { error: upErr } = await supabaseAdmin
+            .from("menu_overrides")
+            .upsert(rows, { onConflict: "item_key" });
+          if (upErr) {
+            console.error(`Category availability update failed: ${upErr.message}`);
+            await sendMessage(chatId, "Non riesco ad aggiornare la categoria in questo momento.");
+            return Response.json({ ok: false }, { status: 500 });
+          }
+          await supabaseAdmin.from("menu_edit_log").insert({
+            actor,
+            action: "set_category_available",
+            item_key: category.id,
+            details: { command: text, available: command.available, items: keys.length },
+          });
+          await sendMessage(
+            chatId,
+            `${command.available ? "✅" : "🚫"} Categoria ${category.name}: ${keys.length} voci ${
+              command.available ? "di nuovo disponibili" : "tolte dal menù"
+            }.`,
+          );
+          return Response.json({ ok: true });
+        }
+
         if (command.action === "unknown" || !("item_key" in command) || !command.item_key) {
           await sendMessage(
             chatId,
@@ -307,6 +403,7 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           );
           return Response.json({ ok: true });
         }
+
 
         const existing = baseItem(command.item_key);
         if (!existing) {
