@@ -62,7 +62,7 @@ export const translateCategory = createServerFn({ method: "POST" })
         };
       }),
     );
-    const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
+    const hashes = new Map(entries.map((e) => [e.key, sourceHash(`${e.name}|${e.description ?? ""}`)]));
 
     const { data: cached } = await supabaseAdmin
       .from("menu_translations")
