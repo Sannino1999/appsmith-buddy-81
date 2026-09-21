@@ -45,7 +45,7 @@ export const translateCategory = createServerFn({ method: "POST" })
     if (!category) return {};
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { translateEntries } = await import("./translate.server");
+  const { translateEntries, sourceHash } = await import("./translate.server");
 
     const { data: overrides } = await supabaseAdmin
       .from("menu_overrides")
