@@ -27,11 +27,6 @@ export const getOverrides = createServerFn({ method: "GET" }).handler(async (): 
   }));
 });
 
-function hash(text: string) {
-  let h = 5381;
-  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
-  return String(h >>> 0);
-}
 
 export type TranslationMap = Record<string, { name: string; description: string | null }>;
 
@@ -50,7 +45,7 @@ export const translateCategory = createServerFn({ method: "POST" })
     if (!category) return {};
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { translateEntries } = await import("./translate.server");
+  const { translateEntries, sourceHash } = await import("./translate.server");
 
     const { data: overrides } = await supabaseAdmin
       .from("menu_overrides")
@@ -67,7 +62,7 @@ export const translateCategory = createServerFn({ method: "POST" })
         };
       }),
     );
-    const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
+    const hashes = new Map(entries.map((e) => [e.key, sourceHash(`${e.name}|${e.description ?? ""}`)]));
 
     const { data: cached } = await supabaseAdmin
       .from("menu_translations")

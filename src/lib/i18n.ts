@@ -337,14 +337,24 @@ export const VENUE = {
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Calata+Trinit%C3%A0+Maggiore+51+Napoli",
 };
 
-type InfoStrings = { title: string; hours: string; closedMonday: string; open: string; directions: string; call: string };
+type InfoStrings = {
+  title: string;
+  eyebrow: string;
+  hours: string;
+  monday: string;
+  closed: string;
+  openDays: string;
+  openHours: string;
+  directions: string;
+  call: string;
+};
 
 export const INFO: Record<LangCode, InfoStrings> = {
-  it: { title: "Dove siamo", hours: "Orari", closedMonday: "Lunedì chiuso", open: "Martedì – Domenica 19:00 – 01:30", directions: "Come arrivare", call: "Chiama" },
-  en: { title: "Find us", hours: "Opening hours", closedMonday: "Monday closed", open: "Tuesday – Sunday 7:00 pm – 1:30 am", directions: "Directions", call: "Call" },
-  es: { title: "Dónde estamos", hours: "Horario", closedMonday: "Lunes cerrado", open: "Martes – Domingo 19:00 – 01:30", directions: "Cómo llegar", call: "Llamar" },
-  fr: { title: "Nous trouver", hours: "Horaires", closedMonday: "Lundi fermé", open: "Mardi – Dimanche 19h00 – 01h30", directions: "Itinéraire", call: "Appeler" },
-  de: { title: "So finden Sie uns", hours: "Öffnungszeiten", closedMonday: "Montag geschlossen", open: "Dienstag – Sonntag 19:00 – 01:30", directions: "Route", call: "Anrufen" },
-  pt: { title: "Onde estamos", hours: "Horário", closedMonday: "Segunda-feira fechado", open: "Terça – Domingo 19:00 – 01:30", directions: "Como chegar", call: "Ligar" },
-  zh: { title: "地址", hours: "营业时间", closedMonday: "周一休息", open: "周二至周日 19:00 – 01:30", directions: "导航", call: "致电" },
+  it: { title: "Dove siamo", eyebrow: "Nel cuore di Napoli", hours: "Orari", monday: "Lunedì", closed: "Chiuso", openDays: "Mar – Dom", openHours: "19:00 – 01:30", directions: "Come arrivare", call: "Chiama" },
+  en: { title: "Find us", eyebrow: "In the heart of Naples", hours: "Opening hours", monday: "Monday", closed: "Closed", openDays: "Tue – Sun", openHours: "7:00 pm – 1:30 am", directions: "Directions", call: "Call" },
+  es: { title: "Dónde estamos", eyebrow: "En el corazón de Nápoles", hours: "Horario", monday: "Lunes", closed: "Cerrado", openDays: "Mar – Dom", openHours: "19:00 – 01:30", directions: "Cómo llegar", call: "Llamar" },
+  fr: { title: "Nous trouver", eyebrow: "Au cœur de Naples", hours: "Horaires", monday: "Lundi", closed: "Fermé", openDays: "Mar – Dim", openHours: "19h00 – 01h30", directions: "Itinéraire", call: "Appeler" },
+  de: { title: "So finden Sie uns", eyebrow: "Im Herzen von Neapel", hours: "Öffnungszeiten", monday: "Montag", closed: "Geschlossen", openDays: "Di – So", openHours: "19:00 – 01:30", directions: "Route", call: "Anrufen" },
+  pt: { title: "Onde estamos", eyebrow: "No coração de Nápoles", hours: "Horário", monday: "Segunda", closed: "Fechado", openDays: "Ter – Dom", openHours: "19:00 – 01:30", directions: "Como chegar", call: "Ligar" },
+  zh: { title: "地址", eyebrow: "那不勒斯市中心", hours: "营业时间", monday: "周一", closed: "休息", openDays: "周二至周日", openHours: "19:00 – 01:30", directions: "导航", call: "致电" },
 };

@@ -272,30 +272,66 @@ function MenuPage() {
           ))}
         </div>
 
-        <section className="anim-fade-up mt-16 rounded-2xl border border-border bg-background/60 p-6 text-center">
-          <h2 className="display-caps text-xl text-brand">{info.title}</h2>
-          <p className="mt-3 text-sm text-foreground">{VENUE.address}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{info.hours}</p>
-          <p className="text-sm text-muted-foreground">{info.closedMonday}</p>
-          <p className="text-sm text-muted-foreground">{info.open}</p>
-          <div className="mt-5 flex flex-wrap justify-center gap-3">
+        <section className="anim-fade-up relative mt-16 border border-border/60 bg-background/70 p-8 shadow-2xl sm:p-10">
+          <div aria-hidden className="pointer-events-none absolute left-0 top-0 size-7 border-l-2 border-t-2 border-brand" />
+          <div aria-hidden className="pointer-events-none absolute right-0 top-0 size-7 border-r-2 border-t-2 border-brand" />
+          <div aria-hidden className="pointer-events-none absolute bottom-0 left-0 size-7 border-b-2 border-l-2 border-brand" />
+          <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 size-7 border-b-2 border-r-2 border-brand" />
+
+          <div className="text-center">
+            <span className="block text-[0.65rem] font-bold uppercase tracking-[0.3em] text-accent">
+              {info.eyebrow}
+            </span>
+            <h2 className="display-caps mt-2 text-3xl text-brand">{info.title}</h2>
+            <div className="mx-auto mt-4 h-px w-16 bg-brand" />
+          </div>
+
+          <div className="mt-7 text-center">
+            <p className="text-lg font-medium tracking-wide text-foreground">{VENUE.address}</p>
             <a
               href={VENUE.phoneHref}
-              className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-4 py-2 text-sm text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
+              className="mt-3 inline-block text-lg font-semibold text-accent underline decoration-border underline-offset-8 transition-colors duration-200 hover:text-foreground"
             >
-              <Phone className="size-4" />
               {VENUE.phone}
+            </a>
+          </div>
+
+          <div className="my-8 border-y border-border/60 bg-black/30 px-4 py-6">
+            <h3 className="mb-4 text-center text-[0.6rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+              {info.hours}
+            </h3>
+            <div className="grid grid-cols-2 gap-x-5 gap-y-2">
+              <span className="text-right text-sm uppercase text-muted-foreground">{info.monday}</span>
+              <span className="display-caps text-left text-sm font-bold uppercase tracking-widest text-brand">
+                {info.closed}
+              </span>
+              <span className="text-right text-sm uppercase text-foreground/80">{info.openDays}</span>
+              <span className="text-left text-sm font-semibold text-foreground">{info.openHours}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <a
+              href={VENUE.phoneHref}
+              className="flex items-center justify-center gap-3 bg-primary px-6 py-4 text-primary-foreground transition-all duration-300 hover:bg-primary/90 active:scale-95"
+            >
+              <Phone className="size-5" />
+              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">{info.call}</span>
             </a>
             <a
               href={VENUE.mapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-4 py-2 text-sm text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
+              className="flex items-center justify-center gap-3 bg-foreground px-6 py-4 text-background transition-all duration-300 hover:opacity-90 active:scale-95"
             >
-              <MapPin className="size-4" />
-              {info.directions}
+              <MapPin className="size-5" />
+              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">{info.directions}</span>
             </a>
           </div>
+
+          <p className="mt-8 text-center text-[0.6rem] uppercase tracking-widest text-muted-foreground/70">
+            {baseMenu.restaurant.name} · Napoli
+          </p>
         </section>
 
         <footer className="anim-fade-up mt-10 text-center text-xs text-muted-foreground">
