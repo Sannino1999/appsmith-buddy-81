@@ -27,11 +27,6 @@ export const getOverrides = createServerFn({ method: "GET" }).handler(async (): 
   }));
 });
 
-function hash(text: string) {
-  let h = 5381;
-  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
-  return String(h >>> 0);
-}
 
 export type TranslationMap = Record<string, { name: string; description: string | null }>;
 
