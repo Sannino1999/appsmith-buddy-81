@@ -92,19 +92,51 @@
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  border: 1.5px solid var(--color-primary);
-  padding: 0.45rem 1.1rem;
+  min-height: 2.75rem;
+  border: 1.5px solid color-mix(in oklab, var(--color-primary) 82%, white);
+  padding: 0.55rem 1.05rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-primary);
-  background-color: oklch(0.17 0.005 250 / 40%);
-  transition: all 0.18s ease;
+  color: color-mix(in oklab, var(--color-primary) 72%, white);
+  background-color: color-mix(in oklab, var(--color-background) 86%, transparent);
+  box-shadow: 0 3px 10px transparent;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
   white-space: nowrap;
+
+  &:hover {
+    color: var(--color-primary-foreground);
+    border-color: var(--color-primary);
+    background-color: color-mix(in oklab, var(--color-primary) 28%, var(--color-background));
+    box-shadow: 0 5px 16px color-mix(in oklab, var(--color-primary) 25%, transparent);
+    transform: scale(1.03);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }
 
 @utility pill-active {
   background-color: var(--color-primary);
   color: var(--color-primary-foreground);
+  border-color: color-mix(in oklab, var(--color-primary) 72%, white);
+  box-shadow: 0 5px 18px color-mix(in oklab, var(--color-primary) 32%, transparent);
+}
+
+@utility menu-control {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+
+  &:hover { transform: scale(1.03); }
+  &:active { transform: scale(0.97); }
+  &:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }
 
 @utility leader {
@@ -126,6 +158,15 @@
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes menu-change {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility anim-menu-change {
+  animation: menu-change 280ms ease-out both;
 }
 
 @keyframes fade-in {
@@ -161,3 +202,12 @@
 @utility stagger-4 { animation-delay: 0.2s; }
 @utility stagger-5 { animation-delay: 0.25s; }
 @utility stagger-6 { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

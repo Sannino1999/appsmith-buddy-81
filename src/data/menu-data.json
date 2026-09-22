@@ -25,108 +25,126 @@
           "name": "",
           "items": [
             {
+              "id": "arrosticini_di_scottona",
               "name": "Arrosticini di scottona",
               "description": "pz. 6",
               "price_eur": 8.5,
               "tags": []
             },
             {
+              "id": "polpettine",
               "name": "Polpettine",
               "description": "pz. 14",
               "price_eur": 5.0,
               "tags": []
             },
             {
+              "id": "straccetti_di_pollo",
               "name": "Straccetti di pollo",
               "description": "straccetti alla paprika, con impanatura ai cornflakes, pz. 4",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "alette_di_pollo",
               "name": "Alette di pollo",
               "description": "pz. 5",
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "stick_di_provola_impanata",
               "name": "Stick di provola impanata",
               "description": "pz. 4",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "mais_prosciutto_e_formaggio",
               "name": "Mais prosciutto e formaggio",
               "description": null,
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "salamini_sott_olio",
               "name": "Salamini sott'olio",
               "description": "salamini a tocchetti con olive verdi e parmigiano",
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "chele_di_granchio",
               "name": "Chele di granchio",
               "description": "pz. 5",
               "price_eur": 5.5,
               "tags": []
             },
             {
+              "id": "polpette_di_pulled_cheddar_e_bbq",
               "name": "Polpette di pulled, cheddar e BBQ",
               "description": "pz. 3",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "jalapenos",
               "name": "Jalapenos",
               "description": "pz. 5",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "anelli_di_cipolla",
               "name": "Anelli di cipolla",
               "description": "pz. 6",
               "price_eur": 5.5,
               "tags": []
             },
             {
+              "id": "double_stick",
               "name": "Double stick",
               "description": "pz. 4",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "fagioli_alla_messicana",
               "name": "Fagioli alla messicana",
               "description": null,
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "mortadella_grigliata",
               "name": "Mortadella grigliata",
               "description": "mortadella grigliata accompagnata da crema di pistacchio",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "mix_di_bruschette",
               "name": "Mix di bruschette",
               "description": "friarielli e provola, melanzane e provola, funghi e provola, pomodorini",
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "bruschetta_al_pomodoro",
               "name": "Bruschetta al pomodoro",
               "description": "pz. 4",
               "price_eur": 5.5,
               "tags": []
             },
             {
+              "id": "bruschetta_bacon_e_provola",
               "name": "Bruschetta bacon e provola",
               "description": null,
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "quadrotti_di_cheddar",
               "name": "Quadrotti di cheddar",
               "description": "pz. 2",
               "price_eur": 7.0,
@@ -146,96 +164,112 @@
           "name": "",
           "items": [
             {
+              "id": "patate_fritte",
               "name": "Patate fritte",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "patate_limone_e_pepe",
               "name": "Patate limone e pepe",
               "description": null,
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "patate_e_wurstel",
               "name": "Patate e wurstel",
               "description": null,
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "patate_e_salsiccia",
               "name": "Patate e salsiccia",
               "description": null,
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "patate_salsiccia_e_wurstel",
               "name": "Patate salsiccia e wurstel",
               "description": null,
               "price_eur": 8.0,
               "tags": []
             },
             {
+              "id": "patate_con_polpettine",
               "name": "Patate con polpettine",
               "description": null,
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "patate_e_porchetta_di_ariccia",
               "name": "Patate e porchetta di Ariccia",
               "description": null,
               "price_eur": 7.5,
               "tags": []
             },
             {
+              "id": "patate_e_bacon",
               "name": "Patate e bacon",
               "description": null,
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "patate_e_hamburger",
               "name": "Patate e hamburger",
               "description": null,
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "patate_e_pulled",
               "name": "Patate e pulled",
               "description": null,
               "price_eur": 7.5,
               "tags": []
             },
             {
+              "id": "patate_chips_cacio_e_pepe",
               "name": "Patate chips cacio e pepe",
               "description": null,
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "patate_al_forno",
               "name": "Patate al forno",
               "description": null,
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "patate_chips",
               "name": "Patate chips",
               "description": null,
               "price_eur": 5.0,
               "tags": []
             },
             {
+              "id": "patate_fritte_e_mortadella_grigliata",
               "name": "Patate fritte e mortadella grigliata",
               "description": null,
               "price_eur": 7.0,
               "tags": []
             },
             {
+              "id": "patate_e_straccetti_di_pollo_croccanti",
               "name": "Patate e straccetti di pollo croccanti",
               "description": null,
               "price_eur": 8.5,
               "tags": []
             },
             {
+              "id": "aggiunta_fonduta_di_cheddar_formaggio_e_provola",
               "name": "Aggiunta fonduta di cheddar, formaggio e provola",
               "description": "supplemento per le patate",
               "price_eur": 1.5,
@@ -255,162 +289,189 @@
           "name": "",
           "items": [
             {
+              "id": "hot_jalapegnos",
               "name": "Hot Jalapegnos",
               "description": "hamburger di scottona, cheddar, jalapegnos, cipolla rossa, nachos, salsa messicana",
               "price_eur": 10.5,
               "tags": []
             },
             {
+              "id": "viva_l_italia",
               "name": "Viva l'Italia",
               "description": "hamburger di chianina, caciocavallo, cipolla rossa, pesto alla genovese, pomodorini secchi, basilico",
               "price_eur": 11.5,
               "tags": []
             },
             {
+              "id": "nzogna_e_pepe",
               "name": "Nzogna e Pepe",
               "description": "hamburger di black angus, burrata, patate al forno, crema di tarallo",
               "price_eur": 13.0,
               "tags": []
             },
             {
+              "id": "perfect_burger",
               "name": "Perfect Burger",
               "description": "hamburger di chianina 150gr, valerianella, provola impanata, maionese affumicata, bacon, mandorle tostate",
               "price_eur": 12.0,
               "tags": []
             },
             {
+              "id": "double_stick_burger",
               "name": "Double Stick Burger",
               "description": "double stick, cipolla rossa, cheddar, uovo, insalata",
               "price_eur": 11.0,
               "tags": []
             },
             {
+              "id": "uvegan",
               "name": "UVegan",
               "description": "hamburger vegano 100% vegan, patate al forno, pesto alla genovese, pomodorini secchi",
               "price_eur": 10.0,
               "tags": []
             },
             {
+              "id": "chicken_royal",
               "name": "Chicken Royal",
               "description": "straccetti di pollo impanati, formaggio, insalata e pomodoro",
               "price_eur": 9.5,
               "tags": []
             },
             {
+              "id": "cheesesteak",
               "name": "Cheesesteak",
               "description": "controfiletto e formaggio fuso, con bacon e patate",
               "price_eur": 9.5,
               "tags": []
             },
             {
+              "id": "americano",
               "name": "Americano",
               "description": "hamburger di chianina da 250gr, cheddar, bacon, anelli di cipolla e uovo",
               "price_eur": 14.0,
               "tags": []
             },
             {
+              "id": "luro",
               "name": "Luro",
               "description": "porchetta di Ariccia, mascarpone, funghi, prosciutto crudo e provola",
               "price_eur": 10.5,
               "tags": []
             },
             {
+              "id": "casertano",
               "name": "Casertano",
               "description": "hamburger di maialino nero, parmigiana di patate e zucchine fritte",
               "price_eur": 10.0,
               "tags": []
             },
             {
+              "id": "priano",
               "name": "Priano",
               "description": "hamburger di chianina, mortadella, crema di pistacchio, provola affumicata",
               "price_eur": 10.5,
               "tags": []
             },
             {
+              "id": "pulled",
               "name": "Pulled",
               "description": "pulled pork, bacon croccante, cipolla caramellata, provola affumicata e pomodoro",
               "price_eur": 11.0,
               "tags": []
             },
             {
+              "id": "la_bomba",
               "name": "La Bomba",
               "description": "hamburger di chianina, bacon croccante, cipolla caramellata, provola affumicata e pomodoro",
               "price_eur": 11.0,
               "tags": []
             },
             {
+              "id": "paperaldo",
               "name": "Paperaldo",
               "description": "hamburger di scottona, provola affumicata, insalata e pomodoro",
               "price_eur": 8.5,
               "tags": []
             },
             {
+              "id": "o_fighett",
               "name": "O' Fighett",
               "description": "petto di pollo, formaggio, insalata e pomodoro",
               "price_eur": 9.0,
               "tags": []
             },
             {
+              "id": "presidente",
               "name": "Presidente",
               "description": "pulled pork, provola, cheddar, bacon, melanzane a funghetto",
               "price_eur": 11.0,
               "tags": []
             },
             {
+              "id": "albertone",
               "name": "Albertone",
               "description": "salsiccia, provola, prosciutto cotto, patate al forno e crema di carciofi",
               "price_eur": 10.5,
               "tags": []
             },
             {
+              "id": "green",
               "name": "Green",
               "description": "hamburger di chianina, provola, uovo, bacon e pomodoro",
               "price_eur": 11.0,
               "tags": []
             },
             {
+              "id": "il_pastore",
               "name": "Il Pastore",
               "description": "hamburger di chianina, provola, rucola e pomodorini",
               "price_eur": 9.0,
               "tags": []
             },
             {
+              "id": "don_gaetano",
               "name": "Don Gaetano",
               "description": "polpettine, parmigiana di melanzane e provola affumicata",
               "price_eur": 9.0,
               "tags": []
             },
             {
+              "id": "lubranone",
               "name": "Lubranone",
               "description": "hamburger di chianina, formaggio, bacon e friarielli",
               "price_eur": 10.0,
               "tags": []
             },
             {
+              "id": "top",
               "name": "Top",
               "description": "wurstel, bacon croccante, uovo e cheddar",
               "price_eur": 9.0,
               "tags": []
             },
             {
+              "id": "mario_p",
               "name": "Mario P.",
               "description": "hamburger di scottona, prosciutto cotto e formaggio",
               "price_eur": 7.5,
               "tags": []
             },
             {
+              "id": "o_mast",
               "name": "O' Mast",
               "description": "cotoletta di pollo, parmigiana di melanzane e provola affumicata",
               "price_eur": 9.5,
               "tags": []
             },
             {
+              "id": "fox",
               "name": "Fox",
               "description": "porchetta di Ariccia, provola affumicata e funghi",
               "price_eur": 8.5,
               "tags": []
             },
             {
+              "id": "patasnella",
               "name": "Patasnella",
               "description": "hamburger di scottona, patate al forno, provola affumicata e melanzane arrostite",
               "price_eur": 9.0,
@@ -430,72 +491,84 @@
           "name": "",
           "items": [
             {
+              "id": "hamburger_di_chianina_alla_brace_250g",
               "name": "Hamburger di chianina",
               "description": "da 250gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 12.5,
               "tags": []
             },
             {
+              "id": "filetto_di_scottona_300g",
               "name": "Filetto di scottona",
               "description": "da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 21.0,
               "tags": []
             },
             {
+              "id": "arrosto_di_scottona_500g",
               "name": "Arrosto di scottona",
               "description": "da 500gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 30.0,
               "tags": []
             },
             {
+              "id": "arrosto_di_scottona_frollata_300g",
               "name": "Arrosto di scottona",
               "description": "30 giorni di frollatura, da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 24.0,
               "tags": []
             },
             {
+              "id": "tagliata_di_scottona",
               "name": "Tagliata di scottona",
               "description": "da 300gr, con rucola, pomodorini e scaglie di parmigiano",
               "price_eur": 21.0,
               "tags": []
             },
             {
+              "id": "tagliata_di_pollo",
               "name": "Tagliata di pollo",
               "description": "da 300gr, con rucola, pomodorini e scaglie di parmigiano",
               "price_eur": 16.5,
               "tags": []
             },
             {
+              "id": "manzetta_prussiana_300g",
               "name": "Manzetta prussiana",
               "description": "da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 25.0,
               "tags": []
             },
             {
+              "id": "manzetta_prussiana_500g",
               "name": "Manzetta prussiana",
               "description": "da 500gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 35.0,
               "tags": []
             },
             {
+              "id": "entrecote_black_angus_reale_300g",
               "name": "Entrecote black angus reale",
               "description": "da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 28.5,
               "tags": []
             },
             {
+              "id": "entrecote_black_angus_reale_500g",
               "name": "Entrecote black angus reale",
               "description": "da 500gr, con contorno di verdura grigliata, insalata o patatine fritte",
               "price_eur": 38.5,
               "tags": []
             },
             {
+              "id": "costine_di_maiale",
               "name": "Costine di maiale",
               "description": "in salsa barbeque con patate chips, pz. 5",
               "price_eur": 19.0,
               "tags": []
             },
             {
+              "id": "misto_brace",
               "name": "Misto brace",
               "description": "arrosto, salsiccia, costata di maiale, arrosto di pollo e costina di maiale, con contorno di insalata, patatine o verdure grigliate",
               "price_eur": null,
@@ -515,18 +588,21 @@
           "name": "",
           "items": [
             {
+              "id": "caesar_salad",
               "name": "Caesar Salad",
               "description": "insalata iceberg, petto di pollo, pomodorino, salsa caesar e scaglie di parmigiano",
               "price_eur": 9.5,
               "tags": []
             },
             {
+              "id": "lubrano_salad",
               "name": "Lubrano Salad",
               "description": "straccetti di manzo, rucola, pomodorini, scaglie di parmigiano, salsa BBQ",
               "price_eur": 10.5,
               "tags": []
             },
             {
+              "id": "crispy_salad",
               "name": "Crispy Salad",
               "description": "insalata iceberg, cotoletta di pollo, pomodorino, salsa caesar e scaglie di parmigiano",
               "price_eur": 9.5,
@@ -546,72 +622,84 @@
           "name": "",
           "items": [
             {
+              "id": "melanzane_arrostite",
               "name": "Melanzane arrostite",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "melanzane_a_funghetto",
               "name": "Melanzane a funghetto",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "funghi_champignon",
               "name": "Funghi champignon",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "parmigiana_di_melanzane",
               "name": "Parmigiana di melanzane",
               "description": null,
               "price_eur": 5.5,
               "tags": []
             },
             {
+              "id": "parmigiana_di_patate",
               "name": "Parmigiana di patate",
               "description": null,
               "price_eur": 5.5,
               "tags": []
             },
             {
+              "id": "zucchine_arrostite",
               "name": "Zucchine arrostite",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "zucchine_fritte",
               "name": "Zucchine fritte",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "verdura_grigliata_mista",
               "name": "Verdura grigliata mista",
               "description": null,
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "zucca_grigliata",
               "name": "Zucca grigliata",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "insalata_iceberg",
               "name": "Insalata iceberg",
               "description": null,
               "price_eur": 4.0,
               "tags": []
             },
             {
+              "id": "friarielli",
               "name": "Friarielli",
               "description": null,
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "pomodorini_e_rucola",
               "name": "Pomodorini e rucola",
               "description": null,
               "price_eur": 4.5,
@@ -631,36 +719,42 @@
           "name": "",
           "items": [
             {
+              "id": "pan_di_stelle",
               "name": "Pan di Stelle",
               "description": null,
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "cheesecake",
               "name": "Cheesecake",
               "description": "pistacchio, nutella, frutti di bosco, caramello",
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "tiramisu",
               "name": "Tiramisù",
               "description": null,
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "torta_lotus",
               "name": "Torta Lotus",
               "description": null,
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "torta_bueno",
               "name": "Torta Bueno",
               "description": null,
               "price_eur": null,
               "tags": []
             },
             {
+              "id": "la_bombetta",
               "name": "La Bombetta",
               "description": null,
               "price_eur": null,
@@ -680,36 +774,42 @@
           "name": "",
           "items": [
             {
+              "id": "acqua_ferrarelle",
               "name": "Acqua Ferrarelle",
               "description": "500 ml",
               "price_eur": 2.5,
               "tags": []
             },
             {
+              "id": "acqua_natia",
               "name": "Acqua Natia",
               "description": "500 ml",
               "price_eur": 2.5,
               "tags": []
             },
             {
+              "id": "coca_cola",
               "name": "Coca Cola",
               "description": "330 ml",
               "price_eur": 3.0,
               "tags": []
             },
             {
+              "id": "coca_cola_zero",
               "name": "Coca Cola Zero",
               "description": "330 ml",
               "price_eur": 3.0,
               "tags": []
             },
             {
+              "id": "fanta",
               "name": "Fanta",
               "description": "330 ml",
               "price_eur": 3.0,
               "tags": []
             },
             {
+              "id": "sprite",
               "name": "Sprite",
               "description": "330 ml",
               "price_eur": 3.0,
@@ -729,24 +829,28 @@
           "name": "",
           "items": [
             {
+              "id": "falkenturm_pills_0_20",
               "name": "Falkenturm Pills 0,20",
               "description": null,
               "price_eur": 3.5,
               "tags": []
             },
             {
+              "id": "falkenturm_pills_0_40",
               "name": "Falkenturm Pills 0,40",
               "description": null,
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "birra_del_mese_0_20",
               "name": "Birra del mese 0,20",
               "description": null,
               "price_eur": 4.0,
               "tags": []
             },
             {
+              "id": "birra_del_mese_0_40",
               "name": "Birra del mese 0,40",
               "description": null,
               "price_eur": 6.5,
@@ -766,60 +870,70 @@
           "name": "",
           "items": [
             {
+              "id": "heineken_57",
               "name": "Heineken 57",
               "description": "330 ml – 5,0% vol",
               "price_eur": 3.5,
               "tags": []
             },
             {
+              "id": "tennent_s",
               "name": "Tennent's",
               "description": "330 ml – 9,0% vol",
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "leffe_blan",
               "name": "Leffe Blan",
               "description": "330 ml – 6,6% vol",
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "leffe_rituel",
               "name": "Leffe Rituel",
               "description": "330 ml – 9,0% vol",
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "leffe_rouge",
               "name": "Leffe Rouge",
               "description": "330 ml – 6,6% vol",
               "price_eur": 4.5,
               "tags": []
             },
             {
+              "id": "la_chouffe",
               "name": "La Chouffe",
               "description": "330 ml – 8,0% vol",
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "peroni_senza_glutine",
               "name": "Peroni senza glutine",
               "description": "330 ml – 4,7% vol",
               "price_eur": 4.0,
               "tags": []
             },
             {
+              "id": "la_trappe_tripel",
               "name": "La Trappe Tripel",
               "description": "330 ml – 8,0% vol",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "la_trappe_blonde",
               "name": "La Trappe Blonde",
               "description": "330 ml – 6,5% vol",
               "price_eur": 6.5,
               "tags": []
             },
             {
+              "id": "la_trappe_quadrupel",
               "name": "La Trappe Quadrupel",
               "description": "330 ml – 10,0% vol",
               "price_eur": 6.5,
@@ -839,66 +953,77 @@
           "name": "",
           "items": [
             {
+              "id": "calice_moio_57",
               "name": "Calice Moio 57",
               "description": "14,5% vol",
               "price_eur": 6.0,
               "tags": []
             },
             {
+              "id": "calice_di_aglianico",
               "name": "Calice di Aglianico",
               "description": "12,5% vol",
               "price_eur": 5.0,
               "tags": []
             },
             {
+              "id": "mojo_57",
               "name": "Mojo 57",
               "description": "14,5% vol",
               "price_eur": 21.0,
               "tags": []
             },
             {
+              "id": "rubrato",
               "name": "Rubrato",
               "description": "\"Feudi di San Gregorio\" – 13,5% vol",
               "price_eur": 18.0,
               "tags": []
             },
             {
+              "id": "aglianico_quintodecimo",
               "name": "Aglianico \"Quintodecimo\"",
               "description": "14,0% vol",
               "price_eur": null,
               "tags": []
             },
             {
+              "id": "mastro_rosso",
               "name": "Mastro Rosso",
               "description": "\"Mastroberardino\" – 12,5% vol",
               "price_eur": 17.0,
               "tags": []
             },
             {
+              "id": "lacryma_christi_del_vesuvio",
               "name": "Lacryma Christi del Vesuvio",
               "description": "\"Mastroberardino\" – 12,5% vol (indicato anche come \"Christi\")",
               "price_eur": 19.0,
               "tags": []
             },
             {
+              "id": "radici_taurasi",
               "name": "Radici Taurasi",
               "description": "\"Mastroberardino\" – 14,0% vol",
               "price_eur": 46.0,
               "tags": []
             },
             {
+              "id": "aglianico_doni_del_sole",
               "name": "Aglianico",
               "description": "\"Doni del sole\" – 12,5% vol",
               "price_eur": 17.0,
               "tags": []
             },
             {
+              "id": "piedirosso",
               "name": "Piedirosso",
               "description": "\"Doni del sole\" – 12,5% vol",
               "price_eur": 17.0,
               "tags": []
             },
             {
+              "id": "ottouve_doc",
               "name": "Ottouve DOC",
               "description": "cl. 75, 11,5% vol",
               "price_eur": 22.0,
@@ -918,24 +1043,28 @@
           "name": "",
           "items": [
             {
+              "id": "fiano_di_avellino_feudi_di_san_gregorio",
               "name": "Fiano di Avellino",
               "description": "\"Feudi di San Gregorio\" – 13,0% vol",
               "price_eur": 21.0,
               "tags": []
             },
             {
+              "id": "fiano_di_avellino_doni_del_sole",
               "name": "Fiano di Avellino",
               "description": "\"Doni del sole\" – 13,0% vol",
               "price_eur": 19.0,
               "tags": []
             },
             {
+              "id": "falanghina_doni_del_sole",
               "name": "Falanghina",
               "description": "\"Doni del sole\" – 12,5% vol",
               "price_eur": 17.0,
               "tags": []
             },
             {
+              "id": "falanghina_mastroberardino",
               "name": "Falanghina",
               "description": "\"Mastroberardino\", cl. 37,5 – 12,5% vol",
               "price_eur": 13.5,
@@ -955,36 +1084,42 @@
           "name": "",
           "items": [
             {
+              "id": "amaro_rucolino",
               "name": "Amaro Rucolino",
               "description": null,
               "price_eur": 2.5,
               "tags": []
             },
             {
+              "id": "limoncello",
               "name": "Limoncello",
               "description": null,
               "price_eur": 2.5,
               "tags": []
             },
             {
+              "id": "liquirizia",
               "name": "Liquirizia",
               "description": null,
               "price_eur": 2.5,
               "tags": []
             },
             {
+              "id": "meloncello",
               "name": "Meloncello",
               "description": null,
               "price_eur": 2.5,
               "tags": []
             },
             {
+              "id": "grappa",
               "name": "Grappa",
               "description": null,
               "price_eur": 3.5,
               "tags": []
             },
             {
+              "id": "caffe",
               "name": "Caffè",
               "description": null,
               "price_eur": 1.5,

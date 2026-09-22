@@ -26,6 +26,7 @@ export type Menu = {
 };
 
 type RawItem = {
+  id?: string;
   name: string;
   price_eur?: number | null;
   description?: string | null;
@@ -62,7 +63,7 @@ export const baseMenu: Menu = {
     groups: c.groups.map((g, gi) => ({
       name: g.name,
       items: g.items.map((it, ii) => ({
-        key: itemKey(c.id, gi, ii),
+        key: it.id ? `${c.id}:${it.id}` : itemKey(c.id, gi, ii),
         name: it.name,
         description: it.description ?? null,
         price_eur: it.price_eur ?? null,

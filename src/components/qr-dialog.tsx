@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Download, QrCode } from "lucide-react";
 import QRCode from "qrcode";
+import { Button } from "@/components/ui/button";
 
 type QrDialogProps = {
   open: boolean;
@@ -66,14 +67,16 @@ export function QrDialog({ open, onOpenChange, url, restaurantName }: QrDialogPr
       >
         <div className="flex items-center justify-between">
           <h2 className="display-caps text-lg text-brand">QR Code Menù</h2>
-          <button
+          <Button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-secondary"
+            variant="ghost"
+            size="icon"
+            className="menu-control min-h-11 min-w-11 text-muted-foreground"
             aria-label="Chiudi"
           >
             <X className="size-4" />
-          </button>
+          </Button>
         </div>
 
         <p className="mt-1 text-sm text-muted-foreground">
@@ -87,22 +90,23 @@ export function QrDialog({ open, onOpenChange, url, restaurantName }: QrDialogPr
         </div>
 
         <div className="mt-4 flex gap-2">
-          <button
+          <Button
             type="button"
             onClick={downloadPng}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90"
+            className="menu-control h-11 flex-1"
           >
             <Download className="size-4" />
             PNG
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={downloadSvg}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+            variant="outline"
+            className="menu-control h-11 flex-1"
           >
             <Download className="size-4" />
             SVG
-          </button>
+          </Button>
         </div>
 
         <p className="mt-4 break-all text-center text-xs text-muted-foreground">{url}</p>
@@ -113,13 +117,15 @@ export function QrDialog({ open, onOpenChange, url, restaurantName }: QrDialogPr
 
 export function QrButton({ onClick }: { onClick: () => void }) {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
       aria-label="QR Code"
-      className="grid size-10 place-items-center rounded-lg border border-border bg-background/60 text-foreground transition-colors hover:bg-secondary"
+      variant="outline"
+      size="icon"
+      className="menu-control min-h-11 min-w-11 bg-background/60"
     >
       <QrCode className="size-4" />
-    </button>
+    </Button>
   );
 }
