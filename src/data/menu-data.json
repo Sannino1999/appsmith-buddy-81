@@ -7,1676 +7,572 @@
   "macros": [
     {
       "id": "food",
-      "label": "Food"
+      "label": "Cibo"
     },
     {
-      "id": "beer",
-      "label": "Birre"
+      "id": "drinks",
+      "label": "Bevande"
     }
   ],
   "categories": [
     {
-      "id": "ale",
-      "macro": "beer",
-      "name": "Ale",
-      "eyebrow": "Rotonde, maltate, da tutto pasto",
-      "groups": [
-        {
-          "name": "Raccomandiamo Noi",
-          "items": [
-            {
-              "name": "Sicilian Pale Ale – Bruno Ribadi",
-              "price_eur": 7.0,
-              "description": "Pilsner prodotta con Timilia, Russello e Perciasacchi, i grani antichi di Sicilia. È una birra chiara e leggera dal piacevole retrogusto di cerai, ottima da abbinare ai piatti tipici siciliani.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Pale Ale",
-          "items": [
-            {
-              "name": "Sierra Nevada Pale Ale",
-              "price_eur": 7.5,
-              "description": "Birra con note di agrumi e pino, finale amaro e rinfrescante, perfetta per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Fuller's London Pride",
-              "price_eur": 7.0,
-              "description": "Birra con un sapore pieno e note di caramello, dal corpo medio e ben bilanciato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Bass Pale Ale",
-              "price_eur": 6.5,
-              "description": "Birra con un gusto bilanciato di malto e luppolo, con un finale leggermente amaro.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Goose Island Honkers Ale",
-              "price_eur": 7.0,
-              "description": "Birra con note di toffee e malto, finale leggermente amaro, perfetta per i pasti.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Old Speckled Hen",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore morbido di malto e un finale dolce, con un corpo rotondo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Boddingtons Pub Ale",
-              "price_eur": 6.5,
-              "description": "Birra dal gusto leggero e una finitura cremosa, ideale per un pomeriggio al pub.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Samuel Smith's Pale Ale",
-              "price_eur": 8.0,
-              "description": "Birra con un sapore pieno di malto e un finale amaro, perfetta per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Stone Pale Ale",
-              "price_eur": 7.0,
-              "description": "Birra con note di luppolo resinoso e agrumi, finitura amara e rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Lagunitas Pale Ale",
-              "price_eur": 7.5,
-              "description": "Birra con un profilo di luppolo fresco e un finale pulito, perfetta per dissetarsi.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Deschutes Mirror Pond",
-              "price_eur": 6.5,
-              "description": "Birra dal corpo medio, con note di malto e luppolo, finitura equilibrata e piacevole.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Oskar Blues Dale's Pale Ale",
-              "price_eur": 7.0,
-              "description": "Birra con un sapore ricco di luppolo e un finale amaro, perfetta per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Firestone Walker Pale 31",
-              "price_eur": 7.5,
-              "description": "Birra con note di agrumi e pino, finitura pulita e amara, ideale per accompagnare i pasti.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Brown Ale",
-          "items": [
-            {
-              "name": "Newcastle Brown Ale",
-              "price_eur": 7.5,
-              "description": "Birra con note di malto tostato e caramello, dal sapore morbido e dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Samuel Smith's Nut Brown Ale",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo di noci e malto, finitura dolce e ben bilanciata.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Brooklyn Brown Ale",
-              "price_eur": 7.0,
-              "description": "Birra con note di cioccolato e malto, dal sapore ricco e rotondo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Lost Coast Downtown Brown",
-              "price_eur": 7.5,
-              "description": "Birra dal corpo leggero, con note di malto e caramello, finitura pulita.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Avery Ellie's Brown Ale",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo di malto tostato e un finale dolce, perfetta per le serate invernali.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Big Sky Moose Drool",
-              "price_eur": 7.5,
-              "description": "Birra con note di malto e cioccolato, dal sapore morbido e rotondo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Bell's Best Brown Ale",
-              "price_eur": 8.0,
-              "description": "Birra dal corpo medio, con note di malto e un finale dolce, perfetta per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Rogue Hazelnut Brown Nectar",
-              "price_eur": 7.5,
-              "description": "Birra con note di nocciole e malto, finitura dolce e piacevole.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Abita Turbodog",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo di cioccolato e malto, dal sapore ricco e morbido.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Cigar City Maduro",
-              "price_eur": 7.5,
-              "description": "Birra con note di malto tostato e caramello, dal sapore equilibrato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Smog City Coffee Porter",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo di caffè e malto tostato, perfetta per gli amanti del caffè.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "North Coast Acme Brown",
-              "price_eur": 7.0,
-              "description": "Birra con un corpo medio, note di malto e un finale liscio, ideale per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "lager",
-      "macro": "beer",
-      "name": "Lager",
-      "eyebrow": "Chiare, pulite, dirette",
-      "groups": [
-        {
-          "name": "Pale Lager",
-          "items": [
-            {
-              "name": "Heineken",
-              "price_eur": 6.0,
-              "description": "Birra leggera con note erbacee e un finale rinfrescante, ideale per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Peroni",
-              "price_eur": 5.5,
-              "description": "Birra italiana dal gusto morbido con una leggera amarezza e una finitura pulita.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Budweiser",
-              "price_eur": 6.5,
-              "description": "Birra americana dal sapore equilibrato, con un corpo medio e una finitura croccante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Beck's",
-              "price_eur": 5.0,
-              "description": "Birra tedesca con un gusto deciso e un finale leggermente amaro, perfetta per dissetarsi.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Stella Artois",
-              "price_eur": 7.0,
-              "description": "Birra belga dal sapore ricco e corposo con un finale piacevolmente amaro.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Corona",
-              "price_eur": 6.0,
-              "description": "Birra leggera e rinfrescante, perfetta con una fetta di lime nelle giornate calde.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Moretti",
-              "price_eur": 5.5,
-              "description": "Birra italiana dal gusto rotondo con note di malto e una leggera amarezza.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Estrella Damm",
-              "price_eur": 6.0,
-              "description": "Birra spagnola con un gusto leggero e una finitura pulita, perfetta per accompagnare i pasti.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Carlsberg",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fresco e ben bilanciato, ideale per dissetarsi in qualsiasi momento.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Amstel",
-              "price_eur": 5.0,
-              "description": "Birra dal gusto morbido e una leggera amarezza, perfetta per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Pilsner Urquell",
-              "price_eur": 7.5,
-              "description": "Birra ceca dal sapore pieno e un finale amaro, con note di luppolo nobile.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Asahi",
-              "price_eur": 6.0,
-              "description": "Birra giapponese con un gusto secco e rinfrescante, perfetta per accompagnare sushi e sashimi.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Dark Lager",
-          "items": [
-            {
-              "name": "Warsteiner Dunkel",
-              "price_eur": 7.0,
-              "description": "Birra scura con note di caramello e malto tostato, dal sapore pieno e rotondo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "König Ludwig Dunkel",
-              "price_eur": 6.5,
-              "description": "Birra scura dal gusto pieno e una dolcezza maltata, con un finale bilanciato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "DAB Dark",
-              "price_eur": 6.0,
-              "description": "Birra scura con un sapore tostato e note di caramello, finitura morbida e piacevole.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Samichlaus",
-              "price_eur": 9.0,
-              "description": "Birra forte con note di frutta secca e malto dolce, perfetta per serate speciali.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Ayinger Altbairisch Dunkel",
-              "price_eur": 7.0,
-              "description": "Birra scura dal sapore morbido di malto e una leggera amarezza, ideale per i pasti.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Köstritzer Schwarzbier",
-              "price_eur": 6.5,
-              "description": "Birra scura con un gusto bilanciato di malto e luppolo, finitura pulita.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Baltika 6",
-              "price_eur": 7.0,
-              "description": "Birra con un sapore ricco di malto scuro e un finale leggermente amaro, molto corposa.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Krušovice Černé",
-              "price_eur": 6.0,
-              "description": "Birra scura con un sapore di malto tostato e una finitura pulita, perfetta per serate invernali.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Paulaner Original Münchner Dunkel",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore pieno di malto e una leggera dolcezza, con un finale rotondo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Sapporo Black",
-              "price_eur": 8.0,
-              "description": "Birra scura con un sapore ricco e un finale liscio, perfetta per accompagnare piatti robusti.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Yuengling Black & Tan",
-              "price_eur": 6.5,
-              "description": "Birra con un equilibrio di malto e luppolo, finitura morbida e piacevole.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Žatec Dark Lager",
-              "price_eur": 7.0,
-              "description": "Birra dal sapore pieno di malto e una leggera amarezza, con note di cioccolato.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "ipa",
-      "macro": "beer",
-      "name": "IPA",
-      "eyebrow": "Luppolo in primo piano",
-      "groups": [
-        {
-          "name": "West Coast IPA",
-          "items": [
-            {
-              "name": "Stone IPA",
-              "price_eur": 8.0,
-              "description": "Birra con note di agrumi e resina di pino, dal sapore intenso e amaro.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Lagunitas IPA",
-              "price_eur": 7.5,
-              "description": "Birra dal corpo medio, con note di luppolo fresco e un finale amaro.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Ballast Point Sculpin",
-              "price_eur": 8.5,
-              "description": "Birra dal profilo fruttato e un finale amaro, con un gusto equilibrato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Green Flash West Coast IPA",
-              "price_eur": 8.0,
-              "description": "Birra con note di agrumi e resina, finitura amara e persistente.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Sierra Nevada Torpedo",
-              "price_eur": 7.5,
-              "description": "Birra con un sapore intenso di luppolo e un finale amaro, perfetta per i veri appassionati.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Deschutes Fresh Squeezed",
-              "price_eur": 8.0,
-              "description": "Birra dal profilo di agrumi e luppolo, finitura bilanciata e rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Firestone Walker Union Jack",
-              "price_eur": 7.5,
-              "description": "Birra con note di agrumi e pino, dal sapore amaro e pulito.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Bear Republic Racer 5",
-              "price_eur": 8.5,
-              "description": "Birra dal sapore fruttato e un finale amaro, perfetta per i veri intenditori.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Alpine Beer Company Duet",
-              "price_eur": 8.0,
-              "description": "Birra con note di luppolo resinoso e un finale amaro, dal gusto deciso.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Russian River Pliny the Elder",
-              "price_eur": 9.0,
-              "description": "Birra con un profilo intenso di luppolo e un finale amaro, molto apprezzata.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Modern Times Blazing World",
-              "price_eur": 8.5,
-              "description": "Birra con note di frutta tropicale e un finale amaro, dal sapore unico.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Coronado Islander IPA",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo di luppolo e agrumi, finitura amara e rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "New England IPA",
-          "items": [
-            {
-              "name": "Tree House Julius",
-              "price_eur": 8.5,
-              "description": "Birra con un profilo di frutta tropicale e un finale morbido, molto aromatica.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Trillium Congress Street",
-              "price_eur": 8.0,
-              "description": "Birra con note di agrumi e luppolo, dal gusto fresco e bilanciato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "The Alchemist Heady Topper",
-              "price_eur": 9.0,
-              "description": "Birra dal sapore intenso di luppolo e un finale amaro, molto apprezzata.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Other Half Green City",
-              "price_eur": 8.5,
-              "description": "Birra con note di frutta tropicale e un finale morbido, dal gusto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Equilibrium Photon",
-              "price_eur": 8.0,
-              "description": "Birra dal profilo di luppolo e agrumi, finitura bilanciata e piacevole.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Bissell Brothers Substance",
-              "price_eur": 8.5,
-              "description": "Birra con note di frutta tropicale e un finale morbido, molto aromatica.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Maine Beer Company Lunch",
-              "price_eur": 8.0,
-              "description": "Birra con un sapore di luppolo e agrumi, dal gusto fresco e pulito.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Tired Hands Alien Church",
-              "price_eur": 8.5,
-              "description": "Birra con note di frutta tropicale e un finale morbido, dal sapore unico.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "SingleCut Softly Spoken Magic Spells",
-              "price_eur": 8.5,
-              "description": "Birra con un profilo di frutta tropicale e un finale morbido, molto aromatica.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Fiddlehead Second Fiddle",
-              "price_eur": 8.0,
-              "description": "Birra con un sapore di luppolo e agrumi, finitura bilanciata e rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Night Shift Santilli",
-              "price_eur": 8.0,
-              "description": "Birra dal sapore fresco di luppolo e agrumi, perfetta per ogni occasione.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Hill Farmstead Susan",
-              "price_eur": 9.0,
-              "description": "Birra dal sapore intenso di luppolo e un finale morbido, molto apprezzata.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "stout",
-      "macro": "beer",
-      "name": "Stout",
-      "eyebrow": "Scure, tostate, profonde",
-      "groups": [
-        {
-          "name": "Dry Stout",
-          "items": [
-            {
-              "name": "Guinness Draught",
-              "price_eur": 6.5,
-              "description": "Birra irlandese con un sapore di malto tostato e un finale cremoso.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Murphy's Irish Stout",
-              "price_eur": 6.0,
-              "description": "Birra dal corpo leggero, con note di caffè e cioccolato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Beamish Stout",
-              "price_eur": 6.5,
-              "description": "Birra irlandese con un gusto bilanciato di malto e luppolo, finitura cremosa.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "O'Hara's Irish Stout",
-              "price_eur": 7.0,
-              "description": "Birra dal sapore robusto di malto tostato e un finale secco.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Porterhouse Plain Porter",
-              "price_eur": 7.5,
-              "description": "Birra con note di caffè e cioccolato, dal corpo medio.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "The Porterhouse Wrasslers 4X",
-              "price_eur": 7.5,
-              "description": "Birra dal gusto intenso di malto e una leggera amarezza.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "St. Peter's Cream Stout",
-              "price_eur": 7.0,
-              "description": "Birra inglese con un sapore ricco e cremoso di malto tostato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Sierra Nevada Stout",
-              "price_eur": 7.5,
-              "description": "Birra americana con note di caffè e cioccolato, finitura robusta.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "North Coast Old No. 38",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore di malto tostato e un finale cremoso, molto equilibrata.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Left Hand Milk Stout",
-              "price_eur": 8.0,
-              "description": "Birra americana con un gusto dolce di malto e un finale liscio.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Young's Double Chocolate Stout",
-              "price_eur": 8.0,
-              "description": "Birra inglese con un sapore di cioccolato e un finale cremoso, perfetta per i dessert.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Founders Breakfast Stout",
-              "price_eur": 8.5,
-              "description": "Birra con un profilo ricco di caffè e cioccolato, dal corpo robusto.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Imperial Stout",
-          "items": [
-            {
-              "name": "Goose Island Bourbon County Stout",
-              "price_eur": 9.0,
-              "description": "Birra dal sapore intenso di bourbon e malto, con note di cioccolato e vaniglia.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "North Coast Old Rasputin",
-              "price_eur": 8.0,
-              "description": "Birra con un gusto robusto di malto tostato e un finale caldo di alcol.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Stone Imperial Russian Stout",
-              "price_eur": 8.5,
-              "description": "Birra dal corpo pieno, con note di cioccolato e caffè, finitura lunga.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Oskar Blues Ten Fidy",
-              "price_eur": 9.0,
-              "description": "Birra con un sapore ricco di malto tostato e un finale leggermente dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Brooklyn Black Chocolate Stout",
-              "price_eur": 8.5,
-              "description": "Birra con un profilo di cioccolato fondente e un finale robusto.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Founders KBS",
-              "price_eur": 9.0,
-              "description": "Birra con un sapore intenso di caffè e bourbon, finitura lunga e calda.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Avery The Czar",
-              "price_eur": 8.5,
-              "description": "Birra dal gusto pieno di malto e cioccolato, con un finale lungo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Bell's Expedition Stout",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo di malto tostato e caffè, dal corpo robusto.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Three Floyds Dark Lord",
-              "price_eur": 9.0,
-              "description": "Birra dal sapore ricco di malto e frutta secca, con un finale lungo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Lagunitas Imperial Stout",
-              "price_eur": 8.0,
-              "description": "Birra con un gusto intenso di malto e un finale dolce e caldo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Great Divide Yeti",
-              "price_eur": 8.5,
-              "description": "Birra con un profilo di cioccolato e caffè, dal corpo pieno.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Victory Storm King",
-              "price_eur": 8.0,
-              "description": "Birra dal gusto robusto di malto tostato e un finale amaro, molto equilibrata.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "sour",
-      "macro": "beer",
-      "name": "Sour Beer",
-      "eyebrow": "Acidule, fruttate, vive",
-      "groups": [
-        {
-          "name": "Berliner Weisse",
-          "items": [
-            {
-              "name": "Berliner Kindl Weisse",
-              "price_eur": 7.0,
-              "description": "Birra dal gusto leggero e acidulo, con note di limone e un finale rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Tart Raspberry Berliner Weisse",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore fruttato di lampone e un finale acidulo e vivace.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "1809 Berliner Weisse",
-              "price_eur": 7.5,
-              "description": "Birra con un gusto acidulo e note di pane, perfetta per dissetarsi.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Dogfish Head Festina Pêche",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore di pesca e un finale leggermente acidulo, molto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Professor Fritz Briem 1809",
-              "price_eur": 8.0,
-              "description": "Birra con note di agrumi e un gusto acidulo, perfetta per l'estate.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "The Bruery Hottenroth",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore leggero e acidulo, con note di agrumi.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Gose",
-          "items": [
-            {
-              "name": "Lost Nation Gose",
-              "price_eur": 7.5,
-              "description": "Birra con un profilo salato e acidulo, dal gusto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Anderson Valley Blood Orange Gose",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore fruttato di arancia rossa e un finale salato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Westbrook Gose",
-              "price_eur": 7.5,
-              "description": "Birra con un profilo salato e acidulo, perfetta per dissetarsi.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Ritterguts Gose",
-              "price_eur": 8.0,
-              "description": "Birra con un gusto salato e acidulo, dal profilo complesso.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Bayerischer Bahnhof Leipziger Gose",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore salato e acidulo, molto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Freigeist Geisterzug Gose",
-              "price_eur": 8.0,
-              "description": "Birra con un profilo salato e acidulo, dal gusto unico.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Lambic",
-          "items": [
-            {
-              "name": "Cantillon Gueuze",
-              "price_eur": 8.0,
-              "description": "Birra dal sapore complesso e acidulo, con note di frutta secca.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Boon Oude Geuze",
-              "price_eur": 7.5,
-              "description": "Birra con un gusto acidulo e un finale leggermente fruttato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "3 Fonteinen Oude Geuze",
-              "price_eur": 8.0,
-              "description": "Birra dal sapore complesso e acidulo, con un finale lungo.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Lindemans Gueuze",
-              "price_eur": 7.5,
-              "description": "Birra con un gusto acidulo e un finale leggermente dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Tilquin Gueuze",
-              "price_eur": 8.0,
-              "description": "Birra dal sapore complesso e acidulo, con note di frutta.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Girardin Gueuze",
-              "price_eur": 7.5,
-              "description": "Birra con un gusto acidulo e un finale lungo, molto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Hanssens Oude Gueuze",
-              "price_eur": 8.0,
-              "description": "Birra dal sapore complesso e acidulo, con un finale leggermente dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Brouwerij Oud Beersel Oude Geuze",
-              "price_eur": 8.0,
-              "description": "Birra dal gusto acidulo e fruttato, con un finale rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Mort Subite Gueuze",
-              "price_eur": 7.5,
-              "description": "Birra con un profilo acidulo e un finale leggermente dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Drie Fonteinen Armand & Gaston",
-              "price_eur": 8.0,
-              "description": "Birra dal sapore complesso e acidulo, con note di frutta secca.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "De Cam Oude Geuze",
-              "price_eur": 8.0,
-              "description": "Birra con un gusto acidulo e un finale lungo, molto apprezzata.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "De Troch Oude Gueuze",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore acidulo e fruttato, perfetta per dissetarsi.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "wheat",
-      "macro": "beer",
-      "name": "Wheat Beer",
-      "eyebrow": "Fruttate e speziate",
-      "groups": [
-        {
-          "name": "Hefeweizen",
-          "items": [
-            {
-              "name": "Weihenstephaner Hefeweissbier",
-              "price_eur": 7.0,
-              "description": "Birra con note di banana e chiodi di garofano, dal sapore morbido.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Paulaner Hefe-Weissbier",
-              "price_eur": 6.5,
-              "description": "Birra dal gusto fruttato e speziato, con un finale morbido.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Franziskaner Hefe-Weissbier",
-              "price_eur": 6.5,
-              "description": "Birra con note di banana e un finale dolce, molto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Ayinger Bräuweisse",
-              "price_eur": 7.0,
-              "description": "Birra dal sapore fruttato e speziato, con un finale morbido.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Schneider Weisse Original",
-              "price_eur": 7.5,
-              "description": "Birra con un profilo fruttato e speziato, dal gusto pieno.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Erdinger Weissbier",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fruttato e un finale morbido, perfetta per dissetarsi.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Tucher Helles Hefe Weizen",
-              "price_eur": 7.0,
-              "description": "Birra con note di banana e chiodi di garofano, dal gusto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Maisel's Weisse Original",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fruttato e speziato, con un finale dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Hacker-Pschorr Weisse",
-              "price_eur": 7.0,
-              "description": "Birra con note di banana e un finale morbido, molto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "König Ludwig Weissbier",
-              "price_eur": 7.5,
-              "description": "Birra dal sapore fruttato e speziato, con un finale morbido e dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Vitus Weizenbock",
-              "price_eur": 8.0,
-              "description": "Birra dal gusto pieno di malto e frutta, con un finale dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "G. Schneider & Sohn Aventinus",
-              "price_eur": 8.5,
-              "description": "Birra con un profilo complesso di malto e frutta, dal gusto robusto.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Witbier",
-          "items": [
-            {
-              "name": "Hoegaarden",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fruttato e speziato, con un finale rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Allagash White",
-              "price_eur": 7.0,
-              "description": "Birra con note di agrumi e spezie, dal gusto fresco e pulito.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Blue Moon Belgian White",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fruttato e speziato, con un finale morbido.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "St. Bernardus Witbier",
-              "price_eur": 7.5,
-              "description": "Birra con note di agrumi e coriandolo, dal gusto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Hitachino Nest White Ale",
-              "price_eur": 7.5,
-              "description": "Birra con un profilo fruttato e speziato, dal gusto unico.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Ommegang Witte",
-              "price_eur": 7.0,
-              "description": "Birra dal sapore fruttato e speziato, con un finale morbido.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Unibroue Blanche de Chambly",
-              "price_eur": 7.5,
-              "description": "Birra con note di agrumi e spezie, dal gusto rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Wittekerke",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fruttato e speziato, con un finale morbido e dolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Erdinger Weissbier",
-              "price_eur": 7.0,
-              "description": "Birra con note di agrumi e coriandolo, dal gusto fresco.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Celis White",
-              "price_eur": 7.0,
-              "description": "Birra dal sapore fruttato e speziato, con un finale rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Brugse Zot",
-              "price_eur": 7.5,
-              "description": "Birra con note di agrumi e spezie, dal gusto unico e fresco.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Blanche de Bruxelles",
-              "price_eur": 6.5,
-              "description": "Birra dal sapore fruttato e speziato, con un finale morbido e piacevole.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "sponsor",
-      "macro": "beer",
-      "name": "Sponsor",
-      "eyebrow": "Le grandi classiche, sempre in spina",
-      "groups": [
-        {
-          "name": null,
-          "items": [
-            {
-              "name": "Birra Moretti Lager",
-              "price_eur": 5.0,
-              "description": "Birra lager italiana dal gusto equilibrato e rinfrescante.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Birra Moretti La Rossa",
-              "price_eur": 6.0,
-              "description": "Birra doppio malto, corposa e dal sapore intenso.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Birra Moretti Radler",
-              "price_eur": 5.5,
-              "description": "Birra con succo di limone, fresca e dissetante.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "focacce",
+      "id": "stuzzicheria",
       "macro": "food",
-      "name": "Focacce",
-      "eyebrow": "Forno & brace",
+      "name": "Stuzzicheria",
+      "eyebrow": null,
       "groups": [
         {
-          "name": "Classiche",
+          "name": "",
           "items": [
             {
-              "name": "Focaccia al Rosmarino",
-              "price_eur": 8.0,
-              "description": "Focaccia con olio d'oliva e rosmarino fresco.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "arrosticini_di_scottona",
+              "name": "Arrosticini di scottona",
+              "description": "pz. 6",
+              "price_eur": 8.5,
+              "tags": []
             },
             {
-              "name": "Focaccia al Pomodoro",
-              "price_eur": 9.0,
-              "description": "Focaccia con pomodorini freschi e basilico.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "polpettine",
+              "name": "Polpettine",
+              "description": "pz. 14",
+              "price_eur": 5.0,
+              "tags": []
             },
             {
-              "name": "Focaccia al Formaggio",
-              "price_eur": 10.0,
-              "description": "Focaccia con formaggio fuso e origano.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "straccetti_di_pollo",
+              "name": "Straccetti di pollo",
+              "description": "straccetti alla paprika, con impanatura ai cornflakes, pz. 4",
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Focaccia al Prosciutto",
-              "price_eur": 11.0,
-              "description": "Focaccia con prosciutto crudo e rucola.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "alette_di_pollo",
+              "name": "Alette di pollo",
+              "description": "pz. 5",
+              "price_eur": 6.0,
+              "tags": []
             },
             {
-              "name": "Focaccia alle Olive",
-              "price_eur": 9.0,
-              "description": "Focaccia con olive nere e rosmarino.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "stick_di_provola_impanata",
+              "name": "Stick di provola impanata",
+              "description": "pz. 4",
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Focaccia al Salame",
-              "price_eur": 11.0,
-              "description": "Focaccia con salame piccante e formaggio.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "mais_prosciutto_e_formaggio",
+              "name": "Mais prosciutto e formaggio",
+              "description": null,
+              "price_eur": 7.0,
+              "tags": []
             },
             {
-              "name": "Focaccia Vegetariana",
-              "price_eur": 10.0,
-              "description": "Focaccia con verdure grigliate e mozzarella.",
-              "tags": [
-                "Glutine",
-                "Lattosio",
-                "Vegetariano"
-              ]
+              "id": "salamini_sott_olio",
+              "name": "Salamini sott'olio",
+              "description": "salamini a tocchetti con olive verdi e parmigiano",
+              "price_eur": 7.0,
+              "tags": []
             },
             {
-              "name": "Focaccia al Tonno",
-              "price_eur": 11.0,
-              "description": "Focaccia con tonno, cipolla e capperi.",
-              "tags": [
-                "Glutine",
-                "Pesce"
-              ]
+              "id": "chele_di_granchio",
+              "name": "Chele di granchio",
+              "description": "pz. 5",
+              "price_eur": 5.5,
+              "tags": []
             },
             {
-              "name": "Focaccia ai Funghi",
-              "price_eur": 10.0,
-              "description": "Focaccia con funghi porcini e prezzemolo.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "polpette_di_pulled_cheddar_e_bbq",
+              "name": "Polpette di pulled, cheddar e BBQ",
+              "description": "pz. 3",
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Focaccia con Cipolle",
-              "price_eur": 9.0,
-              "description": "Focaccia con cipolle caramellate e timo.",
-              "tags": [
-                "Glutine"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Speciali",
-          "items": [
-            {
-              "name": "Focaccia al Tartufo",
-              "price_eur": 14.0,
-              "description": "Focaccia con crema al tartufo e formaggio fuso.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "jalapenos",
+              "name": "Jalapenos",
+              "description": "pz. 5",
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Focaccia al Pesto",
-              "price_eur": 12.0,
-              "description": "Focaccia con pesto genovese e pinoli tostati.",
-              "tags": [
-                "Glutine",
-                "Frutta a guscio"
-              ]
+              "id": "anelli_di_cipolla",
+              "name": "Anelli di cipolla",
+              "description": "pz. 6",
+              "price_eur": 5.5,
+              "tags": []
             },
             {
-              "name": "Focaccia ai Quattro Formaggi",
-              "price_eur": 13.0,
-              "description": "Focaccia con mozzarella, gorgonzola, taleggio e parmigiano.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "double_stick",
+              "name": "Double stick",
+              "description": "pz. 4",
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Focaccia con Prosciutto e Fichi",
-              "price_eur": 13.0,
-              "description": "Focaccia con prosciutto crudo, fichi e rucola.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "fagioli_alla_messicana",
+              "name": "Fagioli alla messicana",
+              "description": null,
+              "price_eur": 7.0,
+              "tags": []
             },
             {
-              "name": "Focaccia con Speck e Brie",
-              "price_eur": 13.0,
-              "description": "Focaccia con speck, brie e noci.",
-              "tags": [
-                "Glutine",
-                "Lattosio",
-                "Frutta a guscio"
-              ]
+              "id": "mortadella_grigliata",
+              "name": "Mortadella grigliata",
+              "description": "mortadella grigliata accompagnata da crema di pistacchio",
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Focaccia con Pollo e Peperoni",
-              "price_eur": 12.0,
-              "description": "Focaccia con pollo grigliato, peperoni e mozzarella.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "mix_di_bruschette",
+              "name": "Mix di bruschette",
+              "description": "friarielli e provola, melanzane e provola, funghi e provola, pomodorini",
+              "price_eur": 7.0,
+              "tags": []
             },
             {
-              "name": "Focaccia con Salmone",
-              "price_eur": 14.0,
-              "description": "Focaccia con salmone affumicato, formaggio cremoso e aneto.",
-              "tags": [
-                "Glutine",
-                "Lattosio",
-                "Pesce"
-              ]
+              "id": "bruschetta_al_pomodoro",
+              "name": "Bruschetta al pomodoro",
+              "description": "pz. 4",
+              "price_eur": 5.5,
+              "tags": []
             },
             {
-              "name": "Focaccia con Mortadella",
-              "price_eur": 12.0,
-              "description": "Focaccia con mortadella, pistacchi e rucola.",
-              "tags": [
-                "Glutine",
-                "Frutta a guscio"
-              ]
+              "id": "bruschetta_bacon_e_provola",
+              "name": "Bruschetta bacon e provola",
+              "description": null,
+              "price_eur": 7.0,
+              "tags": []
             },
             {
-              "name": "Focaccia con Gorgonzola e Pere",
-              "price_eur": 13.0,
-              "description": "Focaccia con gorgonzola, pere e noci.",
-              "tags": [
-                "Glutine",
-                "Lattosio",
-                "Frutta a guscio"
-              ]
-            },
-            {
-              "name": "Focaccia con Melanzane",
-              "price_eur": 11.0,
-              "description": "Focaccia con melanzane grigliate, pomodori secchi e basilico.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "quadrotti_di_cheddar",
+              "name": "Quadrotti di cheddar",
+              "description": "pz. 2",
+              "price_eur": 7.0,
+              "tags": []
             }
           ]
         }
       ]
     },
     {
-      "id": "burgers",
+      "id": "patate",
       "macro": "food",
-      "name": "Burgers",
-      "eyebrow": "Manzo, brace e un panino a tenuta",
+      "name": "Le patate",
+      "eyebrow": null,
       "groups": [
         {
-          "name": "Classici",
+          "name": "",
           "items": [
             {
-              "name": "Classic Burger",
-              "price_eur": 12.0,
-              "description": "Hamburger di manzo con lattuga, pomodoro, cipolla e formaggio cheddar.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "patate_fritte",
+              "name": "Patate fritte",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Cheeseburger",
-              "price_eur": 13.0,
-              "description": "Hamburger di manzo con doppio formaggio cheddar, lattuga e pomodoro.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "patate_limone_e_pepe",
+              "name": "Patate limone e pepe",
+              "description": null,
+              "price_eur": 6.0,
+              "tags": []
             },
             {
-              "name": "Bacon Burger",
-              "price_eur": 14.0,
-              "description": "Hamburger di manzo con bacon croccante, formaggio cheddar e salsa BBQ.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "patate_e_wurstel",
+              "name": "Patate e wurstel",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "Veggie Burger",
-              "price_eur": 12.0,
-              "description": "Burger vegetariano con patty di verdure, lattuga, pomodoro e salsa aioli.",
-              "tags": [
-                "Glutine",
-                "Vegetariano"
-              ]
+              "id": "patate_e_salsiccia",
+              "name": "Patate e salsiccia",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
             },
             {
-              "name": "BBQ Burger",
-              "price_eur": 14.0,
-              "description": "Hamburger di manzo con salsa BBQ, formaggio cheddar, cipolla fritta e lattuga.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "patate_salsiccia_e_wurstel",
+              "name": "Patate salsiccia e wurstel",
+              "description": null,
+              "price_eur": 8.0,
+              "tags": []
             },
             {
-              "name": "Chicken Burger",
-              "price_eur": 12.0,
-              "description": "Hamburger di pollo con lattuga, pomodoro e maionese.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "patate_con_polpettine",
+              "name": "Patate con polpettine",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
+            },
+            {
+              "id": "patate_e_porchetta_di_ariccia",
+              "name": "Patate e porchetta di Ariccia",
+              "description": null,
+              "price_eur": 7.5,
+              "tags": []
+            },
+            {
+              "id": "patate_e_bacon",
+              "name": "Patate e bacon",
+              "description": null,
+              "price_eur": 7.0,
+              "tags": []
+            },
+            {
+              "id": "patate_e_hamburger",
+              "name": "Patate e hamburger",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
+            },
+            {
+              "id": "patate_e_pulled",
+              "name": "Patate e pulled",
+              "description": null,
+              "price_eur": 7.5,
+              "tags": []
+            },
+            {
+              "id": "patate_chips_cacio_e_pepe",
+              "name": "Patate chips cacio e pepe",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
+            },
+            {
+              "id": "patate_al_forno",
+              "name": "Patate al forno",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
+            },
+            {
+              "id": "patate_chips",
+              "name": "Patate chips",
+              "description": null,
+              "price_eur": 5.0,
+              "tags": []
+            },
+            {
+              "id": "patate_fritte_e_mortadella_grigliata",
+              "name": "Patate fritte e mortadella grigliata",
+              "description": null,
+              "price_eur": 7.0,
+              "tags": []
+            },
+            {
+              "id": "patate_e_straccetti_di_pollo_croccanti",
+              "name": "Patate e straccetti di pollo croccanti",
+              "description": null,
+              "price_eur": 8.5,
+              "tags": []
+            },
+            {
+              "id": "aggiunta_fonduta_di_cheddar_formaggio_e_provola",
+              "name": "Aggiunta fonduta di cheddar, formaggio e provola",
+              "description": "supplemento per le patate",
+              "price_eur": 1.5,
+              "tags": []
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": "panini",
+      "macro": "food",
+      "name": "I panini",
+      "eyebrow": null,
+      "groups": [
         {
-          "name": "Speciali",
+          "name": "",
           "items": [
             {
-              "name": "Truffle Burger",
-              "price_eur": 18.0,
-              "description": "Hamburger di manzo con salsa al tartufo, funghi e formaggio svizzero.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "hot_jalapegnos",
+              "name": "Hot Jalapegnos",
+              "description": "hamburger di scottona, cheddar, jalapegnos, cipolla rossa, nachos, salsa messicana",
+              "price_eur": 10.5,
+              "tags": []
             },
             {
-              "name": "Pulled Pork Burger",
-              "price_eur": 15.0,
-              "description": "Burger di maiale sfilacciato con salsa BBQ e coleslaw.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "viva_l_italia",
+              "name": "Viva l'Italia",
+              "description": "hamburger di chianina, caciocavallo, cipolla rossa, pesto alla genovese, pomodorini secchi, basilico",
+              "price_eur": 11.5,
+              "tags": []
             },
             {
-              "name": "Avocado Bacon Burger",
-              "price_eur": 16.0,
-              "description": "Hamburger di manzo con avocado, bacon e formaggio cheddar.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "nzogna_e_pepe",
+              "name": "Nzogna e Pepe",
+              "description": "hamburger di black angus, burrata, patate al forno, crema di tarallo",
+              "price_eur": 13.0,
+              "tags": []
             },
             {
-              "name": "Italian Burger",
-              "price_eur": 15.0,
-              "description": "Hamburger di manzo con prosciutto crudo, mozzarella e rucola.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "perfect_burger",
+              "name": "Perfect Burger",
+              "description": "hamburger di chianina 150gr, valerianella, provola impanata, maionese affumicata, bacon, mandorle tostate",
+              "price_eur": 12.0,
+              "tags": []
             },
             {
-              "name": "Tex-Mex Burger",
-              "price_eur": 15.0,
-              "description": "Hamburger di manzo con guacamole, salsa piccante e nachos croccanti.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "double_stick_burger",
+              "name": "Double Stick Burger",
+              "description": "double stick, cipolla rossa, cheddar, uovo, insalata",
+              "price_eur": 11.0,
+              "tags": []
             },
             {
-              "name": "Hawaiian Burger",
+              "id": "uvegan",
+              "name": "UVegan",
+              "description": "hamburger vegano 100% vegan, patate al forno, pesto alla genovese, pomodorini secchi",
+              "price_eur": 10.0,
+              "tags": []
+            },
+            {
+              "id": "chicken_royal",
+              "name": "Chicken Royal",
+              "description": "straccetti di pollo impanati, formaggio, insalata e pomodoro",
+              "price_eur": 9.5,
+              "tags": []
+            },
+            {
+              "id": "cheesesteak",
+              "name": "Cheesesteak",
+              "description": "controfiletto e formaggio fuso, con bacon e patate",
+              "price_eur": 9.5,
+              "tags": []
+            },
+            {
+              "id": "americano",
+              "name": "Americano",
+              "description": "hamburger di chianina da 250gr, cheddar, bacon, anelli di cipolla e uovo",
               "price_eur": 14.0,
-              "description": "Hamburger di manzo con ananas grigliato, prosciutto e formaggio svizzero.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "tags": []
             },
             {
-              "name": "Lamb Burger",
-              "price_eur": 17.0,
-              "description": "Hamburger di agnello con formaggio feta, cetriolo e salsa tzatziki.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "luro",
+              "name": "Luro",
+              "description": "porchetta di Ariccia, mascarpone, funghi, prosciutto crudo e provola",
+              "price_eur": 10.5,
+              "tags": []
             },
             {
-              "name": "Turkey Burger",
-              "price_eur": 14.0,
-              "description": "Hamburger di tacchino con lattuga, pomodoro e salsa aioli.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "casertano",
+              "name": "Casertano",
+              "description": "hamburger di maialino nero, parmigiana di patate e zucchine fritte",
+              "price_eur": 10.0,
+              "tags": []
             },
             {
-              "name": "Greek Burger",
-              "price_eur": 15.0,
-              "description": "Hamburger di manzo con feta, olive nere e pomodoro.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "priano",
+              "name": "Priano",
+              "description": "hamburger di chianina, mortadella, crema di pistacchio, provola affumicata",
+              "price_eur": 10.5,
+              "tags": []
             },
             {
-              "name": "Fish Burger",
-              "price_eur": 14.0,
-              "description": "Filetto di pesce impanato con lattuga, pomodoro e salsa tartara.",
-              "tags": [
-                "Glutine",
-                "Pesce"
-              ]
+              "id": "pulled",
+              "name": "Pulled",
+              "description": "pulled pork, bacon croccante, cipolla caramellata, provola affumicata e pomodoro",
+              "price_eur": 11.0,
+              "tags": []
+            },
+            {
+              "id": "la_bomba",
+              "name": "La Bomba",
+              "description": "hamburger di chianina, bacon croccante, cipolla caramellata, provola affumicata e pomodoro",
+              "price_eur": 11.0,
+              "tags": []
+            },
+            {
+              "id": "paperaldo",
+              "name": "Paperaldo",
+              "description": "hamburger di scottona, provola affumicata, insalata e pomodoro",
+              "price_eur": 8.5,
+              "tags": []
+            },
+            {
+              "id": "o_fighett",
+              "name": "O' Fighett",
+              "description": "petto di pollo, formaggio, insalata e pomodoro",
+              "price_eur": 9.0,
+              "tags": []
+            },
+            {
+              "id": "presidente",
+              "name": "Presidente",
+              "description": "pulled pork, provola, cheddar, bacon, melanzane a funghetto",
+              "price_eur": 11.0,
+              "tags": []
+            },
+            {
+              "id": "albertone",
+              "name": "Albertone",
+              "description": "salsiccia, provola, prosciutto cotto, patate al forno e crema di carciofi",
+              "price_eur": 10.5,
+              "tags": []
+            },
+            {
+              "id": "green",
+              "name": "Green",
+              "description": "hamburger di chianina, provola, uovo, bacon e pomodoro",
+              "price_eur": 11.0,
+              "tags": []
+            },
+            {
+              "id": "il_pastore",
+              "name": "Il Pastore",
+              "description": "hamburger di chianina, provola, rucola e pomodorini",
+              "price_eur": 9.0,
+              "tags": []
+            },
+            {
+              "id": "don_gaetano",
+              "name": "Don Gaetano",
+              "description": "polpettine, parmigiana di melanzane e provola affumicata",
+              "price_eur": 9.0,
+              "tags": []
+            },
+            {
+              "id": "lubranone",
+              "name": "Lubranone",
+              "description": "hamburger di chianina, formaggio, bacon e friarielli",
+              "price_eur": 10.0,
+              "tags": []
+            },
+            {
+              "id": "top",
+              "name": "Top",
+              "description": "wurstel, bacon croccante, uovo e cheddar",
+              "price_eur": 9.0,
+              "tags": []
+            },
+            {
+              "id": "mario_p",
+              "name": "Mario P.",
+              "description": "hamburger di scottona, prosciutto cotto e formaggio",
+              "price_eur": 7.5,
+              "tags": []
+            },
+            {
+              "id": "o_mast",
+              "name": "O' Mast",
+              "description": "cotoletta di pollo, parmigiana di melanzane e provola affumicata",
+              "price_eur": 9.5,
+              "tags": []
+            },
+            {
+              "id": "fox",
+              "name": "Fox",
+              "description": "porchetta di Ariccia, provola affumicata e funghi",
+              "price_eur": 8.5,
+              "tags": []
+            },
+            {
+              "id": "patasnella",
+              "name": "Patasnella",
+              "description": "hamburger di scottona, patate al forno, provola affumicata e melanzane arrostite",
+              "price_eur": 9.0,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brace",
+      "macro": "food",
+      "name": "La brace",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "hamburger_di_chianina_alla_brace_250g",
+              "name": "Hamburger di chianina",
+              "description": "da 250gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 12.5,
+              "tags": []
+            },
+            {
+              "id": "filetto_di_scottona_300g",
+              "name": "Filetto di scottona",
+              "description": "da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 21.0,
+              "tags": []
+            },
+            {
+              "id": "arrosto_di_scottona_500g",
+              "name": "Arrosto di scottona",
+              "description": "da 500gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 30.0,
+              "tags": []
+            },
+            {
+              "id": "arrosto_di_scottona_frollata_300g",
+              "name": "Arrosto di scottona",
+              "description": "30 giorni di frollatura, da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 24.0,
+              "tags": []
+            },
+            {
+              "id": "tagliata_di_scottona",
+              "name": "Tagliata di scottona",
+              "description": "da 300gr, con rucola, pomodorini e scaglie di parmigiano",
+              "price_eur": 21.0,
+              "tags": []
+            },
+            {
+              "id": "tagliata_di_pollo",
+              "name": "Tagliata di pollo",
+              "description": "da 300gr, con rucola, pomodorini e scaglie di parmigiano",
+              "price_eur": 16.5,
+              "tags": []
+            },
+            {
+              "id": "manzetta_prussiana_300g",
+              "name": "Manzetta prussiana",
+              "description": "da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 25.0,
+              "tags": []
+            },
+            {
+              "id": "manzetta_prussiana_500g",
+              "name": "Manzetta prussiana",
+              "description": "da 500gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 35.0,
+              "tags": []
+            },
+            {
+              "id": "entrecote_black_angus_reale_300g",
+              "name": "Entrecote black angus reale",
+              "description": "da 300gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 28.5,
+              "tags": []
+            },
+            {
+              "id": "entrecote_black_angus_reale_500g",
+              "name": "Entrecote black angus reale",
+              "description": "da 500gr, con contorno di verdura grigliata, insalata o patatine fritte",
+              "price_eur": 38.5,
+              "tags": []
+            },
+            {
+              "id": "costine_di_maiale",
+              "name": "Costine di maiale",
+              "description": "in salsa barbeque con patate chips, pz. 5",
+              "price_eur": 19.0,
+              "tags": []
+            },
+            {
+              "id": "misto_brace",
+              "name": "Misto brace",
+              "description": "arrosto, salsiccia, costata di maiale, arrosto di pollo e costina di maiale, con contorno di insalata, patatine o verdure grigliate",
+              "price_eur": null,
+              "tags": []
             }
           ]
         }
@@ -1685,548 +581,548 @@
     {
       "id": "insalate",
       "macro": "food",
-      "name": "Insalate",
-      "eyebrow": "Leggere o sostanziose, sempre fresche",
+      "name": "Le insalate",
+      "eyebrow": null,
       "groups": [
         {
-          "name": "Classiche",
+          "name": "",
           "items": [
             {
-              "name": "Insalata Caesar",
-              "price_eur": 10.0,
-              "description": "Insalata con lattuga, pollo grigliato, parmigiano e crostini.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Insalata Greca",
-              "price_eur": 9.0,
-              "description": "Insalata con pomodori, cetrioli, feta, olive e cipolla rossa.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Insalata Caprese",
-              "price_eur": 9.0,
-              "description": "Mozzarella di bufala, pomodori freschi e basilico.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Insalata di Tonno",
-              "price_eur": 10.0,
-              "description": "Insalata con tonno, mais, pomodori e olive.",
-              "tags": [
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Insalata Mista",
-              "price_eur": 8.0,
-              "description": "Lattuga, pomodori, cetrioli e carote.",
+              "id": "caesar_salad",
+              "name": "Caesar Salad",
+              "description": "insalata iceberg, petto di pollo, pomodorino, salsa caesar e scaglie di parmigiano",
+              "price_eur": 9.5,
               "tags": []
             },
             {
-              "name": "Insalata di Pollo",
-              "price_eur": 11.0,
-              "description": "Pollo grigliato, lattuga, pomodori, avocado e vinaigrette.",
+              "id": "lubrano_salad",
+              "name": "Lubrano Salad",
+              "description": "straccetti di manzo, rucola, pomodorini, scaglie di parmigiano, salsa BBQ",
+              "price_eur": 10.5,
               "tags": []
             },
             {
-              "name": "Insalata di Gamberi",
-              "price_eur": 12.0,
-              "description": "Gamberi grigliati, lattuga, pomodori, avocado e salsa cocktail.",
-              "tags": [
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Insalata di Rucola e Parmigiano",
-              "price_eur": 9.0,
-              "description": "Rucola, scaglie di parmigiano, pomodori ciliegini e aceto balsamico.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Insalata di Spinaci",
-              "price_eur": 9.0,
-              "description": "Spinaci freschi, noci, mele e formaggio di capra.",
-              "tags": [
-                "Lattosio",
-                "Frutta a guscio"
-              ]
-            },
-            {
-              "name": "Insalata Waldorf",
-              "price_eur": 10.0,
-              "description": "Sedano, mele, noci e uva passa con maionese.",
-              "tags": [
-                "Frutta a guscio"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Speciali",
-          "items": [
-            {
-              "name": "Insalata di Quinoa",
-              "price_eur": 12.0,
-              "description": "Quinoa, avocado, pomodori, cetrioli e menta.",
+              "id": "crispy_salad",
+              "name": "Crispy Salad",
+              "description": "insalata iceberg, cotoletta di pollo, pomodorino, salsa caesar e scaglie di parmigiano",
+              "price_eur": 9.5,
               "tags": []
-            },
-            {
-              "name": "Insalata di Farro",
-              "price_eur": 11.0,
-              "description": "Farro, pomodori secchi, olive, feta e rucola.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Insalata di Couscous",
-              "price_eur": 12.0,
-              "description": "Couscous, verdure grigliate, ceci e menta.",
-              "tags": []
-            },
-            {
-              "name": "Insalata Mediterranea",
-              "price_eur": 11.0,
-              "description": "Pomodori, cetrioli, peperoni, olive e feta.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Insalata di Salmone",
-              "price_eur": 14.0,
-              "description": "Salmone affumicato, lattuga, avocado e limone.",
-              "tags": [
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Insalata di Polpo",
-              "price_eur": 15.0,
-              "description": "Polpo, patate, prezzemolo e limone.",
-              "tags": [
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Insalata di Riso",
-              "price_eur": 10.0,
-              "description": "Riso, tonno, pomodori, peperoni e piselli.",
-              "tags": [
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Insalata di Ceci",
-              "price_eur": 10.0,
-              "description": "Ceci, pomodori, cetrioli, cipolla rossa e prezzemolo.",
-              "tags": []
-            },
-            {
-              "name": "Insalata di Bietole",
-              "price_eur": 9.0,
-              "description": "Bietole, arance, mandorle e vinaigrette.",
-              "tags": [
-                "Frutta a guscio"
-              ]
-            },
-            {
-              "name": "Insalata di Funghi",
-              "price_eur": 11.0,
-              "description": "Funghi freschi, rucola, parmigiano e limone.",
-              "tags": [
-                "Lattosio"
-              ]
             }
           ]
         }
       ]
     },
     {
-      "id": "sandwiches",
+      "id": "contorni",
       "macro": "food",
-      "name": "Sandwiches",
-      "eyebrow": "Farciti caldi o pronti al volo",
+      "name": "I contorni",
+      "eyebrow": null,
       "groups": [
         {
-          "name": "Caldi",
+          "name": "",
           "items": [
             {
-              "name": "Club Sandwich",
-              "price_eur": 12.0,
-              "description": "Pane tostato con pollo, bacon, lattuga, pomodoro e maionese.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "melanzane_arrostite",
+              "name": "Melanzane arrostite",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "BLT Sandwich",
-              "price_eur": 10.0,
-              "description": "Pane tostato con bacon, lattuga e pomodoro.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "melanzane_a_funghetto",
+              "name": "Melanzane a funghetto",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Grilled Cheese",
-              "price_eur": 8.0,
-              "description": "Sandwich al formaggio grigliato con formaggio cheddar.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "funghi_champignon",
+              "name": "Funghi champignon",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Pulled Pork Sandwich",
-              "price_eur": 12.0,
-              "description": "Pane morbido con maiale sfilacciato e salsa BBQ.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "parmigiana_di_melanzane",
+              "name": "Parmigiana di melanzane",
+              "description": null,
+              "price_eur": 5.5,
+              "tags": []
             },
             {
-              "name": "Philly Cheesesteak",
-              "price_eur": 14.0,
-              "description": "Sandwich con carne di manzo, peperoni, cipolle e formaggio.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "parmigiana_di_patate",
+              "name": "Parmigiana di patate",
+              "description": null,
+              "price_eur": 5.5,
+              "tags": []
             },
             {
-              "name": "Reuben Sandwich",
-              "price_eur": 13.0,
-              "description": "Pane di segale con manzo in salamoia, crauti e formaggio svizzero.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "zucchine_arrostite",
+              "name": "Zucchine arrostite",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Chicken Parm Sandwich",
-              "price_eur": 11.0,
-              "description": "Sandwich con pollo impanato, salsa marinara e formaggio.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "zucchine_fritte",
+              "name": "Zucchine fritte",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Tuna Melt",
-              "price_eur": 10.0,
-              "description": "Sandwich al tonno con formaggio fuso.",
-              "tags": [
-                "Glutine",
-                "Lattosio",
-                "Pesce"
-              ]
+              "id": "verdura_grigliata_mista",
+              "name": "Verdura grigliata mista",
+              "description": null,
+              "price_eur": 6.0,
+              "tags": []
             },
             {
-              "name": "Meatball Sub",
-              "price_eur": 12.0,
-              "description": "Sandwich con polpette, salsa marinara e formaggio.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "zucca_grigliata",
+              "name": "Zucca grigliata",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Italian Sub",
-              "price_eur": 11.0,
-              "description": "Sandwich con salame, prosciutto, formaggio provolone e verdure.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Freddi",
-          "items": [
-            {
-              "name": "Turkey Avocado Sandwich",
-              "price_eur": 12.0,
-              "description": "Pane integrale con tacchino, avocado, lattuga e pomodoro.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "insalata_iceberg",
+              "name": "Insalata iceberg",
+              "description": null,
+              "price_eur": 4.0,
+              "tags": []
             },
             {
-              "name": "Ham and Cheese",
-              "price_eur": 10.0,
-              "description": "Pane integrale con prosciutto cotto e formaggio svizzero.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
+              "id": "friarielli",
+              "name": "Friarielli",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             },
             {
-              "name": "Veggie Delight",
-              "price_eur": 9.0,
-              "description": "Pane integrale con verdure grigliate e hummus.",
-              "tags": [
-                "Glutine",
-                "Vegetariano"
-              ]
-            },
-            {
-              "name": "Chicken Caesar Wrap",
-              "price_eur": 11.0,
-              "description": "Tortilla con pollo grigliato, lattuga, parmigiano e salsa Caesar.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Smoked Salmon Bagel",
-              "price_eur": 13.0,
-              "description": "Bagel con salmone affumicato, formaggio cremoso e aneto.",
-              "tags": [
-                "Glutine",
-                "Lattosio",
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Caprese Sandwich",
-              "price_eur": 10.0,
-              "description": "Pane integrale con mozzarella, pomodoro e basilico.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Tuna Salad Sandwich",
-              "price_eur": 11.0,
-              "description": "Pane integrale con insalata di tonno e lattuga.",
-              "tags": [
-                "Glutine",
-                "Pesce"
-              ]
-            },
-            {
-              "name": "Roast Beef Sandwich",
-              "price_eur": 12.0,
-              "description": "Pane integrale con roast beef, lattuga e salsa aioli.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Hummus and Veggie Wrap",
-              "price_eur": 9.0,
-              "description": "Tortilla con hummus, verdure fresche e spinaci.",
-              "tags": [
-                "Glutine",
-                "Vegetariano"
-              ]
-            },
-            {
-              "name": "Egg Salad Sandwich",
-              "price_eur": 9.0,
-              "description": "Pane integrale con insalata di uova e lattuga.",
-              "tags": [
-                "Glutine"
-              ]
+              "id": "pomodorini_e_rucola",
+              "name": "Pomodorini e rucola",
+              "description": null,
+              "price_eur": 4.5,
+              "tags": []
             }
           ]
         }
       ]
     },
     {
-      "id": "snack",
+      "id": "dolci",
       "macro": "food",
-      "name": "Snack",
-      "eyebrow": "Da dividere al centro tavolo",
+      "name": "Dolci",
+      "eyebrow": null,
       "groups": [
         {
-          "name": "Salati",
+          "name": "",
           "items": [
             {
-              "name": "Involtino di Maiale al BBQ",
-              "price_eur": null,
+              "id": "pan_di_stelle",
+              "name": "Pan di Stelle",
               "description": null,
-              "tags": [],
-              "needs_review": true
-            },
-            {
-              "name": "Involtini di Pollo con Bacon",
-              "price_eur": 15.0,
-              "description": null,
-              "tags": [],
-              "needs_review": true
-            },
-            {
-              "name": "Patatine Fritte",
               "price_eur": 6.0,
-              "description": "Patatine fritte croccanti servite con ketchup.",
               "tags": []
             },
             {
-              "name": "Alette di Pollo",
-              "price_eur": 9.0,
-              "description": "Alette di pollo piccanti servite con salsa BBQ.",
-              "tags": []
-            },
-            {
-              "name": "Onion Rings",
-              "price_eur": 7.0,
-              "description": "Anelli di cipolla fritti serviti con salsa aioli.",
-              "tags": []
-            },
-            {
-              "name": "Mozzarella Sticks",
-              "price_eur": 8.0,
-              "description": "Bastoncini di mozzarella fritti serviti con salsa marinara.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Jalapeño Poppers",
-              "price_eur": 8.0,
-              "description": "Peperoncini jalapeño ripieni di formaggio e fritti.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Quesadilla",
-              "price_eur": 10.0,
-              "description": "Quesadilla con formaggio fuso e pollo, servita con salsa piccante.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Nachos con Guacamole",
-              "price_eur": 8.0,
-              "description": "Nachos croccanti serviti con guacamole fresco.",
-              "tags": []
-            },
-            {
-              "name": "Tacos",
-              "price_eur": 12.0,
-              "description": "Tris di tacos con carne, lattuga, pomodori e formaggio.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Spring Rolls",
-              "price_eur": 7.0,
-              "description": "Involtini primavera fritti serviti con salsa agrodolce.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Chicken Nuggets",
-              "price_eur": 9.0,
-              "description": "Bocconcini di pollo fritti serviti con salsa BBQ.",
-              "tags": []
-            },
-            {
-              "name": "Polpette di Maiale",
-              "price_eur": 6.0,
-              "description": null,
-              "tags": [],
-              "needs_review": true
-            }
-          ]
-        },
-        {
-          "name": "Dolci",
-          "items": [
-            {
-              "name": "Churros con Cioccolato",
-              "price_eur": 7.0,
-              "description": "Churros caldi serviti con salsa al cioccolato.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Brownie al Cioccolato",
-              "price_eur": 7.0,
-              "description": "Brownie al cioccolato servito con gelato alla vaniglia.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Apple Pie",
-              "price_eur": 8.0,
-              "description": "Torta di mele servita con crema alla vaniglia.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
+              "id": "cheesecake",
               "name": "Cheesecake",
-              "price_eur": 8.0,
-              "description": "Cheesecake con base di biscotto e topping ai frutti di bosco.",
-              "tags": [
-                "Glutine"
-              ]
-            },
-            {
-              "name": "Tiramisù",
-              "price_eur": 7.0,
-              "description": "Classico tiramisù con mascarpone, caffè e cacao.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Panna Cotta",
+              "description": "pistacchio, nutella, frutti di bosco, caramello",
               "price_eur": 6.0,
-              "description": "Panna cotta servita con coulis di frutti di bosco.",
-              "tags": [
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Profiteroles",
-              "price_eur": 7.0,
-              "description": "Bignè ripieni di crema e ricoperti di cioccolato.",
-              "tags": [
-                "Glutine",
-                "Lattosio"
-              ]
-            },
-            {
-              "name": "Gelato Artigianale",
-              "price_eur": 5.0,
-              "description": "Gelato artigianale con vari gusti a scelta.",
               "tags": []
             },
             {
-              "name": "Sorbetto al Limone",
-              "price_eur": 5.0,
-              "description": "Sorbetto rinfrescante al limone.",
+              "id": "tiramisu",
+              "name": "Tiramisù",
+              "description": null,
+              "price_eur": 6.0,
               "tags": []
             },
             {
-              "name": "Tartufo Gelato",
-              "price_eur": 7.0,
-              "description": "Tartufo gelato con cuore di cioccolato fondente.",
+              "id": "torta_lotus",
+              "name": "Torta Lotus",
+              "description": null,
+              "price_eur": 6.0,
+              "tags": []
+            },
+            {
+              "id": "torta_bueno",
+              "name": "Torta Bueno",
+              "description": null,
+              "price_eur": null,
+              "tags": []
+            },
+            {
+              "id": "la_bombetta",
+              "name": "La Bombetta",
+              "description": null,
+              "price_eur": null,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bibite",
+      "macro": "drinks",
+      "name": "Bibite analcoliche",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "acqua_ferrarelle",
+              "name": "Acqua Ferrarelle",
+              "description": "500 ml",
+              "price_eur": 2.5,
+              "tags": []
+            },
+            {
+              "id": "acqua_natia",
+              "name": "Acqua Natia",
+              "description": "500 ml",
+              "price_eur": 2.5,
+              "tags": []
+            },
+            {
+              "id": "coca_cola",
+              "name": "Coca Cola",
+              "description": "330 ml",
+              "price_eur": 3.0,
+              "tags": []
+            },
+            {
+              "id": "coca_cola_zero",
+              "name": "Coca Cola Zero",
+              "description": "330 ml",
+              "price_eur": 3.0,
+              "tags": []
+            },
+            {
+              "id": "fanta",
+              "name": "Fanta",
+              "description": "330 ml",
+              "price_eur": 3.0,
+              "tags": []
+            },
+            {
+              "id": "sprite",
+              "name": "Sprite",
+              "description": "330 ml",
+              "price_eur": 3.0,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "birre_spina",
+      "macro": "drinks",
+      "name": "Birre alla spina",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "falkenturm_pills_0_20",
+              "name": "Falkenturm Pills 0,20",
+              "description": null,
+              "price_eur": 3.5,
+              "tags": []
+            },
+            {
+              "id": "falkenturm_pills_0_40",
+              "name": "Falkenturm Pills 0,40",
+              "description": null,
+              "price_eur": 6.0,
+              "tags": []
+            },
+            {
+              "id": "birra_del_mese_0_20",
+              "name": "Birra del mese 0,20",
+              "description": null,
+              "price_eur": 4.0,
+              "tags": []
+            },
+            {
+              "id": "birra_del_mese_0_40",
+              "name": "Birra del mese 0,40",
+              "description": null,
+              "price_eur": 6.5,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "birre_bottiglia",
+      "macro": "drinks",
+      "name": "Birre in bottiglia",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "heineken_57",
+              "name": "Heineken 57",
+              "description": "330 ml – 5,0% vol",
+              "price_eur": 3.5,
+              "tags": []
+            },
+            {
+              "id": "tennent_s",
+              "name": "Tennent's",
+              "description": "330 ml – 9,0% vol",
+              "price_eur": 4.5,
+              "tags": []
+            },
+            {
+              "id": "leffe_blan",
+              "name": "Leffe Blan",
+              "description": "330 ml – 6,6% vol",
+              "price_eur": 4.5,
+              "tags": []
+            },
+            {
+              "id": "leffe_rituel",
+              "name": "Leffe Rituel",
+              "description": "330 ml – 9,0% vol",
+              "price_eur": 4.5,
+              "tags": []
+            },
+            {
+              "id": "leffe_rouge",
+              "name": "Leffe Rouge",
+              "description": "330 ml – 6,6% vol",
+              "price_eur": 4.5,
+              "tags": []
+            },
+            {
+              "id": "la_chouffe",
+              "name": "La Chouffe",
+              "description": "330 ml – 8,0% vol",
+              "price_eur": 6.0,
+              "tags": []
+            },
+            {
+              "id": "peroni_senza_glutine",
+              "name": "Peroni senza glutine",
+              "description": "330 ml – 4,7% vol",
+              "price_eur": 4.0,
+              "tags": []
+            },
+            {
+              "id": "la_trappe_tripel",
+              "name": "La Trappe Tripel",
+              "description": "330 ml – 8,0% vol",
+              "price_eur": 6.5,
+              "tags": []
+            },
+            {
+              "id": "la_trappe_blonde",
+              "name": "La Trappe Blonde",
+              "description": "330 ml – 6,5% vol",
+              "price_eur": 6.5,
+              "tags": []
+            },
+            {
+              "id": "la_trappe_quadrupel",
+              "name": "La Trappe Quadrupel",
+              "description": "330 ml – 10,0% vol",
+              "price_eur": 6.5,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vini_rossi",
+      "macro": "drinks",
+      "name": "Vini rossi",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "calice_moio_57",
+              "name": "Calice Moio 57",
+              "description": "14,5% vol",
+              "price_eur": 6.0,
+              "tags": []
+            },
+            {
+              "id": "calice_di_aglianico",
+              "name": "Calice di Aglianico",
+              "description": "12,5% vol",
+              "price_eur": 5.0,
+              "tags": []
+            },
+            {
+              "id": "mojo_57",
+              "name": "Mojo 57",
+              "description": "14,5% vol",
+              "price_eur": 21.0,
+              "tags": []
+            },
+            {
+              "id": "rubrato",
+              "name": "Rubrato",
+              "description": "\"Feudi di San Gregorio\" – 13,5% vol",
+              "price_eur": 18.0,
+              "tags": []
+            },
+            {
+              "id": "aglianico_quintodecimo",
+              "name": "Aglianico \"Quintodecimo\"",
+              "description": "14,0% vol",
+              "price_eur": null,
+              "tags": []
+            },
+            {
+              "id": "mastro_rosso",
+              "name": "Mastro Rosso",
+              "description": "\"Mastroberardino\" – 12,5% vol",
+              "price_eur": 17.0,
+              "tags": []
+            },
+            {
+              "id": "lacryma_christi_del_vesuvio",
+              "name": "Lacryma Christi del Vesuvio",
+              "description": "\"Mastroberardino\" – 12,5% vol (indicato anche come \"Christi\")",
+              "price_eur": 19.0,
+              "tags": []
+            },
+            {
+              "id": "radici_taurasi",
+              "name": "Radici Taurasi",
+              "description": "\"Mastroberardino\" – 14,0% vol",
+              "price_eur": 46.0,
+              "tags": []
+            },
+            {
+              "id": "aglianico_doni_del_sole",
+              "name": "Aglianico",
+              "description": "\"Doni del sole\" – 12,5% vol",
+              "price_eur": 17.0,
+              "tags": []
+            },
+            {
+              "id": "piedirosso",
+              "name": "Piedirosso",
+              "description": "\"Doni del sole\" – 12,5% vol",
+              "price_eur": 17.0,
+              "tags": []
+            },
+            {
+              "id": "ottouve_doc",
+              "name": "Ottouve DOC",
+              "description": "cl. 75, 11,5% vol",
+              "price_eur": 22.0,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vini_bianchi",
+      "macro": "drinks",
+      "name": "Vini bianchi",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "fiano_di_avellino_feudi_di_san_gregorio",
+              "name": "Fiano di Avellino",
+              "description": "\"Feudi di San Gregorio\" – 13,0% vol",
+              "price_eur": 21.0,
+              "tags": []
+            },
+            {
+              "id": "fiano_di_avellino_doni_del_sole",
+              "name": "Fiano di Avellino",
+              "description": "\"Doni del sole\" – 13,0% vol",
+              "price_eur": 19.0,
+              "tags": []
+            },
+            {
+              "id": "falanghina_doni_del_sole",
+              "name": "Falanghina",
+              "description": "\"Doni del sole\" – 12,5% vol",
+              "price_eur": 17.0,
+              "tags": []
+            },
+            {
+              "id": "falanghina_mastroberardino",
+              "name": "Falanghina",
+              "description": "\"Mastroberardino\", cl. 37,5 – 12,5% vol",
+              "price_eur": 13.5,
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "altre_bevande",
+      "macro": "drinks",
+      "name": "Altre bevande",
+      "eyebrow": null,
+      "groups": [
+        {
+          "name": "",
+          "items": [
+            {
+              "id": "amaro_rucolino",
+              "name": "Amaro Rucolino",
+              "description": null,
+              "price_eur": 2.5,
+              "tags": []
+            },
+            {
+              "id": "limoncello",
+              "name": "Limoncello",
+              "description": null,
+              "price_eur": 2.5,
+              "tags": []
+            },
+            {
+              "id": "liquirizia",
+              "name": "Liquirizia",
+              "description": null,
+              "price_eur": 2.5,
+              "tags": []
+            },
+            {
+              "id": "meloncello",
+              "name": "Meloncello",
+              "description": null,
+              "price_eur": 2.5,
+              "tags": []
+            },
+            {
+              "id": "grappa",
+              "name": "Grappa",
+              "description": null,
+              "price_eur": 3.5,
+              "tags": []
+            },
+            {
+              "id": "caffe",
+              "name": "Caffè",
+              "description": null,
+              "price_eur": 1.5,
               "tags": []
             }
           ]
