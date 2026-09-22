@@ -15,12 +15,12 @@ export async function translateEntries(
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "google/gemini-3.8-flash",
+      model: "openai/gpt-6-astra",
       messages: [
         {
           role: "system",
           content:
-            "You translate restaurant menus from Italian. Keep proper names of dishes, beers and brands untranslated. Translate descriptions naturally and concisely. Reply with JSON only.",
+            "You translate Italian restaurant menus. Translate every non-empty description fully into the requested language. Keep only genuine dish names, beer names and brands untranslated; never copy an Italian description into the output. Preserve meaning, ingredients, quantities and allergen wording. Return every input key exactly once and reply with JSON only.",
         },
         {
           role: "user",
@@ -35,13 +35,20 @@ export async function translateEntries(
   });
 
   if (!response.ok) {
-    const body = await response.text();
-    console.error(`AI translation failed [${response.status}]: ${body}`);
-    throw new Error(`AI translation failed [${response.status}]: ${body}`);
+    await response.text();
+    console.error(`AI translation failed [${response.status}]`);
+    throw new Error(`AI translation failed [${response.status}]`);
   }
 
   const payload = (await response.json()) as { choices?: { message?: { content?: string } }[] };
   const content = payload.choices?.[0]?.message?.content ?? "{}";
   const parsed = JSON.parse(content) as { items?: TranslatedEntry[] };
-  return parsed.items ?? [];
+  const sourceKeys = new Set(entries.map((entry) => entry.key));
+  return (parsed.items ?? []).filter(
+    (item) =>
+      sourceKeys.has(item.key) &&
+      typeof item.name === "string" &&
+      item.name.trim().length > 0 &&
+      (item.description === null || typeof item.description === "string"),
+  );
 }
