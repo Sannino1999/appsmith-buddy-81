@@ -47,7 +47,7 @@
   --card-foreground: oklch(0.97 0.004 66);
   --popover: oklch(0.21 0.008 250);
   --popover-foreground: oklch(0.97 0.004 66);
-  --brand: oklch(0.55 0.17 17); /* bordeaux logo Lubrano (#9b2035), leggermente schiarito per la leggibilità su fondo scuro */
+  --brand: oklch(0.63 0.18 18);
   --logo-panel: oklch(0.98 0.003 72);
   --primary: var(--brand);
   --primary-foreground: oklch(0.98 0.003 72);

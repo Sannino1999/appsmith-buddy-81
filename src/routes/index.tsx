@@ -300,7 +300,7 @@ function MenuPage() {
             <h3 className="mb-4 text-center text-[0.6rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
               {info.hours}
             </h3>
-            <div className="grid grid-cols-2 gap-x-5 gap-y-2">
+            <div className="grid grid-cols-2 gap-y-2">
               <span className="text-right text-sm uppercase text-muted-foreground">{info.monday}</span>
               <span className="display-caps text-left text-sm font-bold uppercase tracking-widest text-brand">
                 {info.closed}
