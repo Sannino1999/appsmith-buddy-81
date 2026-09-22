@@ -296,7 +296,7 @@ function MenuPage() {
             </a>
           </div>
 
-          <div className="my-8 border-y border-border/60 bg-black/30 px-4 py-6">
+          <div className="my-8 border-y border-border/60 bg-background/40 px-4 py-6">
             <h3 className="mb-4 text-center text-[0.6rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
               {info.hours}
             </h3>

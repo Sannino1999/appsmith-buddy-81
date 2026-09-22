@@ -39,6 +39,14 @@ const TRANSLATION_BATCH_SIZE = 14;
 
 const LANG_CODES = LANGUAGES.map((l) => l.code) as [LangCode, ...LangCode[]];
 
+function hasTranslatedDescription(
+  source: { description: string | null },
+  translated: { description: string | null },
+) {
+  if (!source.description?.trim()) return true;
+  return translated.description?.trim().toLocaleLowerCase("it") !== source.description.trim().toLocaleLowerCase("it");
+}
+
 export const translateCategory = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z.object({ categoryId: z.string(), lang: z.enum(LANG_CODES) }).parse(data),
@@ -82,7 +90,7 @@ export const translateCategory = createServerFn({ method: "POST" })
     const cachedMap = new Map((cached ?? []).map((c) => [c.item_key, c]));
     const missing = entries.filter((e) => {
       const hit = cachedMap.get(e.key);
-      if (hit && hit.source_hash === hashes.get(e.key)) {
+      if (hit && hit.source_hash === hashes.get(e.key) && hasTranslatedDescription(e, hit)) {
         result[e.key] = { name: hit.name ?? e.name, description: hit.description };
         return false;
       }
@@ -97,10 +105,17 @@ export const translateCategory = createServerFn({ method: "POST" })
             ...(await translateEntries(missing.slice(i, i + TRANSLATION_BATCH_SIZE), LANG_NAMES[lang] ?? lang)),
           );
         }
+        const validTranslations = translated.filter((t) => {
+          const source = missing.find((entry) => entry.key === t.key);
+          return source ? hasTranslatedDescription(source, t) : false;
+        });
+        translated.length = 0;
+        translated.push(...validTranslations);
         const translatedKeys = new Set(translated.map((t) => t.key));
         const stillMissing = missing.filter((entry) => !translatedKeys.has(entry.key));
         for (const entry of stillMissing) {
-          translated.push(...(await translateEntries([entry], LANG_NAMES[lang] ?? lang)));
+          const retry = await translateEntries([entry], LANG_NAMES[lang] ?? lang);
+          translated.push(...retry.filter((t) => hasTranslatedDescription(entry, t)));
         }
         const rows = translated.map((t) => ({
           item_key: t.key,
