@@ -68,6 +68,39 @@ export type Database = {
         }
         Relationships: []
       }
+      menu_specials: {
+        Row: {
+          active: boolean
+          description: string | null
+          id: string
+          image_url: string | null
+          item_key: string | null
+          price_eur: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          item_key?: string | null
+          price_eur?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          item_key?: string | null
+          price_eur?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       menu_translations: {
         Row: {
           created_at: string

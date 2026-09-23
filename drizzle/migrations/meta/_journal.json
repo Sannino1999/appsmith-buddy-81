@@ -15,6 +15,13 @@
       "when": 1789670918058,
       "tag": "0001_add_telegram_admin_names",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790128568622,
+      "tag": "0002_add_menu_specials",
+      "breakpoints": true
     }
   ]
 }
