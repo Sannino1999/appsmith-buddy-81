@@ -20,7 +20,14 @@ export const LANG_NAMES: Record<LangCode, string> = {
   zh: "Simplified Chinese",
 };
 
-type UIStrings = { search: string; noResults: string; unavailable: string; allergens: string };
+type UIStrings = {
+  search: string;
+  noResults: string;
+  unavailable: string;
+  allergens: string;
+  searchResults: string;
+  clearSearch: string;
+};
 
 type MenuLabelTranslations = {
   macros: Record<string, string>;
@@ -35,13 +42,15 @@ export const UI: Record<LangCode, UIStrings> = {
     noResults: "Nessun risultato",
     unavailable: "Non disponibile",
     allergens: "Allergeni",
+    searchResults: "risultati trovati",
+    clearSearch: "Cancella ricerca",
   },
-  en: { search: "Search the menu", noResults: "No results", unavailable: "Unavailable", allergens: "Allergens" },
-  es: { search: "Buscar en el menú", noResults: "Sin resultados", unavailable: "No disponible", allergens: "Alérgenos" },
-  fr: { search: "Rechercher au menu", noResults: "Aucun résultat", unavailable: "Indisponible", allergens: "Allergènes" },
-  de: { search: "Menü durchsuchen", noResults: "Keine Treffer", unavailable: "Nicht verfügbar", allergens: "Allergene" },
-  pt: { search: "Pesquisar no menu", noResults: "Sem resultados", unavailable: "Indisponível", allergens: "Alérgenos" },
-  zh: { search: "搜索菜单", noResults: "没有结果", unavailable: "暂不供应", allergens: "过敏原" },
+  en: { search: "Search the menu", noResults: "No results", unavailable: "Unavailable", allergens: "Allergens", searchResults: "results found", clearSearch: "Clear search" },
+  es: { search: "Buscar en el menú", noResults: "Sin resultados", unavailable: "No disponible", allergens: "Alérgenos", searchResults: "resultados encontrados", clearSearch: "Borrar búsqueda" },
+  fr: { search: "Rechercher au menu", noResults: "Aucun résultat", unavailable: "Indisponible", allergens: "Allergènes", searchResults: "résultats trouvés", clearSearch: "Effacer la recherche" },
+  de: { search: "Menü durchsuchen", noResults: "Keine Treffer", unavailable: "Nicht verfügbar", allergens: "Allergene", searchResults: "Ergebnisse gefunden", clearSearch: "Suche löschen" },
+  pt: { search: "Pesquisar no menu", noResults: "Sem resultados", unavailable: "Indisponível", allergens: "Alérgenos", searchResults: "resultados encontrados", clearSearch: "Limpar pesquisa" },
+  zh: { search: "搜索菜单", noResults: "没有结果", unavailable: "暂不供应", allergens: "过敏原", searchResults: "个结果", clearSearch: "清除搜索" },
 };
 
 export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
@@ -106,6 +115,24 @@ export const VENUE = {
   phone: "081-18273748",
   phoneHref: "tel:+3908118273748",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Calata+Trinit%C3%A0+Maggiore+51+Napoli",
+  reviewUrl: "https://share.google/zfypnSXd01WtotAVc",
+  instagramUrl: "https://www.instagram.com/lubranopubnapoli/",
+  whatsappUrl: "https://wa.me/3908118273748",
+  wifiPassword: null as string | null,
+};
+
+export const SERVICES: Record<LangCode, {
+  title: string; review: string; instagram: string; whatsapp: string; wifi: string;
+  wifiAsk: string; copied: string; allergenTitle: string; allergenBody: string;
+  special: string;
+}> = {
+  it: { title: "Lubrano con te", review: "Lascia una recensione", instagram: "Seguici su Instagram", whatsapp: "Scrivici su WhatsApp", wifi: "Wi-Fi", wifiAsk: "Password disponibile al banco", copied: "Password copiata", allergenTitle: "Allergie o intolleranze?", allergenBody: "Prima di ordinare, informa il nostro staff: siamo a disposizione per indicarti ingredienti e allergeni.", special: "In evidenza" },
+  en: { title: "Stay with Lubrano", review: "Leave a review", instagram: "Follow us on Instagram", whatsapp: "Message us on WhatsApp", wifi: "Wi-Fi", wifiAsk: "Password available at the counter", copied: "Password copied", allergenTitle: "Allergies or intolerances?", allergenBody: "Please tell our staff before ordering. We can help you check ingredients and allergens.", special: "Featured" },
+  es: { title: "Conecta con Lubrano", review: "Deja una reseña", instagram: "Síguenos en Instagram", whatsapp: "Escríbenos por WhatsApp", wifi: "Wi-Fi", wifiAsk: "Contraseña disponible en la barra", copied: "Contraseña copiada", allergenTitle: "¿Alergias o intolerancias?", allergenBody: "Informa a nuestro personal antes de pedir. Te ayudaremos con ingredientes y alérgenos.", special: "Destacado" },
+  fr: { title: "Restez avec Lubrano", review: "Laisser un avis", instagram: "Suivez-nous sur Instagram", whatsapp: "Écrivez-nous sur WhatsApp", wifi: "Wi-Fi", wifiAsk: "Mot de passe disponible au comptoir", copied: "Mot de passe copié", allergenTitle: "Allergies ou intolérances ?", allergenBody: "Prévenez notre équipe avant de commander. Nous vous renseignerons sur les ingrédients et allergènes.", special: "À la une" },
+  de: { title: "Lubrano erleben", review: "Bewertung abgeben", instagram: "Folgen Sie uns auf Instagram", whatsapp: "WhatsApp-Nachricht", wifi: "WLAN", wifiAsk: "Passwort an der Theke erhältlich", copied: "Passwort kopiert", allergenTitle: "Allergien oder Unverträglichkeiten?", allergenBody: "Bitte informieren Sie unser Team vor der Bestellung. Wir helfen bei Zutaten und Allergenen.", special: "Empfehlung" },
+  pt: { title: "Fique com o Lubrano", review: "Deixe uma avaliação", instagram: "Siga-nos no Instagram", whatsapp: "Fale connosco no WhatsApp", wifi: "Wi-Fi", wifiAsk: "Senha disponível no balcão", copied: "Senha copiada", allergenTitle: "Alergias ou intolerâncias?", allergenBody: "Avise a nossa equipa antes de pedir. Ajudamos com ingredientes e alergénios.", special: "Em destaque" },
+  zh: { title: "关注 Lubrano", review: "留下评价", instagram: "关注 Instagram", whatsapp: "WhatsApp 联系我们", wifi: "无线网络", wifiAsk: "请向吧台索取密码", copied: "密码已复制", allergenTitle: "有过敏或不耐受吗？", allergenBody: "点餐前请告知工作人员，我们可以协助确认食材和过敏原。", special: "本月推荐" },
 };
 
 type InfoStrings = {
