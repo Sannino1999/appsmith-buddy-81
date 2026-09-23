@@ -14,6 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
+      menu_category_overrides: {
+        Row: {
+          available: boolean
+          category_id: string
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          category_id: string
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          category_id?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      menu_custom_categories: {
+        Row: {
+          active: boolean
+          id: string
+          macro: string
+          name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          id: string
+          macro: string
+          name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          id?: string
+          macro?: string
+          name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      menu_custom_items: {
+        Row: {
+          available: boolean
+          category_id: string
+          description: string | null
+          id: string
+          item_key: string
+          name: string
+          price_eur: number | null
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          category_id: string
+          description?: string | null
+          id?: string
+          item_key: string
+          name: string
+          price_eur?: number | null
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          category_id?: string
+          description?: string | null
+          id?: string
+          item_key?: string
+          name?: string
+          price_eur?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       menu_edit_log: {
         Row: {
           action: string
@@ -64,6 +145,39 @@ export type Database = {
           item_key?: string
           name?: string | null
           price_eur?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      menu_specials: {
+        Row: {
+          active: boolean
+          description: string | null
+          id: string
+          image_url: string | null
+          item_key: string | null
+          price_eur: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          item_key?: string | null
+          price_eur?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          item_key?: string | null
+          price_eur?: number | null
+          title?: string
           updated_at?: string
         }
         Relationships: []

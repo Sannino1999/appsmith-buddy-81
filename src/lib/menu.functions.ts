@@ -12,6 +12,40 @@ export type Override = {
   available: boolean;
 };
 
+export type MenuSpecial = {
+  id: string;
+  title: string;
+  description: string | null;
+  price_eur: number | null;
+  image_url: string | null;
+  item_key: string | null;
+};
+
+export type DynamicCategory = {
+  id: string;
+  macro: string;
+  name: string;
+  available: boolean;
+  custom: boolean;
+  sort_order: number;
+};
+
+export type CustomItem = {
+  item_key: string;
+  category_id: string;
+  name: string;
+  description: string | null;
+  price_eur: number | null;
+  available: boolean;
+};
+
+export type LiveMenuData = {
+  overrides: Override[];
+  categories: DynamicCategory[];
+  customItems: CustomItem[];
+  special: MenuSpecial | null;
+};
+
 export const getOverrides = createServerFn({ method: "GET" }).handler(async (): Promise<Override[]> => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
@@ -25,6 +59,32 @@ export const getOverrides = createServerFn({ method: "GET" }).handler(async (): 
     price_eur: row.price_eur === null ? null : Number(row.price_eur),
     available: row.available,
   }));
+});
+
+export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (): Promise<LiveMenuData> => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const [overrideResult, categoryOverrideResult, customCategoryResult, customItemResult, specialResult] =
+    await Promise.all([
+      supabaseAdmin.from("menu_overrides").select("item_key, name, description, price_eur, available"),
+      supabaseAdmin.from("menu_category_overrides").select("category_id, name, available"),
+      supabaseAdmin.from("menu_custom_categories").select("id, macro, name, sort_order, active").eq("active", true),
+      supabaseAdmin.from("menu_custom_items").select("item_key, category_id, name, description, price_eur, available"),
+      supabaseAdmin.from("menu_specials").select("id, title, description, price_eur, image_url, item_key").eq("active", true).order("updated_at", { ascending: false }).limit(1).maybeSingle(),
+    ]);
+  const error = overrideResult.error ?? categoryOverrideResult.error ?? customCategoryResult.error ?? customItemResult.error ?? specialResult.error;
+  if (error) throw new Error(error.message);
+  const categoryOverrideMap = new Map((categoryOverrideResult.data ?? []).map((row) => [row.category_id, row]));
+  const baseCategories = baseMenu.categories.map((category, index) => {
+    const override = categoryOverrideMap.get(category.id);
+    return { id: category.id, macro: category.macro, name: override?.name ?? category.name, available: override?.available ?? true, custom: false, sort_order: index };
+  });
+  const customCategories = (customCategoryResult.data ?? []).map((category) => ({ id: category.id, macro: category.macro, name: category.name, available: category.active, custom: true, sort_order: category.sort_order }));
+  return {
+    overrides: (overrideResult.data ?? []).map((row) => ({ ...row, price_eur: row.price_eur === null ? null : Number(row.price_eur) })),
+    categories: [...baseCategories, ...customCategories].filter((category) => category.available).sort((a, b) => a.sort_order - b.sort_order),
+    customItems: (customItemResult.data ?? []).map((row) => ({ ...row, price_eur: row.price_eur === null ? null : Number(row.price_eur) })),
+    special: specialResult.data ? { ...specialResult.data, price_eur: specialResult.data.price_eur === null ? null : Number(specialResult.data.price_eur) } : null,
+  };
 });
 
 function hash(text: string) {
