@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the canonical menu in `src/data/menu-data.json` and layer live owner changes from Lovable Cloud; this preserves a reliable reset baseline.
+- Serve restaurant photography through Lovable Assets and use semantic visual tokens for interface colors; this keeps assets light and theming consistent.

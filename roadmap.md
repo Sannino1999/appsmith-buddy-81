@@ -11,8 +11,10 @@
 - [x] Sostituire Food/Birre con CIBO/BEVANDE.
 - [x] Importare le 135 voci dal nuovo catalogo nelle 13 categorie.
 - [x] Aggiungere emoji e traduzioni alle nuove categorie CIBO / BEVANDE.
-- [ ] Rendere ricerca globale e interazioni completamente accessibili.
-- [ ] Aggiungere banner speciale del mese predisposto per le foto dei panini.
-- [ ] Aggiungere recensione Google, Instagram, WhatsApp, Wi-Fi e avviso allergeni.
+- [x] Rendere ricerca globale e interazioni completamente accessibili.
+- [x] Aggiungere banner speciale del mese predisposto per le foto dei panini.
+- [x] Aggiungere recensione Google, Instagram, WhatsApp, Wi-Fi e avviso allergeni.
 - [ ] Allineare Telegram a categorie, prodotti e speciale del mese modificabili.
 - [ ] Verificare il nuovo menù su telefono, tablet e desktop.
+- [x] Usare una fotografia originale Lubrano come sfondo del menù.
+- [x] Evidenziare in giallo le descrizioni della categoria Le patate.
