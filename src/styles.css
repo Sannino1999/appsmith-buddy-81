@@ -35,6 +35,7 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
   --color-logo-panel: var(--logo-panel);
+  --color-feature: var(--feature);
   --font-display: var(--font-display);
   --font-sans: var(--font-body);
 }
@@ -57,6 +58,7 @@
   --muted-foreground: oklch(0.8 0.011 66);
   --accent: oklch(0.92 0.13 101);
   --accent-foreground: oklch(0.2 0.03 101);
+  --feature: oklch(0.88 0.16 95);
   --destructive: oklch(0.63 0.21 27);
   --destructive-foreground: oklch(0.98 0.003 72);
   --border: oklch(1 0 0 / 22%);

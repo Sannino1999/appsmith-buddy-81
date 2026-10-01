@@ -62,6 +62,20 @@ export const getOverrides = createServerFn({ method: "GET" }).handler(async (): 
 });
 
 export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (): Promise<LiveMenuData> => {
+  const fallback: LiveMenuData = {
+    overrides: [],
+    categories: baseMenu.categories.map((category, index) => ({
+      id: category.id,
+      macro: category.macro,
+      name: category.name,
+      available: true,
+      custom: false,
+      sort_order: index,
+    })),
+    customItems: [],
+    special: null,
+  };
+  try {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const [overrideResult, categoryOverrideResult, customCategoryResult, customItemResult, specialResult] =
     await Promise.all([
@@ -85,6 +99,10 @@ export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (
     customItems: (customItemResult.data ?? []).map((row) => ({ ...row, price_eur: row.price_eur === null ? null : Number(row.price_eur) })),
     special: specialResult.data ? { ...specialResult.data, price_eur: specialResult.data.price_eur === null ? null : Number(specialResult.data.price_eur) } : null,
   };
+  } catch (error) {
+    console.error("Live menu unavailable; serving the original catalog.", error);
+    return fallback;
+  }
 });
 
 function hash(text: string) {
