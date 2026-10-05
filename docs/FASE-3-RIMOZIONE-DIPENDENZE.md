@@ -39,7 +39,6 @@ npm run db:seed
 npm run db:verify
 ```
 
-
 ## Creazione database su Hostinger
 
 Nel tuo hPanel vai su **Websites → Dashboard** del sito, poi apri **Databases Management**. Hostinger documenta da questa schermata la sezione **Create a New MySQL Database And Database User**: inserisci nome database, username e una password forte, quindi premi **Create**. Il database viene associato automaticamente al sito selezionato.
