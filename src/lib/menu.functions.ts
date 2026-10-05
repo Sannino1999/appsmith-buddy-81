@@ -6,6 +6,7 @@ import { LANGUAGES, LANG_NAMES, type LangCode } from "./i18n";
 import { isMySqlConfigured } from "./mysql.server";
 import {
   getLiveMenuDataFromMysql,
+  getMenuFromMysql,
   getTranslationCache,
   listMenuOverrides,
   upsertTranslation,
@@ -52,6 +53,17 @@ export type LiveMenuData = {
   customItems: CustomItem[];
   special: MenuSpecial | null;
 };
+
+export const getPublicMenu = createServerFn({ method: "GET" }).handler(async () => {
+  if (!isMySqlConfigured()) return baseMenu;
+
+  try {
+    return (await getMenuFromMysql()) ?? baseMenu;
+  } catch (error) {
+    console.error("MySQL catalog unavailable; serving the original menu catalog.", error);
+    return baseMenu;
+  }
+});
 
 export const getOverrides = createServerFn({ method: "GET" }).handler(
   async (): Promise<Override[]> => {
@@ -129,7 +141,8 @@ export const translateCategory = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<TranslationMap> => {
     const lang: LangCode = data.lang;
     if (lang === "it") return {};
-    const category = baseMenu.categories.find((c) => c.id === data.categoryId);
+    const menu = isMySqlConfigured() ? ((await getMenuFromMysql()) ?? baseMenu) : baseMenu;
+    const category = menu.categories.find((c) => c.id === data.categoryId);
     if (!category) return {};
 
     const overrides = isMySqlConfigured()
