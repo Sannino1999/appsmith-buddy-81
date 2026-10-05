@@ -142,7 +142,9 @@ export const translateCategory = createServerFn({ method: "POST" })
     const category = menu.categories.find((c) => c.id === data.categoryId);
     if (!category) return {};
 
-    const overrides = await listMenuOverrides();
+    const overrides = isMySqlConfigured() ? await listMenuOverrides() : [];
+    const overrideMap = new Map(overrides.map((o) => [o.item_key, o]));
+
     const entries = category.groups.flatMap((g) =>
       g.items.map((item) => {
         const o = overrideMap.get(item.key);
@@ -155,10 +157,12 @@ export const translateCategory = createServerFn({ method: "POST" })
     );
     const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
 
-    const cached = await getTranslationCache(
-      entries.map((e) => e.key),
-      lang,
-    );
+    const cached = isMySqlConfigured()
+      ? await getTranslationCache(
+          entries.map((e) => e.key),
+          lang,
+        )
+      : [];
 
     const result: TranslationMap = {};
     const cachedMap = new Map((cached ?? []).map((c) => [c.item_key, c]));
