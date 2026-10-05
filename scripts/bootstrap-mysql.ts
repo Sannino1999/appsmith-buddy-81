@@ -50,10 +50,7 @@ async function bootstrap() {
           await connection.query(statement);
         }
 
-        await connection.execute(
-          "INSERT INTO schema_migrations (version) VALUES (?)",
-          [version],
-        );
+        await connection.execute("INSERT INTO schema_migrations (version) VALUES (?)", [version]);
 
         await connection.commit();
         console.log(`[db] migration applied: ${version}`);
@@ -65,12 +62,8 @@ async function bootstrap() {
       }
     }
 
-    const [countRows] = await pool.execute(
-      "SELECT COUNT(*) AS count FROM menu_catalog_items",
-    );
-    const count = Number(
-      (countRows as { count: number }[])[0]?.count ?? 0,
-    );
+    const [countRows] = await pool.execute("SELECT COUNT(*) AS count FROM menu_catalog_items");
+    const count = Number((countRows as { count: number }[])[0]?.count ?? 0);
 
     if (count === 0) {
       const { execFile } = await import("child_process");
@@ -89,10 +82,7 @@ async function bootstrap() {
 
     console.log("[db] bootstrap complete.");
   } catch (error) {
-    console.error(
-      "[db] bootstrap failed; application will continue with static fallback.",
-      error,
-    );
+    console.error("[db] bootstrap failed; application will continue with static fallback.", error);
   } finally {
     await pool.end().catch(() => undefined);
   }
