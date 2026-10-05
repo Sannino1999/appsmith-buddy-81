@@ -265,7 +265,7 @@ function MenuPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t.search}
-              className="min-h-12 w-full bg-transparent py-2 text-base text-white outline-none placeholder:text-white/40"
+              className="min-h-12 w-full bg-transparent py-2 text-base text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-accent/70"
             />
             {query && (
               <button
@@ -588,7 +588,7 @@ function MenuPage() {
             </a>
           </div>
 
-          <div className="my-8 border-y border-border/60 bg-background/40 px-4 py-6">
+          <div className="my-8 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-5">
             <h3 className="mb-4 text-center text-[0.6rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
               {info.hours}
             </h3>
