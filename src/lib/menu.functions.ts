@@ -3,6 +3,13 @@ import { z } from "zod";
 
 import { baseMenu } from "./menu";
 import { LANGUAGES, LANG_NAMES, type LangCode } from "./i18n";
+import { isMySqlConfigured } from "./mysql.server";
+import {
+  getLiveMenuDataFromMysql,
+  getTranslationCache,
+  listMenuOverrides,
+  upsertTranslation,
+} from "./mysql.repository";
 
 export type Override = {
   item_key: string;
@@ -47,6 +54,10 @@ export type LiveMenuData = {
 };
 
 export const getOverrides = createServerFn({ method: "GET" }).handler(async (): Promise<Override[]> => {
+  if (isMySqlConfigured()) {
+    return listMenuOverrides();
+  }
+
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("menu_overrides")
@@ -75,32 +86,85 @@ export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (
     customItems: [],
     special: null,
   };
+
+  if (isMySqlConfigured()) {
+    try {
+      const data = await getLiveMenuDataFromMysql();
+      return {
+        overrides: data.overrides,
+        categories: data.categories,
+        customItems: data.customItems,
+        special: data.special,
+      };
+    } catch (error) {
+      console.error("MySQL live menu unavailable; serving the original catalog.", error);
+      return fallback;
+    }
+  }
+
   try {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const [overrideResult, categoryOverrideResult, customCategoryResult, customItemResult, specialResult] =
-    await Promise.all([
-      supabaseAdmin.from("menu_overrides").select("item_key, name, description, price_eur, available"),
-      supabaseAdmin.from("menu_category_overrides").select("category_id, name, available"),
-      supabaseAdmin.from("menu_custom_categories").select("id, macro, name, sort_order, active").eq("active", true),
-      supabaseAdmin.from("menu_custom_items").select("item_key, category_id, name, description, price_eur, available"),
-      supabaseAdmin.from("menu_specials").select("id, title, description, price_eur, image_url, item_key").eq("active", true).order("updated_at", { ascending: false }).limit(1).maybeSingle(),
-    ]);
-  const error = overrideResult.error ?? categoryOverrideResult.error ?? customCategoryResult.error ?? customItemResult.error ?? specialResult.error;
-  if (error) throw new Error(error.message);
-  const categoryOverrideMap = new Map((categoryOverrideResult.data ?? []).map((row) => [row.category_id, row]));
-  const baseCategories = baseMenu.categories.map((category, index) => {
-    const override = categoryOverrideMap.get(category.id);
-    return { id: category.id, macro: category.macro, name: override?.name ?? category.name, available: override?.available ?? true, custom: false, sort_order: index };
-  });
-  const customCategories = (customCategoryResult.data ?? []).map((category) => ({ id: category.id, macro: category.macro, name: category.name, available: category.active, custom: true, sort_order: category.sort_order }));
-  return {
-    overrides: (overrideResult.data ?? []).map((row) => ({ ...row, price_eur: row.price_eur === null ? null : Number(row.price_eur) })),
-    categories: [...baseCategories, ...customCategories].filter((category) => category.available).sort((a, b) => a.sort_order - b.sort_order),
-    customItems: (customItemResult.data ?? []).map((row) => ({ ...row, price_eur: row.price_eur === null ? null : Number(row.price_eur) })),
-    special: specialResult.data ? { ...specialResult.data, price_eur: specialResult.data.price_eur === null ? null : Number(specialResult.data.price_eur) } : null,
-  };
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const [overrideResult, categoryOverrideResult, customCategoryResult, customItemResult, specialResult] =
+      await Promise.all([
+        supabaseAdmin.from("menu_overrides").select("item_key, name, description, price_eur, available"),
+        supabaseAdmin.from("menu_category_overrides").select("category_id, name, available"),
+        supabaseAdmin.from("menu_custom_categories").select("id, macro, name, sort_order, active").eq("active", true),
+        supabaseAdmin.from("menu_custom_items").select("item_key, category_id, name, description, price_eur, available"),
+        supabaseAdmin.from("menu_specials").select("id, title, description, price_eur, image_url, item_key").eq("active", true).order("updated_at", { ascending: false }).limit(1).maybeSingle(),
+      ]);
+
+    const error =
+      overrideResult.error ??
+      categoryOverrideResult.error ??
+      customCategoryResult.error ??
+      customItemResult.error ??
+      specialResult.error;
+    if (error) throw new Error(error.message);
+
+    const categoryOverrideMap = new Map(
+      (categoryOverrideResult.data ?? []).map((row) => [row.category_id, row]),
+    );
+    const baseCategories = baseMenu.categories.map((category, index) => {
+      const override = categoryOverrideMap.get(category.id);
+      return {
+        id: category.id,
+        macro: category.macro,
+        name: override?.name ?? category.name,
+        available: override?.available ?? true,
+        custom: false,
+        sort_order: index,
+      };
+    });
+    const customCategories = (customCategoryResult.data ?? []).map((category) => ({
+      id: category.id,
+      macro: category.macro,
+      name: category.name,
+      available: category.active,
+      custom: true,
+      sort_order: category.sort_order,
+    }));
+    return {
+      overrides: (overrideResult.data ?? []).map((row) => ({
+        ...row,
+        price_eur: row.price_eur === null ? null : Number(row.price_eur),
+      })),
+      categories: [...baseCategories, ...customCategories]
+        .filter((category) => category.available)
+        .sort((a, b) => a.sort_order - b.sort_order),
+      customItems: (customItemResult.data ?? []).map((row) => ({
+        ...row,
+        price_eur: row.price_eur === null ? null : Number(row.price_eur),
+      })),
+      special: specialResult.data
+        ? {
+            ...specialResult.data,
+            price_eur:
+              specialResult.data.price_eur === null ? null : Number(specialResult.data.price_eur),
+          }
+        : null,
+    };
   } catch (error) {
-    console.error("Live menu unavailable; serving the original catalog.", error);
+    console.error("Legacy live menu unavailable; serving the original catalog.", error);
     return fallback;
   }
 });
@@ -135,12 +199,16 @@ export const translateCategory = createServerFn({ method: "POST" })
     const category = baseMenu.categories.find((c) => c.id === data.categoryId);
     if (!category) return {};
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const overrides = isMySqlConfigured()
+      ? await listMenuOverrides()
+      : (await (async () => {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data } = await supabaseAdmin
+            .from("menu_overrides")
+            .select("item_key, name, description");
+          return data ?? [];
+        })());
     const { translateEntries } = await import("./translate.server");
-
-    const { data: overrides } = await supabaseAdmin
-      .from("menu_overrides")
-      .select("item_key, name, description");
     const overrideMap = new Map((overrides ?? []).map((o) => [o.item_key, o]));
 
     const entries = category.groups.flatMap((g) =>
@@ -155,14 +223,17 @@ export const translateCategory = createServerFn({ method: "POST" })
     );
     const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
 
-    const { data: cached } = await supabaseAdmin
-      .from("menu_translations")
-      .select("item_key, name, description, source_hash")
-      .eq("lang", lang)
-      .in(
-        "item_key",
-        entries.map((e) => e.key),
-      );
+    const cached = isMySqlConfigured()
+      ? await getTranslationCache(entries.map((e) => e.key), lang)
+      : (await (async () => {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data } = await supabaseAdmin
+            .from("menu_translations")
+            .select("item_key, name, description, source_hash")
+            .eq("lang", lang)
+            .in("item_key", entries.map((e) => e.key));
+          return data ?? [];
+        })());
 
     const result: TranslationMap = {};
     const cachedMap = new Map((cached ?? []).map((c) => [c.item_key, c]));
@@ -202,8 +273,19 @@ export const translateCategory = createServerFn({ method: "POST" })
           description: t.description ?? null,
           source_hash: hashes.get(t.key) ?? "",
         }));
-        if (rows.length > 0) {
-          await supabaseAdmin.from("menu_translations").upsert(rows, { onConflict: "item_key,lang" });
+        for (const row of rows) {
+          if (isMySqlConfigured()) {
+            await upsertTranslation({
+              itemKey: row.item_key,
+              lang: row.lang,
+              name: row.name,
+              description: row.description,
+              sourceHash: row.source_hash,
+            });
+          } else {
+            const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+            await supabaseAdmin.from("menu_translations").upsert(row, { onConflict: "item_key,lang" });
+          }
         }
       } catch (err) {
         console.error(`Translation AI call failed for lang=${lang}:`, err);
