@@ -326,7 +326,60 @@ function MenuPage() {
           <p className="anim-fade mt-5 text-center text-sm text-primary">…</p>
         )}
 
-        <div key={active?.id ?? "empty"} className="mt-8 space-y-10">
+        {query.trim() ? (
+          <section className="anim-fade mt-7" aria-label="Risultati ricerca globale">
+            {searchResults.length === 0 ? (
+              <div className="rounded-2xl border border-white/10 bg-black/30 px-6 py-12 text-center">
+                <Search className="mx-auto size-8 text-accent" />
+                <p className="mt-3 font-semibold text-white">{t.noResults}</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {searchResults.map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => {
+                      const target = menu.categories.find(
+                        (category) => category.id === item.categoryId,
+                      );
+                      if (!target) return;
+                      setMacro(target.macro);
+                      setCategoryId(target.id);
+                      setQuery("");
+                    }}
+                    className="group w-full rounded-2xl border border-white/10 bg-black/35 p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-black/45"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="mt-1 grid size-10 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
+                        <Utensils className="size-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="display-caps text-base text-white group-hover:text-accent">
+                            {item.name}
+                          </h3>
+                          <span className="display-caps shrink-0 text-base text-accent">
+                            {formatPrice(item.price_eur)}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs uppercase tracking-[0.12em] text-white/40">
+                          {menuLabels.categories[item.categoryId]?.name ?? item.categoryName}
+                        </p>
+                        {item.description && (
+                          <p className="mt-2 text-sm leading-relaxed text-white/65">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        ) : (
+          <div key={active?.id ?? "empty"} className="mt-8 space-y-10">
           {groups.length === 0 && (
             <p className="text-center text-muted-foreground">{t.noResults}</p>
           )}
@@ -377,7 +430,8 @@ function MenuPage() {
               </ul>
             </section>
           ))}
-        </div>
+          </div>
+        )}
 
         <section className="anim-fade-up relative mt-16 border border-border/60 bg-background/70 p-8 shadow-2xl sm:p-10">
           <div
