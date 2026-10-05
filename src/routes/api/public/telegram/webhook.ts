@@ -296,7 +296,17 @@ async function upsertOverride(row: {
   if (error) throw new Error(error.message);
 }
 
-async function audit(actor: string, action: string, itemKey: string | null, details: Record<string, unknown>) {
+type AuditDetails = Record<
+  string,
+  string | number | boolean | null | string[] | number[] | boolean[]
+>;
+
+async function audit(
+  actor: string,
+  action: string,
+  itemKey: string | null,
+  details: AuditDetails,
+) {
   if (isMySqlConfigured()) {
     const admin = await getAdminUserByTelegramChatId(Number(actor.replace(/^@/, "")));
     await insertAuditLog({
