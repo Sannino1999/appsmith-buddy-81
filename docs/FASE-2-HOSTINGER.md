@@ -39,12 +39,15 @@ npm run db:migrate
 
 Questo applica solo le migrazioni non ancora registrate in `schema_migrations`.
 
+Subito dopo esegui `npm run db:seed` per importare il catalogo e `npm run db:verify` per controllare automaticamente i numeri attesi.
+
 ## 4. Importa il catalogo
 
 Esegui:
 
 ```
 npm run db:seed
+npm run db:verify
 ```
 
 Lo script controlla che il catalogo contenga esattamente **135 voci e 13 categorie**, quindi importa il catalogo nella tabella `menu_catalog_items` e le traduzioni statiche presenti in `i18n.ts` nella tabella `ui_translations`.
@@ -57,7 +60,7 @@ Controlla in phpMyAdmin che esistano almeno:
 
 `menu_catalog_items`, `menu_overrides`, `menu_translations`, `menu_edit_log`, `admin_users`, `admin_sessions`, `chat_messages`, `audit_log`, `menu_specials`, `menu_category_overrides`, `menu_custom_categories`, `menu_custom_items`, `ui_translations`, `app_settings`.
 
-Il menu pubblico continuerà a usare il catalogo statico se MySQL non è configurato oppure non è raggiungibile. Questo evita che un database appena creato ma ancora vuoto renda il menu inutilizzabile.
+Con `MYSQL_*` configurato, il menu pubblico legge il catalogo da `menu_catalog_items`. Se MySQL non è configurato oppure non è raggiungibile, viene usato il catalogo statico come fallback. Questo evita che un database appena creato ma ancora vuoto renda il menu inutilizzabile.
 
 ## Note di sicurezza
 

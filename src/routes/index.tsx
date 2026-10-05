@@ -7,7 +7,7 @@ import { Search, X, Globe, Phone, MapPin } from "lucide-react";
 import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
-import { getOverrides, translateCategory } from "@/lib/menu.functions";
+import { getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, INFO, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
@@ -41,6 +41,14 @@ function MenuPage() {
   const [qrOpen, setQrOpen] = useState(false);
   const [query, setQuery] = useState("");
 
+  const menuQuery = useQuery({
+    queryKey: ["menu-catalog"],
+    queryFn: () => getPublicMenu(),
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+  });
+  const menu = menuQuery.data ?? baseMenu;
+
   const overridesQuery = useQuery({
     queryKey: ["overrides"],
     queryFn: () => getOverrides(),
@@ -69,7 +77,7 @@ function MenuPage() {
   const info = INFO[lang];
   const menuLabels = MENU_LABELS[lang];
 
-  const categories = baseMenu.categories.filter((c) => c.macro === macro);
+  const categories = menu.categories.filter((c) => c.macro === macro);
   const active: MenuCategory | undefined =
     categories.find((c) => c.id === categoryId) ?? categories[0];
 
@@ -104,7 +112,7 @@ function MenuPage() {
 
   function pickMacro(id: string) {
     setMacro(id);
-    const first = baseMenu.categories.find((c) => c.macro === id);
+    const first = menu.categories.find((c) => c.macro === id);
     if (first) setCategoryId(first.id);
     setQuery("");
   }
@@ -168,7 +176,7 @@ function MenuPage() {
 
           <img
             src={logoVertical.url}
-            alt={`${baseMenu.restaurant.name} ${baseMenu.restaurant.subtitle}`}
+            alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`}
             className="h-auto w-64 max-w-[80vw] drop-shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-[1.02] sm:w-80"
           />
         </header>
@@ -184,7 +192,7 @@ function MenuPage() {
         )}
 
         <nav className="anim-fade-up stagger-1 mt-7 flex items-center justify-center gap-10">
-          {baseMenu.macros.map((m) => (
+          {menu.macros.map((m) => (
             <button
               key={m.id}
               type="button"
@@ -356,13 +364,13 @@ function MenuPage() {
           </div>
 
           <p className="mt-8 text-center text-[0.6rem] uppercase tracking-widest text-muted-foreground/70">
-            {baseMenu.restaurant.name} · Napoli
+            {menu.restaurant.name} · Napoli
           </p>
         </section>
 
         <footer className="anim-fade-up mt-10 text-center text-xs text-muted-foreground">
           <p className="display-caps text-sm text-brand">
-            {baseMenu.restaurant.name} · {baseMenu.restaurant.subtitle}
+            {menu.restaurant.name} · {menu.restaurant.subtitle}
           </p>
           <p className="mt-2">
             Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco

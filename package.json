@@ -20,7 +20,8 @@
     "format": "prettier --write .",
     "db:migrate": "node --experimental-strip-types scripts/migrate-mysql.ts",
     "db:seed": "node --experimental-strip-types scripts/import-menu-data.ts",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:verify": "node --experimental-strip-types scripts/verify-mysql.ts"
   },
   "overrides": {
     "rolldown": "1.2.1"

@@ -23,6 +23,7 @@ Dopo aver creato database e utente su Hostinger:
 ```
 npm run db:migrate
 npm run db:seed
+npm run db:verify
 ```
 
 Le migrazioni sono in `database/mysql/migrations` e vengono registrate in `schema_migrations`.
