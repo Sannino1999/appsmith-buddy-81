@@ -34,7 +34,14 @@ function readConfig(): MysqlConfig | null {
       }
     : undefined;
 
-  return { host, port, database, user, password, ssl };
+  return {
+    host,
+    port,
+    database,
+    user,
+    password,
+    ...(ssl ? { ssl } : {}),
+  };
 }
 
 export function isMySqlConfigured() {
