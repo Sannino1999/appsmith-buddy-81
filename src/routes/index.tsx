@@ -43,6 +43,7 @@ function MenuPage() {
   const [qrOpen, setQrOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [specialClosed, setSpecialClosed] = useState(false);
+  const [wifiOpen, setWifiOpen] = useState(false);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -481,6 +482,72 @@ function MenuPage() {
             </div>
           </section>
         )}
+
+        <section className="anim-fade-up mt-12 rounded-[1.75rem] border border-white/10 bg-black/45 p-5 shadow-2xl backdrop-blur-md sm:p-7">
+          <div className="flex items-center gap-3">
+            <div className="grid size-11 place-items-center rounded-full bg-accent/10 text-accent">
+              <Star className="size-5" />
+            </div>
+            <div>
+              <p className="text-[0.62rem] font-bold uppercase tracking-[0.28em] text-accent">
+                Lubrano con te
+              </p>
+              <h2 className="display-caps mt-1 text-xl text-white">{services.title}</h2>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <a
+              href={VENUE.reviewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
+            >
+              <Star className="size-4 text-accent" />
+              <span className="flex-1">{services.review}</span>
+              <ExternalLink className="size-4 text-white/35" />
+            </a>
+            <a
+              href={VENUE.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
+            >
+              <Instagram className="size-4 text-accent" />
+              <span className="flex-1">{services.instagram}</span>
+              <ExternalLink className="size-4 text-white/35" />
+            </a>
+            <a
+              href={VENUE.whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
+            >
+              <MessageCircle className="size-4 text-accent" />
+              <span className="flex-1">{services.whatsapp}</span>
+              <ExternalLink className="size-4 text-white/35" />
+            </a>
+            <button
+              type="button"
+              onClick={() => setWifiOpen(true)}
+              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
+              aria-haspopup="dialog"
+            >
+              <Wifi className="size-4 text-accent" />
+              <span className="flex-1 text-left">
+                {services.wifi}
+                <span className="mt-0.5 block text-xs font-normal text-white/45">
+                  {services.wifiAsk}
+                </span>
+              </span>
+            </button>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-accent/20 bg-accent/5 p-4">
+            <p className="text-sm font-bold text-accent">{services.allergenTitle}</p>
+            <p className="mt-1 text-sm leading-relaxed text-white/65">{services.allergenBody}</p>
+          </div>
+        </section>
 
         <section className="anim-fade-up relative mt-16 border border-border/60 bg-background/70 p-8 shadow-2xl sm:p-10">
           <div
