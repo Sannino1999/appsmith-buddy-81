@@ -15,9 +15,7 @@ try {
   const [languageRows] = await pool.execute(
     "SELECT COUNT(DISTINCT lang) AS languages FROM ui_translations",
   );
-  const [schemaRows] = await pool.execute(
-    "SELECT COUNT(*) AS count FROM schema_migrations",
-  );
+  const [schemaRows] = await pool.execute("SELECT COUNT(*) AS count FROM schema_migrations");
 
   const catalog = (catalogRows as { count: number; categories: number }[])[0];
   const language = (languageRows as { languages: number }[])[0];
@@ -28,13 +26,7 @@ try {
   const languages = Number(language?.languages ?? 0);
   const migrations = Number(schema?.count ?? 0);
 
-  console.log(
-    JSON.stringify(
-      { products, categories, languages, migrations },
-      null,
-      2,
-    ),
-  );
+  console.log(JSON.stringify({ products, categories, languages, migrations }, null, 2));
 
   if (products !== 135 || categories !== 13 || languages !== 7 || migrations < 1) {
     throw new Error(

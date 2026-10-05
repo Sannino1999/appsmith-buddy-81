@@ -79,7 +79,6 @@ type CatalogRow = {
   sort_order: number;
 };
 
-
 function toBool(value: BoolLike) {
   return value === true || value === 1;
 }
@@ -138,7 +137,8 @@ export async function getMenuFromMysql(): Promise<Menu | null> {
               let tags: string[] = [];
               try {
                 const parsed = JSON.parse(row.tags);
-                if (Array.isArray(parsed)) tags = parsed.filter((tag): tag is string => typeof tag === "string");
+                if (Array.isArray(parsed))
+                  tags = parsed.filter((tag): tag is string => typeof tag === "string");
               } catch {
                 tags = [];
               }
