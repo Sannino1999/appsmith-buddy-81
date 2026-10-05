@@ -1,4 +1,4 @@
-import mysql from "mysql2/promise";
+import mysql, { type PoolOptions } from "mysql2/promise";
 
 type MysqlConfig = {
   host: string;
@@ -6,7 +6,7 @@ type MysqlConfig = {
   database: string;
   user: string;
   password: string;
-  ssl?: { rejectUnauthorized: boolean } | undefined;
+  ssl?: { rejectUnauthorized: boolean };
 };
 
 let pool: ReturnType<typeof mysql.createPool> | undefined;
@@ -51,8 +51,12 @@ export function getMysqlPool() {
     );
   }
 
-  pool = mysql.createPool({
-    ...config,
+  const options: PoolOptions = {
+    host: config.host,
+    port: config.port,
+    database: config.database,
+    user: config.user,
+    password: config.password,
     charset: "utf8mb4",
     waitForConnections: true,
     connectionLimit: 10,
@@ -61,17 +65,21 @@ export function getMysqlPool() {
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
     decimalNumbers: true,
-  });
+  };
+
+  if (config.ssl) options.ssl = config.ssl;
+
+  pool = mysql.createPool(options);
 
   return pool;
 }
 
-export async function mysqlQuery<T = unknown>(sql: string, params: unknown[] = []): Promise<T[]> {
+export async function mysqlQuery<T = unknown>(sql: string, params: any[] = []): Promise<T[]> {
   const [rows] = await getMysqlPool().execute(sql, params);
   return rows as T[];
 }
 
-export async function mysqlExecute(sql: string, params: unknown[] = []) {
+export async function mysqlExecute(sql: string, params: any[] = []) {
   const [result] = await getMysqlPool().execute(sql, params);
   return result as { affectedRows?: number; insertId?: number };
 }
