@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 
-import { baseMenu } from "./menu";
+import { baseMenu, type Menu } from "./menu";
 import { mysqlExecute, mysqlQuery } from "./mysql.server";
 
 export type MysqlOverride = {
@@ -68,6 +68,17 @@ type CustomCategoryRow = {
 };
 type CustomItemRow = MysqlCustomItem & { available: BoolLike };
 type SpecialRow = MysqlMenuSpecial;
+type CatalogRow = {
+  item_key: string;
+  category_id: string;
+  group_name: string | null;
+  name: string;
+  description: string | null;
+  price_eur: number | null;
+  tags: string;
+  sort_order: number;
+};
+
 
 function toBool(value: BoolLike) {
   return value === true || value === 1;
@@ -80,6 +91,76 @@ function mapOverride(row: OverrideRow): MysqlOverride {
     description: row.description,
     price_eur: row.price_eur === null ? null : Number(row.price_eur),
     available: toBool(row.available),
+  };
+}
+
+export async function getMenuFromMysql(): Promise<Menu | null> {
+  const rows = await mysqlQuery<CatalogRow>(
+    `SELECT item_key, category_id, group_name, name, description, price_eur, tags, sort_order
+     FROM menu_catalog_items
+     ORDER BY category_id, sort_order, item_key`,
+  );
+
+  if (rows.length === 0) return null;
+
+  const rowsByCategory = new Map<string, CatalogRow[]>();
+  for (const row of rows) {
+    const list = rowsByCategory.get(row.category_id) ?? [];
+    list.push(row);
+    rowsByCategory.set(row.category_id, list);
+  }
+
+  const categories = baseMenu.categories.map((category) => {
+    const categoryRows = rowsByCategory.get(category.id) ?? [];
+    const groupsByName = new Map<string, CatalogRow[]>();
+    for (const row of categoryRows) {
+      const groupName = row.group_name ?? "";
+      const list = groupsByName.get(groupName) ?? [];
+      list.push(row);
+      groupsByName.set(groupName, list);
+    }
+
+    const orderedGroupNames = [
+      ...category.groups.map((group) => group.name),
+      ...[...groupsByName.keys()].filter(
+        (groupName) => groupName && !category.groups.some((group) => group.name === groupName),
+      ),
+    ];
+
+    return {
+      ...category,
+      groups: orderedGroupNames
+        .map((groupName) => ({
+          name: groupName,
+          items: (groupsByName.get(groupName) ?? [])
+            .sort((a, b) => a.sort_order - b.sort_order)
+            .map((row) => {
+              let tags: string[] = [];
+              try {
+                const parsed = JSON.parse(row.tags);
+                if (Array.isArray(parsed)) tags = parsed.filter((tag): tag is string => typeof tag === "string");
+              } catch {
+                tags = [];
+              }
+
+              return {
+                key: row.item_key,
+                name: row.name,
+                description: row.description,
+                price_eur: row.price_eur === null ? null : Number(row.price_eur),
+                tags,
+                available: true,
+              };
+            }),
+        }))
+        .filter((group) => group.items.length > 0),
+    };
+  });
+
+  return {
+    restaurant: baseMenu.restaurant,
+    macros: baseMenu.macros,
+    categories,
   };
 }
 
