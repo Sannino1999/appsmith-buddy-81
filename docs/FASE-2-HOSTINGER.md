@@ -10,7 +10,7 @@ In Hostinger apri **Websites → Dashboard → Databases → Management** e crea
 - password;
 - host del database.
 
-Per le connessioni locali l'host è normalmente `localhost` e la porta standard è 3306. Hostinger documenta che i piani Web/Cloud usano MariaDB, compatibile con il protocollo MySQL. citeturn182037search6turn182037search2
+Per le connessioni locali l'host è normalmente `localhost` e la porta standard è 3306. Hostinger documenta che i piani Web/Cloud usano MariaDB, compatibile con il protocollo MySQL.
 
 ## 2. Imposta le variabili dell'app Node.js
 
@@ -24,7 +24,7 @@ MYSQL_USER=<utente database>
 MYSQL_PASSWORD=<password>
 ```
 
-Non inserirle in GitHub, nel codice o in `.env.example`. Hostinger prevede le variabili d'ambiente nella configurazione della Node.js Web App. citeturn401873search5
+Non inserirle in GitHub, nel codice o in `.env.example`. Hostinger prevede le variabili d'ambiente nella configurazione della Node.js Web App.
 
 Le variabili legacy di Lovable/Supabase/Telegram restano necessarie temporaneamente finché non chiudiamo le Fasi 3 e 5.
 
