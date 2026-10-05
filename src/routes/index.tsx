@@ -7,6 +7,7 @@ import { ExternalLink, Globe, Instagram, MapPin, MessageCircle, Phone, Search, S
 import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import burgerBackground from "@/assets/lubrano-burger-background.jpeg.asset.json";
+import burgerBackground from "@/assets/lubrano-burger-background.jpeg.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getLiveMenuData, getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, INFO, VENUE, type LangCode } from "@/lib/i18n";
@@ -431,6 +432,54 @@ function MenuPage() {
             </section>
           ))}
           </div>
+        )}
+
+        {special && !specialClosed && (
+          <section className="anim-fade-up relative mt-12 overflow-hidden rounded-[1.75rem] border border-accent/30 bg-black/55 shadow-2xl backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => setSpecialClosed(true)}
+              className="menu-control absolute right-3 top-3 z-10 grid size-10 place-items-center rounded-full border border-white/15 bg-black/45 text-white"
+              aria-label="Chiudi speciale del mese"
+            >
+              <X className="size-4" />
+            </button>
+            <div className="grid md:grid-cols-[0.9fr_1.1fr]">
+              <div className="relative min-h-60 overflow-hidden">
+                <img
+                  src={special.image_url || burgerBackground.url}
+                  alt={special.title}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1.5 text-xs font-black uppercase tracking-[0.12em] text-accent-foreground">
+                  <Star className="size-3.5 fill-current" />
+                  {services.special}
+                </span>
+              </div>
+              <div className="p-6 sm:p-7">
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.3em] text-accent">
+                  Speciale del Mese
+                </p>
+                <div className="mt-2 flex items-start justify-between gap-4">
+                  <h2 className="display-caps text-2xl text-white sm:text-3xl">{special.title}</h2>
+                  {special.price_eur !== null && (
+                    <span className="display-caps shrink-0 text-xl text-accent">
+                      {formatPrice(special.price_eur)}
+                    </span>
+                  )}
+                </div>
+                {special.description && (
+                  <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                    <p className="text-[0.66rem] font-bold uppercase tracking-[0.22em] text-white/45">
+                      Ingredienti
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-white/70">{special.description}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
         )}
 
         <section className="anim-fade-up relative mt-16 border border-border/60 bg-background/70 p-8 shadow-2xl sm:p-10">
