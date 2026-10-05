@@ -42,14 +42,14 @@ jobs:
       - name: Formatta i file della Fase 3
         if: github.event_name == 'push'
         run: |
-          npx prettier --write src/lib/menu.functions.ts src/routes/api/public/telegram/webhook.ts
+          npx prettier --write src/lib/menu.functions.ts src/routes/api/public/telegram/webhook.ts docs/FASE-3-RIMOZIONE-DIPENDENZE.md
           if git diff --quiet; then
             echo "File della Fase 3 già formattati."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/lib/menu.functions.ts src/routes/api/public/telegram/webhook.ts
+          git add src/lib/menu.functions.ts src/routes/api/public/telegram/webhook.ts docs/FASE-3-RIMOZIONE-DIPENDENZE.md
           git commit -m "fase 3: formatta moduli senza Supabase"
           git push origin HEAD:${GITHUB_REF_NAME}
 
