@@ -8,7 +8,7 @@ import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import burgerBackground from "@/assets/lubrano-burger-background.jpeg.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
-import { getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
+import { getLiveMenuData, getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, INFO, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
