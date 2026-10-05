@@ -14,7 +14,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
-    "start": "node --experimental-strip-types scripts/bootstrap-mysql.ts && node .output/server/index.mjs",
+    "start": "node .output/server/index.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
