@@ -12,4 +12,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Hostinger runs the application as a Node.js process. The default Lovable
+  // target is Cloudflare, so pin Nitro to the Node server preset for production.
+  nitro: { preset: "node-server" },
 });
