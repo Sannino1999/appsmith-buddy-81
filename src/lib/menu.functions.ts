@@ -58,18 +58,8 @@ export const getOverrides = createServerFn({ method: "GET" }).handler(async (): 
     return listMenuOverrides();
   }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin
-    .from("menu_overrides")
-    .select("item_key, name, description, price_eur, available");
-  if (error) throw new Error(error.message);
-  return (data ?? []).map((row) => ({
-    item_key: row.item_key,
-    name: row.name,
-    description: row.description,
-    price_eur: row.price_eur === null ? null : Number(row.price_eur),
-    available: row.available,
-  }));
+  // Until MySQL is configured, the original catalog remains the authoritative fallback.
+  return [];
 });
 
 export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (): Promise<LiveMenuData> => {
@@ -102,7 +92,14 @@ export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (
     }
   }
 
-  try {
+  return fallback;
+
+  /*
+    Legacy Supabase live reads are intentionally left out of the public path during
+    the migration. Fase 3 removes the remaining legacy integration.
+  */
+  /*
+    try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const [overrideResult, categoryOverrideResult, customCategoryResult, customItemResult, specialResult] =
       await Promise.all([
@@ -163,10 +160,12 @@ export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (
           }
         : null,
     };
-  } catch (error) {
-    console.error("Legacy live menu unavailable; serving the original catalog.", error);
-    return fallback;
-  }
+    } catch (error) {
+      console.error("Legacy live menu unavailable; serving the original catalog.", error);
+      return fallback;
+    }
+  */
+
 });
 
 function hash(text: string) {
