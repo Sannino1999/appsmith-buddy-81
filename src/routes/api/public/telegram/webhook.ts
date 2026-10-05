@@ -191,24 +191,13 @@ type AdminRecord = {
 };
 
 async function getAdmins(): Promise<AdminRecord[]> {
-  if (isMySqlConfigured()) {
-    return (await listAdminUsers()).map((admin) => ({
-      id: admin.id,
-      chat_id: admin.telegram_chat_id,
-      username: admin.username,
-      first_name: admin.first_name,
-      last_name: admin.last_name,
-    }));
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
   }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin
-    .from("telegram_admins")
-    .select("chat_id, username, first_name, last_name");
-  if (error) throw new Error(error.message);
-
-  return (data ?? []).map((admin) => ({
-    chat_id: admin.chat_id,
+  return (await listAdminUsers()).map((admin) => ({
+    id: admin.id,
+    chat_id: admin.telegram_chat_id,
     username: admin.username,
     first_name: admin.first_name,
     last_name: admin.last_name,
@@ -221,65 +210,36 @@ async function registerAdmin(input: {
   firstName: string | null;
   lastName: string | null;
 }) {
-  if (isMySqlConfigured()) {
-    return upsertTelegramAdmin(input);
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
   }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin
-    .from("telegram_admins")
-    .upsert(
-      {
-        chat_id: input.chatId,
-        username: input.username,
-        first_name: input.firstName,
-        last_name: input.lastName,
-      },
-      { onConflict: "chat_id" },
-    )
-    .select("chat_id")
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  return data?.chat_id ?? null;
+  return upsertTelegramAdmin(input);
 }
 
 async function getOverrides() {
-  if (isMySqlConfigured()) return listMenuOverrides();
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
+  }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin.from("menu_overrides").select("*");
-  if (error) throw new Error(error.message);
-  return (data ?? []).map((row) => ({
-    item_key: row.item_key,
-    name: row.name,
-    description: row.description,
-    price_eur: row.price_eur === null ? null : Number(row.price_eur),
-    available: row.available,
-  }));
+  return listMenuOverrides();
 }
 
 async function deleteOverrides(keys?: string[]) {
-  if (isMySqlConfigured()) {
-    if (keys) return deleteMenuOverridesByKeys(keys);
-    return deleteAllMenuOverrides();
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
   }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  if (keys) {
-    if (keys.length === 0) return;
-    const { error } = await supabaseAdmin.from("menu_overrides").delete().in("item_key", keys);
-    if (error) throw new Error(error.message);
-    return;
-  }
-  const { error } = await supabaseAdmin.from("menu_overrides").delete().not("item_key", "is", null);
-  if (error) throw new Error(error.message);
+  if (keys) return deleteMenuOverridesByKeys(keys);
+  return deleteAllMenuOverrides();
 }
 
 async function deleteOverride(itemKey: string) {
-  if (isMySqlConfigured()) return deleteMenuOverride(itemKey);
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { error } = await supabaseAdmin.from("menu_overrides").delete().eq("item_key", itemKey);
-  if (error) throw new Error(error.message);
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
+  }
+
+  return deleteMenuOverride(itemKey);
 }
 
 async function upsertOverride(row: {
@@ -289,13 +249,11 @@ async function upsertOverride(row: {
   price_eur: number | null;
   available: boolean;
 }) {
-  if (isMySqlConfigured()) return upsertMenuOverride(row);
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
+  }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { error } = await supabaseAdmin
-    .from("menu_overrides")
-    .upsert(row, { onConflict: "item_key" });
-  if (error) throw new Error(error.message);
+  return upsertMenuOverride(row);
 }
 
 type AuditDetails = Record<
@@ -304,24 +262,17 @@ type AuditDetails = Record<
 >;
 
 async function audit(actor: string, action: string, itemKey: string | null, details: AuditDetails) {
-  if (isMySqlConfigured()) {
-    const admin = await getAdminUserByTelegramChatId(Number(actor.replace(/^@/, "")));
-    await insertAuditLog({
-      actor,
-      action,
-      itemKey,
-      details,
-      adminUserId: admin?.id ?? null,
-    });
-    return;
+  if (!isMySqlConfigured()) {
+    throw new Error("MySQL is not configured");
   }
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  await supabaseAdmin.from("menu_edit_log").insert({
+  const admin = await getAdminUserByTelegramChatId(Number(actor.replace(/^@/, "")));
+  await insertAuditLog({
     actor,
     action,
-    item_key: itemKey,
+    itemKey,
     details,
+    adminUserId: admin?.id ?? null,
   });
 }
 
@@ -346,6 +297,9 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
       POST: async ({ request }) => {
         const apiKey = process.env["TELEGRAM_API_KEY"];
         if (!apiKey) return new Response("Not configured", { status: 500 });
+        if (!isMySqlConfigured()) {
+          return new Response("Database not configured", { status: 503 });
+        }
 
         const expected = deriveSecret(apiKey);
         const actual = request.headers.get("X-Telegram-Bot-Api-Secret-Token") ?? "";
