@@ -9,7 +9,7 @@ import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import burgerBackground from "@/assets/lubrano-burger-background.jpeg.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getLiveMenuData, getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
-import { LANGUAGES, MENU_LABELS, UI, INFO, VENUE, type LangCode } from "@/lib/i18n";
+import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 export const Route = createFileRoute("/")({
