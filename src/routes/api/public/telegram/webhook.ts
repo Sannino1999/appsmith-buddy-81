@@ -275,6 +275,13 @@ async function deleteOverrides(keys?: string[]) {
   if (error) throw new Error(error.message);
 }
 
+async function deleteOverride(itemKey: string) {
+  if (isMySqlConfigured()) return deleteMenuOverride(itemKey);
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { error } = await supabaseAdmin.from("menu_overrides").delete().eq("item_key", itemKey);
+  if (error) throw new Error(error.message);
+}
+
 async function upsertOverride(row: {
   item_key: string;
   name: string | null;
@@ -543,7 +550,7 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         }
 
         if (command.action === "reset_item") {
-          await deleteMenuOverride(command.item_key);
+          await deleteOverride(command.item_key);
           await audit(actor, "reset_item", command.item_key, { command: text });
           await sendMessage(
             chatId,
