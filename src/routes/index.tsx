@@ -2,13 +2,30 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ExternalLink, Globe, Instagram, MapPin, MessageCircle, Phone, Search, Star, Utensils, Wifi, X } from "lucide-react";
+import {
+  ExternalLink,
+  Globe,
+  Instagram,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Search,
+  Star,
+  Utensils,
+  Wifi,
+  X,
+} from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
 import burgerBackground from "@/assets/lubrano-burger-background.jpeg.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
-import { getLiveMenuData, getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
+import {
+  getLiveMenuData,
+  getOverrides,
+  getPublicMenu,
+  translateCategory,
+} from "@/lib/menu.functions";
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
@@ -193,7 +210,10 @@ function MenuPage() {
         style={{ backgroundImage: `url(${bgImage})` }}
         aria-hidden
       />
-      <div className="fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,14,12,0.92)_0%,rgba(20,14,12,0.84)_38%,rgba(20,14,12,0.96)_100%)]" aria-hidden />
+      <div
+        className="fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,14,12,0.92)_0%,rgba(20,14,12,0.84)_38%,rgba(20,14,12,0.96)_100%)]"
+        aria-hidden
+      />
 
       <div className="mx-auto w-full max-w-4xl px-4 pb-24 pt-4 sm:px-6">
         <header className="anim-fade-up flex flex-col items-center gap-4">
@@ -304,20 +324,20 @@ function MenuPage() {
 
         <div className="anim-fade-up stagger-2 sticky top-2 z-20 mt-3 overflow-x-auto rounded-2xl border border-white/10 bg-black/45 px-2 py-2 shadow-lg backdrop-blur-xl">
           <div className="flex min-w-max gap-2">
-          {categories.map((c) => (
-            <button
-              key={c.id}
-              ref={(element) => {
-                categoryRefs.current[c.id] = element;
-              }}
-              type="button"
-              onClick={() => setCategoryId(c.id)}
-              aria-current={c.id === active?.id ? "page" : undefined}
-              className={`pill shrink-0 ${c.id === active?.id ? "pill-active" : ""}`}
-            >
-              {menuLabels.categories[c.id]?.name ?? c.name}
-            </button>
-          ))}
+            {categories.map((c) => (
+              <button
+                key={c.id}
+                ref={(element) => {
+                  categoryRefs.current[c.id] = element;
+                }}
+                type="button"
+                onClick={() => setCategoryId(c.id)}
+                aria-current={c.id === active?.id ? "page" : undefined}
+                className={`pill shrink-0 ${c.id === active?.id ? "pill-active" : ""}`}
+              >
+                {menuLabels.categories[c.id]?.name ?? c.name}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -385,56 +405,58 @@ function MenuPage() {
           </section>
         ) : (
           <div key={active?.id ?? "empty"} className="mt-8 space-y-10">
-          {groups.length === 0 && (
-            <p className="text-center text-muted-foreground">{t.noResults}</p>
-          )}
-          {groups.map((g, gi) => (
-            <section key={g.name} className={`anim-fade-up stagger-${Math.min(gi + 1, 6)}`}>
-              {g.name && (
-                <h2 className="display-caps mb-5 inline-block border-b-4 border-accent text-xl text-brand">
-                  {g.name}
-                </h2>
-              )}
-              <ul className="space-y-6">
-                {g.items.map((item) => (
-                  <li
-                    key={item.key}
-                    className={`group rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur-[2px] transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-black/35 ${item.available ? "" : "opacity-55"}`}
-                  >
-                    <div className="flex items-end gap-2">
-                      <h3 className="display-caps min-w-0 text-[1.03rem] leading-tight text-white sm:text-lg">
-                        {item.name}
-                      </h3>
-                      <span className="leader" />
-                      <span className="display-caps shrink-0 text-base text-accent sm:text-lg">
-                        {formatPrice(item.price_eur)}
-                      </span>
-                    </div>
-                    {item.description && (
-                      <p className={`mt-2 text-sm leading-relaxed sm:text-[0.95rem] ${active?.id === "patate" ? "font-semibold text-accent" : "text-white/65"}`}>
-                        {item.description}
-                      </p>
-                    )}
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {!item.available && (
-                        <span className="rounded-full border border-destructive px-2.5 py-0.5 text-xs text-destructive">
-                          {t.unavailable}
+            {groups.length === 0 && (
+              <p className="text-center text-muted-foreground">{t.noResults}</p>
+            )}
+            {groups.map((g, gi) => (
+              <section key={g.name} className={`anim-fade-up stagger-${Math.min(gi + 1, 6)}`}>
+                {g.name && (
+                  <h2 className="display-caps mb-5 inline-block border-b-4 border-accent text-xl text-brand">
+                    {g.name}
+                  </h2>
+                )}
+                <ul className="space-y-6">
+                  {g.items.map((item) => (
+                    <li
+                      key={item.key}
+                      className={`group rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur-[2px] transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-black/35 ${item.available ? "" : "opacity-55"}`}
+                    >
+                      <div className="flex items-end gap-2">
+                        <h3 className="display-caps min-w-0 text-[1.03rem] leading-tight text-white sm:text-lg">
+                          {item.name}
+                        </h3>
+                        <span className="leader" />
+                        <span className="display-caps shrink-0 text-base text-accent sm:text-lg">
+                          {formatPrice(item.price_eur)}
                         </span>
-                      )}
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-white/8 px-2.5 py-1 text-[0.66rem] text-white/50"
+                      </div>
+                      {item.description && (
+                        <p
+                          className={`mt-2 text-sm leading-relaxed sm:text-[0.95rem] ${active?.id === "patate" ? "font-semibold text-accent" : "text-white/65"}`}
                         >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+                          {item.description}
+                        </p>
+                      )}
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {!item.available && (
+                          <span className="rounded-full border border-destructive px-2.5 py-0.5 text-xs text-destructive">
+                            {t.unavailable}
+                          </span>
+                        )}
+                        {item.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-white/8 px-2.5 py-1 text-[0.66rem] text-white/50"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
           </div>
         )}
 
@@ -478,7 +500,9 @@ function MenuPage() {
                     <p className="text-[0.66rem] font-bold uppercase tracking-[0.22em] text-white/45">
                       Ingredienti
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-white/70">{special.description}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-white/70">
+                      {special.description}
+                    </p>
                   </div>
                 )}
               </div>
@@ -693,9 +717,7 @@ function MenuPage() {
               </button>
             </div>
             <div className="mt-6 rounded-2xl border border-border bg-background/60 p-4">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {services.wifiAsk}
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{services.wifiAsk}</p>
             </div>
             <button
               type="button"
