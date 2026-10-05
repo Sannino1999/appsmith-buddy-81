@@ -301,7 +301,8 @@ function MenuPage() {
           ))}
         </nav>
 
-        <div className="anim-fade-up stagger-2 mt-6 flex flex-wrap justify-center gap-2.5">
+        <div className="anim-fade-up stagger-2 sticky top-2 z-20 mt-3 overflow-x-auto rounded-2xl border border-white/10 bg-black/45 px-2 py-2 shadow-lg backdrop-blur-xl">
+          <div className="flex min-w-max gap-2">
           {categories.map((c) => (
             <button
               key={c.id}
@@ -312,6 +313,7 @@ function MenuPage() {
               {menuLabels.categories[c.id]?.name ?? c.name}
             </button>
           ))}
+          </div>
         </div>
 
         {active?.eyebrow && (
