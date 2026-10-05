@@ -82,7 +82,10 @@ export function getMysqlPool() {
   return pool;
 }
 
-export async function mysqlQuery<T = unknown>(sql: string, params: ExecuteValues = []): Promise<T[]> {
+export async function mysqlQuery<T = unknown>(
+  sql: string,
+  params: ExecuteValues = [],
+): Promise<T[]> {
   const [rows] = await getMysqlPool().execute(sql, params);
   return rows as T[];
 }
