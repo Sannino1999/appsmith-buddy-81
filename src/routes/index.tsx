@@ -87,6 +87,8 @@ function MenuPage() {
   const t = UI[lang];
   const info = INFO[lang];
   const menuLabels = MENU_LABELS[lang];
+  const services = SERVICES[lang];
+  const special = liveMenuQuery.data?.special ?? null;
 
   const categories = menu.categories.filter((c) => c.macro === macro);
   const active: MenuCategory | undefined =
