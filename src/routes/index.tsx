@@ -293,8 +293,8 @@ function MenuPage() {
               onClick={() => pickMacro(m.id)}
               className={`menu-control min-h-12 rounded-xl px-4 text-base font-extrabold uppercase tracking-[0.16em] transition-all duration-200 ${
                 macro === m.id
-                  ? "border-b-4 border-primary text-brand"
-                  : "border-b-4 border-transparent text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-lg"
+                  : "text-white/55 hover:bg-white/5 hover:text-white"
               }`}
             >
               {menuLabels.macros[m.id] ?? m.label}
@@ -307,9 +307,13 @@ function MenuPage() {
           {categories.map((c) => (
             <button
               key={c.id}
+              ref={(element) => {
+                categoryRefs.current[c.id] = element;
+              }}
               type="button"
               onClick={() => setCategoryId(c.id)}
-              className={`pill ${c.id === active?.id ? "pill-active" : ""} transition-all duration-200 hover:scale-105 active:scale-95`}
+              aria-current={c.id === active?.id ? "page" : undefined}
+              className={`pill shrink-0 ${c.id === active?.id ? "pill-active" : ""}`}
             >
               {menuLabels.categories[c.id]?.name ?? c.name}
             </button>
@@ -588,7 +592,7 @@ function MenuPage() {
             <h3 className="mb-4 text-center text-[0.6rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
               {info.hours}
             </h3>
-            <div className="grid grid-cols-2 gap-y-2">
+            <div className="grid gap-2 sm:grid-cols-2 sm:gap-y-2">
               <span className="text-right text-sm uppercase text-muted-foreground">
                 {info.monday}
               </span>
