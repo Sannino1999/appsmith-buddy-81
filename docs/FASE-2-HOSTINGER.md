@@ -20,8 +20,8 @@ Nel pannello dell'app Node.js aggiungi:
 ```
 MYSQL_HOST=localhost
 MYSQL_PORT=3306
-MYSQL_DATABASE=lubrano_menu
-MYSQL_USER=lubrano_admin
+MYSQL_DATABASE=u605125072_lubrano_menu
+MYSQL_USER=u605125072_lubrano_admin
 MYSQL_PASSWORD=<password-da-inserire-in-hostinger>
 ```
 
