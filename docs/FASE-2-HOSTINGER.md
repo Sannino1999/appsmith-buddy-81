@@ -20,9 +20,9 @@ Nel pannello dell'app Node.js aggiungi:
 ```
 MYSQL_HOST=localhost
 MYSQL_PORT=3306
-MYSQL_DATABASE=<nome database>
-MYSQL_USER=<utente database>
-MYSQL_PASSWORD=<password>
+MYSQL_DATABASE=lubrano_menu
+MYSQL_USER=lubrano_admin
+MYSQL_PASSWORD=<password-da-inserire-in-hostinger>
 ```
 
 Non inserirle in GitHub, nel codice o in `.env.example`. Hostinger prevede le variabili d'ambiente nella configurazione della Node.js Web App.
