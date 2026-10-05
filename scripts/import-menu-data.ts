@@ -4,7 +4,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 import { getMysqlPool, isMySqlConfigured } from "../src/lib/mysql.server.ts";
-import { LANGUAGES, MENU_LABELS } from "../src/lib/i18n.ts";
+import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI } from "../src/lib/i18n.ts";
 
 type RawItem = {
   id?: string;
@@ -76,14 +76,14 @@ try {
     await connection.execute(
       `INSERT INTO menu_catalog_items
         (item_key, category_id, group_name, name, description, price_eur, tags, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, CAST(? AS JSON), ?)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
          category_id = ?,
          group_name = ?,
          name = ?,
          description = ?,
          price_eur = ?,
-         tags = CAST(? AS JSON),
+         tags = ?,
          sort_order = ?,
          updated_at = CURRENT_TIMESTAMP(3)`,
       [
@@ -103,6 +103,51 @@ try {
         JSON.stringify(item.tags),
         item.sort_order,
       ],
+    );
+  }
+
+  const uiRows: { lang: string; namespace: string; translationKey: string; translationValue: string }[] = [];
+
+  for (const language of LANGUAGES) {
+    const lang = language.code;
+    const ui = UI[lang];
+    for (const [key, value] of Object.entries(ui)) {
+      uiRows.push({ lang, namespace: "ui", translationKey: key, translationValue: String(value) });
+    }
+
+    const labels = MENU_LABELS[lang];
+    for (const [key, value] of Object.entries(labels.macros)) {
+      uiRows.push({ lang, namespace: "macro", translationKey: key, translationValue: String(value) });
+    }
+    for (const [key, value] of Object.entries(labels.categories)) {
+      uiRows.push({ lang, namespace: "category", translationKey: key, translationValue: value.name });
+      if (value.eyebrow) {
+        uiRows.push({ lang, namespace: "category-eyebrow", translationKey: key, translationValue: value.eyebrow });
+      }
+    }
+    for (const [key, value] of Object.entries(labels.groups)) {
+      uiRows.push({ lang, namespace: "group", translationKey: key, translationValue: String(value) });
+    }
+    for (const [key, value] of Object.entries(labels.tags)) {
+      uiRows.push({ lang, namespace: "tag", translationKey: key, translationValue: String(value) });
+    }
+
+    for (const [key, value] of Object.entries(SERVICES[lang])) {
+      uiRows.push({ lang, namespace: "service", translationKey: key, translationValue: String(value) });
+    }
+    for (const [key, value] of Object.entries(INFO[lang])) {
+      uiRows.push({ lang, namespace: "info", translationKey: key, translationValue: String(value) });
+    }
+  }
+
+  await connection.query("DELETE FROM ui_translations");
+  for (const row of uiRows) {
+    await connection.execute(
+      `INSERT INTO ui_translations
+        (lang, namespace, translation_key, translation_value)
+       VALUES (?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE translation_value = VALUES(translation_value)`,
+      [row.lang, row.namespace, row.translationKey, row.translationValue],
     );
   }
 
@@ -151,7 +196,7 @@ try {
 }
 
 console.log(
-  `Import completato: ${items.length} voci, ${categoryCount} categorie e ${languageCount} lingue UI verificate.`,
+  `Import completato: ${items.length} voci, ${categoryCount} categorie e ${languageCount} lingue UI.`,
 );
 if (!existsSync(translationSeedPath)) {
   console.log(
