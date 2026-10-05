@@ -284,13 +284,13 @@ function MenuPage() {
           </p>
         </section>
 
-        <nav className="anim-fade-up stagger-1 mt-7 flex items-center justify-center gap-10">
+        <nav className="anim-fade-up stagger-1 mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-black/25 p-1.5 backdrop-blur-md">
           {menu.macros.map((m) => (
             <button
               key={m.id}
               type="button"
               onClick={() => pickMacro(m.id)}
-              className={`display-caps pb-1 text-2xl transition-all duration-250 ${
+              className={`menu-control min-h-12 rounded-xl px-4 text-base font-extrabold uppercase tracking-[0.16em] transition-all duration-200 ${
                 macro === m.id
                   ? "border-b-4 border-primary text-brand"
                   : "border-b-4 border-transparent text-muted-foreground hover:text-foreground"
