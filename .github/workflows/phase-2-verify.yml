@@ -7,7 +7,7 @@ on:
       - fase-0-audit
   push:
     branches:
-      - fix/fase-2-ci
+      - fix/fase-2-lint
 
 permissions:
   contents: write
@@ -26,20 +26,21 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Installa dipendenze e aggiorna lockfile
+      - name: Installa dipendenze
         run: npm install --no-audit --no-fund
 
-      - name: Aggiorna package-lock
-        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/fase-2-ci'
+      - name: Formatta automaticamente il repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/fase-2-lint'
         run: |
-          if git diff --quiet -- package-lock.json; then
-            echo "package-lock.json già aggiornato."
+          npx prettier --write .
+          if git diff --quiet; then
+            echo "Nessuna modifica Prettier."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package-lock.json
-          git commit -m "fase 2: aggiorna package-lock"
+          git add -A
+          git commit -m "chore: formatta repository con Prettier"
           git push origin HEAD:${GITHUB_REF_NAME}
 
       - name: Typecheck
@@ -48,6 +49,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Lint completo (baseline)
+      - name: Lint ESLint
         run: npm run lint
-        continue-on-error: true
+
+      - name: Controllo formattazione
+        run: npm run format:check
