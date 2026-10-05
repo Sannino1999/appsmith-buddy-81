@@ -42,8 +42,8 @@ npm run db:verify
 
 ## Creazione database su Hostinger
 
-Nel tuo hPanel vai su **Websites → Dashboard** del sito, poi apri **Databases Management**. Hostinger documenta da questa schermata la sezione **Create a New MySQL Database And Database User**: inserisci nome database, username e una password forte, quindi premi **Create**. Il database viene associato automaticamente al sito selezionato. citeturn758696search0turn758696search2
+Nel tuo hPanel vai su **Websites → Dashboard** del sito, poi apri **Databases Management**. Hostinger documenta da questa schermata la sezione **Create a New MySQL Database And Database User**: inserisci nome database, username e una password forte, quindi premi **Create**. Il database viene associato automaticamente al sito selezionato.
 
-Per il collegamento dell'app usa `localhost` come hostname del database; Hostinger indica questo host per i database del Web/Cloud hosting. citeturn758696search6
+Per il collegamento dell'app usa `localhost` come hostname del database; Hostinger indica questo host per i database del Web/Cloud hosting.
 
-Dopo la creazione, recupera nome database e utente dalla stessa pagina e imposta le variabili `MYSQL_*` nell'ambiente della Node.js Web App. La password non va mai inserita nel repository. Per verificare il database puoi aprire anche phpMyAdmin dalla sezione Databases Management. citeturn758696search15
+Dopo la creazione, recupera nome database e utente dalla stessa pagina e imposta le variabili `MYSQL_*` nell'ambiente della Node.js Web App. La password non va mai inserita nel repository. Per verificare il database puoi aprire anche phpMyAdmin dalla sezione Databases Management.
