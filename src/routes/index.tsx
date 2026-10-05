@@ -6,6 +6,7 @@ import { ExternalLink, Globe, Instagram, MapPin, MessageCircle, Phone, Search, S
 
 import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
+import burgerBackground from "@/assets/lubrano-burger-background.jpeg.asset.json";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { getOverrides, getPublicMenu, translateCategory } from "@/lib/menu.functions";
 import { LANGUAGES, MENU_LABELS, UI, INFO, VENUE, type LangCode } from "@/lib/i18n";
@@ -51,6 +52,13 @@ function MenuPage() {
     refetchOnWindowFocus: false,
   });
   const menu = menuQuery.data ?? baseMenu;
+
+  const liveMenuQuery = useQuery({
+    queryKey: ["live-menu"],
+    queryFn: () => getLiveMenuData(),
+    staleTime: 30_000,
+    refetchOnWindowFocus: true,
+  });
 
   const overridesQuery = useQuery({
     queryKey: ["overrides"],
@@ -141,7 +149,7 @@ function MenuPage() {
 
   const groups = useMemo(() => {
     if (!active) return [];
-    const q = query.trim().toLowerCase();
+    const q = "";
     return active.groups
       .map((g) => ({
         name: menuLabels.groups[g.name] ?? g.name,
