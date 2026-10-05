@@ -261,12 +261,7 @@ type AuditDetails = Record<
   string | number | boolean | null | string[] | number[] | boolean[]
 >;
 
-async function audit(
-  actor: string,
-  action: string,
-  itemKey: string | null,
-  details: AuditDetails,
-) {
+async function audit(actor: string, action: string, itemKey: string | null, details: AuditDetails) {
   if (!isMySqlConfigured()) {
     throw new Error("MySQL is not configured");
   }

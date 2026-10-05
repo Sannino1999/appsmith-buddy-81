@@ -168,7 +168,11 @@ export const translateCategory = createServerFn({ method: "POST" })
     const cachedMap = new Map((cached ?? []).map((c) => [c.item_key, c]));
     for (const entry of entries) {
       const hit = cachedMap.get(entry.key);
-      if (hit && hit.source_hash === hashes.get(entry.key) && hasTranslatedDescription(entry, hit)) {
+      if (
+        hit &&
+        hit.source_hash === hashes.get(entry.key) &&
+        hasTranslatedDescription(entry, hit)
+      ) {
         result[entry.key] = {
           name: hit.name ?? entry.name,
           description: hit.description,
