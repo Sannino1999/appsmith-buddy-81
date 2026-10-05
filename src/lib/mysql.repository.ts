@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 
+import { baseMenu } from "./menu";
 import { mysqlExecute, mysqlQuery } from "./mysql.server";
 
 export type MysqlOverride = {
@@ -44,46 +45,6 @@ export type MysqlLiveMenuData = {
   special: MysqlMenuSpecial | null;
 };
 
-type OverrideRow = {
-  item_key: string;
-  name: string | null;
-  description: string | null;
-  price_eur: number | null;
-  available: number | boolean;
-};
-
-type CategoryOverrideRow = {
-  category_id: string;
-  name: string | null;
-  available: number | boolean;
-};
-
-type CustomCategoryRow = {
-  id: string;
-  macro: string;
-  name: string;
-  sort_order: number;
-  active: number | boolean;
-};
-
-type CustomItemRow = {
-  item_key: string;
-  category_id: string;
-  name: string;
-  description: string | null;
-  price_eur: number | null;
-  available: number | boolean;
-};
-
-type SpecialRow = {
-  id: string;
-  title: string;
-  description: string | null;
-  price_eur: number | null;
-  image_url: string | null;
-  item_key: string | null;
-};
-
 export type MysqlAdminUser = {
   id: string;
   username: string | null;
@@ -95,7 +56,20 @@ export type MysqlAdminUser = {
   is_active: boolean;
 };
 
-function booleanValue(value: number | boolean) {
+type BoolLike = boolean | number;
+type OverrideRow = MysqlOverride & { available: BoolLike };
+type CategoryOverrideRow = { category_id: string; name: string | null; available: BoolLike };
+type CustomCategoryRow = {
+  id: string;
+  macro: string;
+  name: string;
+  sort_order: number;
+  active: BoolLike;
+};
+type CustomItemRow = MysqlCustomItem & { available: BoolLike };
+type SpecialRow = MysqlMenuSpecial;
+
+function toBool(value: BoolLike) {
   return value === true || value === 1;
 }
 
@@ -105,12 +79,12 @@ function mapOverride(row: OverrideRow): MysqlOverride {
     name: row.name,
     description: row.description,
     price_eur: row.price_eur === null ? null : Number(row.price_eur),
-    available: booleanValue(row.available),
+    available: toBool(row.available),
   };
 }
 
 export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
-  const [overrideRows, categoryRows, customCategoryRows, customItemRows, specialRows] = await Promise.all([
+  const [overrideRows, categoryOverrideRows, customCategoryRows, customItemRows, specialRows] = await Promise.all([
     mysqlQuery<OverrideRow>(
       "SELECT item_key, name, description, price_eur, available FROM menu_overrides",
     ),
@@ -118,10 +92,10 @@ export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
       "SELECT category_id, name, available FROM menu_category_overrides",
     ),
     mysqlQuery<CustomCategoryRow>(
-      "SELECT id, macro, name, sort_order, active FROM menu_custom_categories WHERE active = 1",
+      "SELECT id, macro, name, sort_order, active FROM menu_custom_categories WHERE active = 1 ORDER BY sort_order, id",
     ),
     mysqlQuery<CustomItemRow>(
-      "SELECT item_key, category_id, name, description, price_eur, available FROM menu_custom_items",
+      "SELECT item_key, category_id, name, description, price_eur, available FROM menu_custom_items WHERE available = 1",
     ),
     mysqlQuery<SpecialRow>(
       "SELECT id, title, description, price_eur, image_url, item_key
@@ -132,45 +106,64 @@ export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
     ),
   ]);
 
+  const categoryOverrides = new Map(
+    categoryOverrideRows.map((row) => [row.category_id, row]),
+  );
+
+  const baseCategories: MysqlDynamicCategory[] = baseMenu.categories.map((category, index) => {
+    const override = categoryOverrides.get(category.id);
+    return {
+      id: category.id,
+      macro: category.macro,
+      name: override?.name ?? category.name,
+      available: override ? toBool(override.available) : true,
+      custom: false,
+      sort_order: index,
+    };
+  });
+
+  const customCategories: MysqlDynamicCategory[] = customCategoryRows.map((row) => ({
+    id: row.id,
+    macro: row.macro,
+    name: row.name,
+    available: toBool(row.active),
+    custom: true,
+    sort_order: row.sort_order,
+  }));
+
   return {
     overrides: overrideRows.map(mapOverride),
-    categories: categoryRows.map((row) => ({
-      id: row.category_id,
-      macro: "",
-      name: row.name ?? row.category_id,
-      available: booleanValue(row.available),
-      custom: false,
-      sort_order: 0,
-    })),
-    customItems: customItemRows.map((row) => ({
-      item_key: row.item_key,
-      category_id: row.category_id,
-      name: row.name,
-      description: row.description,
-      price_eur: row.price_eur === null ? null : Number(row.price_eur),
-      available: booleanValue(row.available),
-    })),
+    categories: [...baseCategories, ...customCategories]
+      .filter((category) => category.available)
+      .sort((a, b) => a.sort_order - b.sort_order),
+    customItems: customItemRows
+      .filter((row) => toBool(row.available))
+      .map((row) => ({
+        item_key: row.item_key,
+        category_id: row.category_id,
+        name: row.name,
+        description: row.description,
+        price_eur: row.price_eur === null ? null : Number(row.price_eur),
+        available: true,
+      })),
     special: specialRows[0]
       ? {
-          id: specialRows[0].id,
-          title: specialRows[0].title,
-          description: specialRows[0].description,
-          price_eur: specialRows[0].price_eur === null ? null : Number(specialRows[0].price_eur),
-          image_url: specialRows[0].image_url,
-          item_key: specialRows[0].item_key,
+          ...specialRows[0],
+          price_eur:
+            specialRows[0].price_eur === null ? null : Number(specialRows[0].price_eur),
         }
       : null,
   };
 }
 
-export async function listMenuOverrides(): Promise<MysqlOverride[]> {
+export async function listMenuOverrides() {
   const rows = await mysqlQuery<OverrideRow>(
     "SELECT item_key, name, description, price_eur, available FROM menu_overrides ORDER BY item_key",
   );
   return rows.map(mapOverride);
 }
 
-export async function getMenuOverride(itemKey: string): Promise<MysqlOverride | null> {
+export async function getMenuOverride(itemKey: string) {
   const rows = await mysqlQuery<OverrideRow>(
     "SELECT item_key, name, description, price_eur, available FROM menu_overrides WHERE item_key = ? LIMIT 1",
     [itemKey],
@@ -178,22 +171,18 @@ export async function getMenuOverride(itemKey: string): Promise<MysqlOverride | 
   return rows[0] ? mapOverride(rows[0]) : null;
 }
 
-export async function upsertMenuOverride(row: MysqlOverride): Promise<void> {
+export async function upsertMenuOverride(row: MysqlOverride) {
   await mysqlExecute(
     `INSERT INTO menu_overrides (item_key, name, description, price_eur, available, updated_at)
      VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3))
      ON DUPLICATE KEY UPDATE
-       name = ?,
-       description = ?,
-       price_eur = ?,
-       available = ?,
+       name = VALUES(name),
+       description = VALUES(description),
+       price_eur = VALUES(price_eur),
+       available = VALUES(available),
        updated_at = CURRENT_TIMESTAMP(3)`,
     [
       row.item_key,
-      row.name,
-      row.description,
-      row.price_eur,
-      row.available ? 1 : 0,
       row.name,
       row.description,
       row.price_eur,
@@ -202,25 +191,28 @@ export async function upsertMenuOverride(row: MysqlOverride): Promise<void> {
   );
 }
 
-export async function upsertMenuOverrides(rows: MysqlOverride[]): Promise<void> {
+export async function upsertMenuOverrides(rows: MysqlOverride[]) {
   for (const row of rows) await upsertMenuOverride(row);
 }
 
-export async function deleteMenuOverride(itemKey: string): Promise<void> {
+export async function deleteMenuOverride(itemKey: string) {
   await mysqlExecute("DELETE FROM menu_overrides WHERE item_key = ?", [itemKey]);
 }
 
-export async function deleteMenuOverridesByKeys(keys: string[]): Promise<void> {
+export async function deleteMenuOverridesByKeys(keys: string[]) {
   if (keys.length === 0) return;
   const placeholders = keys.map(() => "?").join(", ");
-  await mysqlExecute(`DELETE FROM menu_overrides WHERE item_key IN (${placeholders})`, keys);
+  await mysqlExecute(
+    `DELETE FROM menu_overrides WHERE item_key IN (${placeholders})`,
+    keys,
+  );
 }
 
-export async function deleteAllMenuOverrides(): Promise<void> {
+export async function deleteAllMenuOverrides() {
   await mysqlExecute("DELETE FROM menu_overrides");
 }
 
-export async function countMenuOverrides(): Promise<number> {
+export async function countMenuOverrides() {
   const rows = await mysqlQuery<{ count: number }>(
     "SELECT COUNT(*) AS count FROM menu_overrides",
   );
@@ -233,63 +225,42 @@ export async function listCategoryOverrides() {
   );
 }
 
-export async function upsertCategoryOverride(categoryId: string, available: boolean, name: string | null = null) {
+export async function upsertCategoryOverride(
+  categoryId: string,
+  available: boolean,
+  name: string | null = null,
+) {
   await mysqlExecute(
     `INSERT INTO menu_category_overrides (category_id, name, available, updated_at)
      VALUES (?, ?, ?, CURRENT_TIMESTAMP(3))
      ON DUPLICATE KEY UPDATE
-       name = ?,
-       available = ?,
+       name = VALUES(name),
+       available = VALUES(available),
        updated_at = CURRENT_TIMESTAMP(3)`,
-    [categoryId, name, available ? 1 : 0, name, available ? 1 : 0],
+    [categoryId, name, available ? 1 : 0],
   );
 }
 
 export async function listAdminUsers(): Promise<MysqlAdminUser[]> {
-  const rows = await mysqlQuery<{
-    id: string;
-    username: string | null;
-    password_hash: string | null;
-    telegram_chat_id: number | string | null;
-    first_name: string | null;
-    last_name: string | null;
-    role: string;
-    is_active: number | boolean;
-  }>(
+  const rows = await mysqlQuery<MysqlAdminUser & { is_active: BoolLike }>(
     `SELECT id, username, password_hash, telegram_chat_id, first_name, last_name, role, is_active
      FROM admin_users
      WHERE is_active = 1
      ORDER BY created_at ASC`,
   );
-
-  return rows.map((row) => ({
-    ...row,
-    is_active: booleanValue(row.is_active),
-  }));
+  return rows.map((row) => ({ ...row, is_active: toBool(row.is_active) }));
 }
 
-export async function getAdminUserByTelegramChatId(chatId: number): Promise<MysqlAdminUser | null> {
-  const rows = await mysqlQuery<{
-    id: string;
-    username: string | null;
-    password_hash: string | null;
-    telegram_chat_id: number | string | null;
-    first_name: string | null;
-    last_name: string | null;
-    role: string;
-    is_active: number | boolean;
-  }>(
+export async function getAdminUserByTelegramChatId(chatId: number) {
+  const rows = await mysqlQuery<MysqlAdminUser & { is_active: BoolLike }>(
     `SELECT id, username, password_hash, telegram_chat_id, first_name, last_name, role, is_active
      FROM admin_users
      WHERE telegram_chat_id = ? AND is_active = 1
      LIMIT 1`,
     [chatId],
   );
-
   const row = rows[0];
-  return row
-    ? { ...row, is_active: booleanValue(row.is_active) }
-    : null;
+  return row ? { ...row, is_active: toBool(row.is_active) } : null;
 }
 
 export async function upsertTelegramAdmin(input: {
@@ -298,27 +269,25 @@ export async function upsertTelegramAdmin(input: {
   firstName: string | null;
   lastName: string | null;
 }) {
-  const existing = await mysqlQuery<{ id: string }>(
-    "SELECT id FROM admin_users WHERE telegram_chat_id = ? LIMIT 1",
-    [input.chatId],
-  );
-
-  if (existing[0]) {
+  const existing = await getAdminUserByTelegramChatId(input.chatId);
+  if (existing) {
     await mysqlExecute(
       `UPDATE admin_users
        SET username = ?, first_name = ?, last_name = ?, is_active = 1, updated_at = CURRENT_TIMESTAMP(3)
        WHERE telegram_chat_id = ?`,
       [input.username, input.firstName, input.lastName, input.chatId],
     );
-    return;
+    return existing.id;
   }
 
+  const id = randomUUID();
   await mysqlExecute(
     `INSERT INTO admin_users
       (id, username, password_hash, telegram_chat_id, first_name, last_name, role, is_active, created_at, updated_at)
      VALUES (?, ?, NULL, ?, ?, ?, 'admin', 1, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))`,
-    [randomUUID(), input.username, input.chatId, input.firstName, input.lastName],
+    [id, input.username, input.chatId, input.firstName, input.lastName],
   );
+  return id;
 }
 
 export async function insertAuditLog(input: {
@@ -333,14 +302,13 @@ export async function insertAuditLog(input: {
   await mysqlExecute(
     `INSERT INTO audit_log
       (id, admin_user_id, actor, action, item_key, details, created_at)
-     VALUES (?, ?, ?, ?, ?, CAST(? AS JSON), CURRENT_TIMESTAMP(3))`,
+     VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3))`,
     [id, input.adminUserId ?? null, input.actor, input.action, input.itemKey ?? null, details],
   );
-
   await mysqlExecute(
     `INSERT INTO menu_edit_log
       (id, actor, action, item_key, details, created_at)
-     VALUES (?, ?, ?, ?, CAST(? AS JSON), CURRENT_TIMESTAMP(3))`,
+     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3))`,
     [id, input.actor, input.action, input.itemKey ?? null, details],
   );
 }
@@ -373,16 +341,13 @@ export async function upsertTranslation(input: {
       (item_key, lang, name, description, source_hash, created_at)
      VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3))
      ON DUPLICATE KEY UPDATE
-       name = ?,
-       description = ?,
-       source_hash = ?,
+       name = VALUES(name),
+       description = VALUES(description),
+       source_hash = VALUES(source_hash),
        created_at = CURRENT_TIMESTAMP(3)`,
     [
       input.itemKey,
       input.lang,
-      input.name,
-      input.description,
-      input.sourceHash,
       input.name,
       input.description,
       input.sourceHash,
