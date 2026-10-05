@@ -48,6 +48,9 @@ jobs:
           git commit -m "chore: formatta repository con Prettier"
           git push origin HEAD:${GITHUB_REF_NAME}
 
+      - name: Bootstrap DB senza configurazione
+        run: npm run db:bootstrap
+
       - name: Typecheck
         run: npm run typecheck
 
