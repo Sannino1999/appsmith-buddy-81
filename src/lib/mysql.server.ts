@@ -94,3 +94,9 @@ export async function mysqlExecute(sql: string, params: ExecuteValues = []) {
   const [result] = await getMysqlPool().execute(sql, params);
   return result as { affectedRows?: number; insertId?: number };
 }
+
+export async function closeMysqlPool() {
+  if (!pool) return;
+  await pool.end();
+  pool = undefined;
+}

@@ -1,6 +1,6 @@
 import { baseMenu } from "./menu";
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI } from "./i18n";
-import { getMysqlPool, isMySqlConfigured } from "./mysql.server";
+import { closeMysqlPool, getMysqlPool, isMySqlConfigured } from "./mysql.server";
 
 type Migration = { version: string; sql: string };
 
@@ -190,7 +190,7 @@ function menuItemRows() {
   );
 }
 
-export async function bootstrapMysql() {
+export async function bootstrapMysql(options: { closePool?: boolean } = {}) {
   if (!isMySqlConfigured()) {
     console.log("[db] MySQL non configurato; il menu statico resta il fallback.");
     return false;
@@ -336,6 +336,6 @@ export async function bootstrapMysql() {
     console.error("[db] bootstrap failed; application will continue with static fallback.", error);
     return false;
   } finally {
-    await pool.end().catch(() => undefined);
+    if (options.closePool) await closeMysqlPool();
   }
 }
