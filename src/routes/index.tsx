@@ -84,6 +84,61 @@ function MenuPage() {
   const active: MenuCategory | undefined =
     categories.find((c) => c.id === categoryId) ?? categories[0];
 
+  useEffect(() => {
+    if (menu.categories.some((category) => category.id === categoryId)) return;
+    const first = menu.categories.find((category) => category.macro === macro);
+    if (first) setCategoryId(first.id);
+  }, [categoryId, macro, menu.categories]);
+
+  useEffect(() => {
+    if (!searchOpen) return;
+    requestAnimationFrame(() => searchInputRef.current?.focus());
+  }, [searchOpen]);
+
+  useEffect(() => {
+    categoryRefs.current[categoryId]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [categoryId]);
+
+  const allItems = useMemo(
+    () =>
+      menu.categories.flatMap((category) =>
+        category.groups.flatMap((group) =>
+          group.items.map((item) => {
+            const override = overrides.get(item.key);
+            return {
+              ...item,
+              categoryId: category.id,
+              categoryName: category.name,
+              groupName: group.name,
+              name: override?.name ?? item.name,
+              description: override?.description ?? item.description,
+              price_eur: override?.price_eur ?? item.price_eur,
+              available: override?.available ?? item.available,
+            };
+          }),
+        ),
+      ),
+    [menu.categories, overrides],
+  );
+
+  const normalizedQuery = query.trim().toLocaleLowerCase("it");
+  const searchResults = useMemo(
+    () =>
+      normalizedQuery
+        ? allItems.filter(
+            (item) =>
+              item.name.toLocaleLowerCase("it").includes(normalizedQuery) ||
+              (item.description ?? "").toLocaleLowerCase("it").includes(normalizedQuery) ||
+              item.categoryName.toLocaleLowerCase("it").includes(normalizedQuery),
+          )
+        : [],
+    [allItems, normalizedQuery],
+  );
+
   const groups = useMemo(() => {
     if (!active) return [];
     const q = query.trim().toLowerCase();
