@@ -1,4 +1,4 @@
-# MySQL su Hostinger
+# MySQL / MariaDB su Hostinger
 
 Questa fase introduce il database MySQL lato server e mantiene `src/data/menu-data.json` come fallback quando MySQL non è configurato.
 
@@ -53,13 +53,15 @@ Il file può essere aggiunto in seguito senza modificare lo schema.
 
 ## Compatibilità
 
-Le date applicative sono `DATETIME(3)` in UTC, i prezzi sono `DECIMAL(8,2)`, i booleani `TINYINT(1)`, i dettagli strutturati sono `JSON` e la codifica di tutte le tabelle è `utf8mb4`.
+L'hosting Web/Cloud di Hostinger usa MariaDB, mantenendo compatibilità con il protocollo MySQL. Il progetto usa il driver `mysql2` e SQL compatibile con MariaDB.
+
+Le date applicative sono `DATETIME(3)` in UTC, i prezzi sono `DECIMAL(8,2)`, i booleani `TINYINT(1)`. I dati strutturati (`tags`, `details`, `metadata`) sono salvati come testo JSON per evitare dipendenze da differenze tra versioni MariaDB/MySQL. Tutte le tabelle usano `utf8mb4`.
 
 Le query applicative usano placeholder e `execute()`; non viene costruito SQL con input utente.
 
 ## Hostinger
 
-Per il piano managed, Hostinger indica che il nome host MySQL dei database è normalmente `localhost`; i dettagli del database e dell'utente sono visibili in **Websites → Dashboard → Databases Management**. Per connessioni remote, Hostinger documenta invece la sezione **Remote MySQL** e la porta 3306.
+Per l'hosting Web/Cloud, Hostinger indica normalmente `localhost` come host per la connessione locale; la porta standard è 3306. I dettagli di database e utente sono visibili in **Websites → Dashboard → Databases Management**. Hostinger permette anche connessioni remote tramite **Remote MySQL**.
 
 Non eseguire queste operazioni prima di aver approvato e mergiato la Fase 2:
 1. creare il database;
