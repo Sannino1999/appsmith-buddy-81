@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS menu_catalog_items (
   name VARCHAR(255) NOT NULL,
   description TEXT NULL,
   price_eur DECIMAL(8,2) NULL,
-  tags JSON NOT NULL,
+  tags LONGTEXT NOT NULL,
   sort_order INT NOT NULL DEFAULT 0,
   created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS menu_edit_log (
   actor VARCHAR(190) NOT NULL,
   action VARCHAR(64) NOT NULL,
   item_key VARCHAR(191) NULL,
-  details JSON NOT NULL,
+  details LONGTEXT NOT NULL,
   created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   INDEX menu_edit_log_created_idx (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   admin_user_id CHAR(36) NULL,
   role VARCHAR(32) NOT NULL,
   message TEXT NOT NULL,
-  metadata JSON NOT NULL,
+  metadata LONGTEXT NOT NULL,
   created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   INDEX chat_messages_admin_created_idx (admin_user_id, created_at),
   CONSTRAINT chat_messages_admin_fk
@@ -133,11 +133,26 @@ CREATE TABLE IF NOT EXISTS audit_log (
   actor VARCHAR(190) NOT NULL,
   action VARCHAR(64) NOT NULL,
   item_key VARCHAR(191) NULL,
-  details JSON NOT NULL,
+  details LONGTEXT NOT NULL,
   created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   INDEX audit_log_created_idx (created_at),
   INDEX audit_log_item_idx (item_key),
   CONSTRAINT audit_log_admin_fk
     FOREIGN KEY (admin_user_id) REFERENCES admin_users(id)
     ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS ui_translations (
+  lang VARCHAR(10) NOT NULL,
+  namespace VARCHAR(64) NOT NULL,
+  translation_key VARCHAR(191) NOT NULL,
+  translation_value TEXT NOT NULL,
+  PRIMARY KEY (lang, namespace, translation_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS app_settings (
+  setting_key VARCHAR(191) NOT NULL PRIMARY KEY,
+  setting_value TEXT NULL,
+  updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
