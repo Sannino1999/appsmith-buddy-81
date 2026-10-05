@@ -102,7 +102,12 @@
   color: color-mix(in oklab, var(--color-primary) 72%, white);
   background-color: color-mix(in oklab, var(--color-background) 86%, transparent);
   box-shadow: 0 3px 10px transparent;
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
   white-space: nowrap;
 
   &:hover {
@@ -131,10 +136,19 @@
 }
 
 @utility menu-control {
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 
-  &:hover { transform: scale(1.03); }
-  &:active { transform: scale(0.97); }
+  &:hover {
+    transform: scale(1.03);
+  }
+  &:active {
+    transform: scale(0.97);
+  }
   &:focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 3px;
@@ -158,13 +172,25 @@
 }
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes menu-change {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @utility anim-menu-change {
@@ -172,18 +198,32 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @utility anim-fade-up {
@@ -198,15 +238,29 @@
   animation: scale-in 0.35s ease-out both;
 }
 
-@utility stagger-1 { animation-delay: 0.05s; }
-@utility stagger-2 { animation-delay: 0.1s; }
-@utility stagger-3 { animation-delay: 0.15s; }
-@utility stagger-4 { animation-delay: 0.2s; }
-@utility stagger-5 { animation-delay: 0.25s; }
-@utility stagger-6 { animation-delay: 0.3s; }
+@utility stagger-1 {
+  animation-delay: 0.05s;
+}
+@utility stagger-2 {
+  animation-delay: 0.1s;
+}
+@utility stagger-3 {
+  animation-delay: 0.15s;
+}
+@utility stagger-4 {
+  animation-delay: 0.2s;
+}
+@utility stagger-5 {
+  animation-delay: 0.25s;
+}
+@utility stagger-6 {
+  animation-delay: 0.3s;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

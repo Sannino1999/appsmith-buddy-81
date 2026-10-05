@@ -64,6 +64,7 @@ Le query applicative usano placeholder e `execute()`; non viene costruito SQL co
 Per l'hosting Web/Cloud, Hostinger indica normalmente `localhost` come host per la connessione locale; la porta standard è 3306. I dettagli di database e utente sono visibili in **Websites → Dashboard → Databases Management**. Hostinger permette anche connessioni remote tramite **Remote MySQL**.
 
 Non eseguire queste operazioni prima di aver approvato e mergiato la Fase 2:
+
 1. creare il database;
 2. creare o scegliere l'utente MySQL;
 3. inserire la password nelle variabili d'ambiente;

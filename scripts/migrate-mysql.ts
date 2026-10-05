@@ -50,10 +50,7 @@ for (const file of files) {
     for (const statement of splitSql(sql)) {
       await connection.query(statement);
     }
-    await connection.execute(
-      "INSERT INTO schema_migrations (version) VALUES (?)",
-      [version],
-    );
+    await connection.execute("INSERT INTO schema_migrations (version) VALUES (?)", [version]);
     await connection.commit();
     console.log(`applied ${version}`);
   } catch (error) {

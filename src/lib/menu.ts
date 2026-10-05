@@ -76,7 +76,9 @@ export const baseMenu: Menu = {
 
 export function flatItems(menu: Menu = baseMenu) {
   return menu.categories.flatMap((c) =>
-    c.groups.flatMap((g) => g.items.map((i) => ({ ...i, categoryName: c.name, groupName: g.name }))),
+    c.groups.flatMap((g) =>
+      g.items.map((i) => ({ ...i, categoryName: c.name, groupName: g.name })),
+    ),
   );
 }
 

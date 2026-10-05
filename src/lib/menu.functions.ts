@@ -53,50 +53,51 @@ export type LiveMenuData = {
   special: MenuSpecial | null;
 };
 
-export const getOverrides = createServerFn({ method: "GET" }).handler(async (): Promise<Override[]> => {
-  if (isMySqlConfigured()) {
-    return listMenuOverrides();
-  }
-
-  // Until MySQL is configured, the original catalog remains the authoritative fallback.
-  return [];
-});
-
-export const getLiveMenuData = createServerFn({ method: "GET" }).handler(async (): Promise<LiveMenuData> => {
-  const fallback: LiveMenuData = {
-    overrides: [],
-    categories: baseMenu.categories.map((category, index) => ({
-      id: category.id,
-      macro: category.macro,
-      name: category.name,
-      available: true,
-      custom: false,
-      sort_order: index,
-    })),
-    customItems: [],
-    special: null,
-  };
-
-  if (isMySqlConfigured()) {
-    try {
-      const data = await getLiveMenuDataFromMysql();
-      return {
-        overrides: data.overrides,
-        categories: data.categories,
-        customItems: data.customItems,
-        special: data.special,
-      };
-    } catch (error) {
-      console.error("MySQL live menu unavailable; serving the original catalog.", error);
-      return fallback;
+export const getOverrides = createServerFn({ method: "GET" }).handler(
+  async (): Promise<Override[]> => {
+    if (isMySqlConfigured()) {
+      return listMenuOverrides();
     }
-  }
 
-  return fallback;
+    // Until MySQL is configured, the original catalog remains the authoritative fallback.
+    return [];
+  },
+);
 
+export const getLiveMenuData = createServerFn({ method: "GET" }).handler(
+  async (): Promise<LiveMenuData> => {
+    const fallback: LiveMenuData = {
+      overrides: [],
+      categories: baseMenu.categories.map((category, index) => ({
+        id: category.id,
+        macro: category.macro,
+        name: category.name,
+        available: true,
+        custom: false,
+        sort_order: index,
+      })),
+      customItems: [],
+      special: null,
+    };
 
+    if (isMySqlConfigured()) {
+      try {
+        const data = await getLiveMenuDataFromMysql();
+        return {
+          overrides: data.overrides,
+          categories: data.categories,
+          customItems: data.customItems,
+          special: data.special,
+        };
+      } catch (error) {
+        console.error("MySQL live menu unavailable; serving the original catalog.", error);
+        return fallback;
+      }
+    }
 
-});
+    return fallback;
+  },
+);
 
 function hash(text: string) {
   let h = 5381;
@@ -115,7 +116,10 @@ function hasTranslatedDescription(
   translated: { description: string | null },
 ) {
   if (!source.description?.trim()) return true;
-  return translated.description?.trim().toLocaleLowerCase("it") !== source.description.trim().toLocaleLowerCase("it");
+  return (
+    translated.description?.trim().toLocaleLowerCase("it") !==
+    source.description.trim().toLocaleLowerCase("it")
+  );
 }
 
 export const translateCategory = createServerFn({ method: "POST" })
@@ -130,13 +134,13 @@ export const translateCategory = createServerFn({ method: "POST" })
 
     const overrides = isMySqlConfigured()
       ? await listMenuOverrides()
-      : (await (async () => {
+      : await (async () => {
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           const { data } = await supabaseAdmin
             .from("menu_overrides")
             .select("item_key, name, description");
           return data ?? [];
-        })());
+        })();
     const { translateEntries } = await import("./translate.server");
     const overrideMap = new Map((overrides ?? []).map((o) => [o.item_key, o]));
 
@@ -153,16 +157,22 @@ export const translateCategory = createServerFn({ method: "POST" })
     const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
 
     const cached = isMySqlConfigured()
-      ? await getTranslationCache(entries.map((e) => e.key), lang)
-      : (await (async () => {
+      ? await getTranslationCache(
+          entries.map((e) => e.key),
+          lang,
+        )
+      : await (async () => {
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           const { data } = await supabaseAdmin
             .from("menu_translations")
             .select("item_key, name, description, source_hash")
             .eq("lang", lang)
-            .in("item_key", entries.map((e) => e.key));
+            .in(
+              "item_key",
+              entries.map((e) => e.key),
+            );
           return data ?? [];
-        })());
+        })();
 
     const result: TranslationMap = {};
     const cachedMap = new Map((cached ?? []).map((c) => [c.item_key, c]));
@@ -180,7 +190,10 @@ export const translateCategory = createServerFn({ method: "POST" })
       try {
         for (let i = 0; i < missing.length; i += TRANSLATION_BATCH_SIZE) {
           translated.push(
-            ...(await translateEntries(missing.slice(i, i + TRANSLATION_BATCH_SIZE), LANG_NAMES[lang] ?? lang)),
+            ...(await translateEntries(
+              missing.slice(i, i + TRANSLATION_BATCH_SIZE),
+              LANG_NAMES[lang] ?? lang,
+            )),
           );
         }
         const validTranslations = translated.filter((t) => {
@@ -213,7 +226,9 @@ export const translateCategory = createServerFn({ method: "POST" })
             });
           } else {
             const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-            await supabaseAdmin.from("menu_translations").upsert(row, { onConflict: "item_key,lang" });
+            await supabaseAdmin
+              .from("menu_translations")
+              .upsert(row, { onConflict: "item_key,lang" });
           }
         }
       } catch (err) {

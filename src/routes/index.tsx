@@ -121,7 +121,6 @@ function MenuPage() {
       <div className="mx-auto w-full max-w-2xl px-5 pb-24 pt-6">
         <header className="anim-fade-up flex flex-col items-center gap-5">
           <div className="flex w-full items-center justify-end gap-2">
-
             <QrButton onClick={() => setQrOpen(true)} />
             <button
               type="button"
@@ -190,7 +189,7 @@ function MenuPage() {
               key={m.id}
               type="button"
               onClick={() => pickMacro(m.id)}
-                className={`display-caps pb-1 text-2xl transition-all duration-250 ${
+              className={`display-caps pb-1 text-2xl transition-all duration-250 ${
                 macro === m.id
                   ? "border-b-4 border-primary text-brand"
                   : "border-b-4 border-transparent text-muted-foreground hover:text-foreground"
@@ -237,9 +236,14 @@ function MenuPage() {
               )}
               <ul className="space-y-6">
                 {g.items.map((item) => (
-                  <li key={item.key} className={`group transition-opacity duration-200 ${item.available ? "" : "opacity-50"}`}>
+                  <li
+                    key={item.key}
+                    className={`group transition-opacity duration-200 ${item.available ? "" : "opacity-50"}`}
+                  >
                     <div className="flex items-end">
-                      <h3 className="display-caps text-lg leading-tight text-brand transition-colors duration-200 group-hover:text-primary">{item.name}</h3>
+                      <h3 className="display-caps text-lg leading-tight text-brand transition-colors duration-200 group-hover:text-primary">
+                        {item.name}
+                      </h3>
                       <span className="leader" />
                       <span className="display-caps shrink-0 text-lg text-brand transition-colors duration-200 group-hover:text-primary">
                         {formatPrice(item.price_eur)}
@@ -273,10 +277,22 @@ function MenuPage() {
         </div>
 
         <section className="anim-fade-up relative mt-16 border border-border/60 bg-background/70 p-8 shadow-2xl sm:p-10">
-          <div aria-hidden className="pointer-events-none absolute left-0 top-0 size-7 border-l-2 border-t-2 border-brand" />
-          <div aria-hidden className="pointer-events-none absolute right-0 top-0 size-7 border-r-2 border-t-2 border-brand" />
-          <div aria-hidden className="pointer-events-none absolute bottom-0 left-0 size-7 border-b-2 border-l-2 border-brand" />
-          <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 size-7 border-b-2 border-r-2 border-brand" />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-0 size-7 border-l-2 border-t-2 border-brand"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute right-0 top-0 size-7 border-r-2 border-t-2 border-brand"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 left-0 size-7 border-b-2 border-l-2 border-brand"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 right-0 size-7 border-b-2 border-r-2 border-brand"
+          />
 
           <div className="text-center">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.3em] text-accent">
@@ -301,12 +317,18 @@ function MenuPage() {
               {info.hours}
             </h3>
             <div className="grid grid-cols-2 gap-y-2">
-              <span className="text-right text-sm uppercase text-muted-foreground">{info.monday}</span>
+              <span className="text-right text-sm uppercase text-muted-foreground">
+                {info.monday}
+              </span>
               <span className="display-caps text-left text-sm font-bold uppercase tracking-widest text-brand">
                 {info.closed}
               </span>
-              <span className="text-right text-sm uppercase text-foreground/80">{info.openDays}</span>
-              <span className="text-left text-sm font-semibold text-foreground">{info.openHours}</span>
+              <span className="text-right text-sm uppercase text-foreground/80">
+                {info.openDays}
+              </span>
+              <span className="text-left text-sm font-semibold text-foreground">
+                {info.openHours}
+              </span>
             </div>
           </div>
 
@@ -316,7 +338,9 @@ function MenuPage() {
               className="flex items-center justify-center gap-3 bg-primary px-6 py-4 text-primary-foreground transition-all duration-300 hover:bg-primary/90 active:scale-95"
             >
               <Phone className="size-5" />
-              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">{info.call}</span>
+              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">
+                {info.call}
+              </span>
             </a>
             <a
               href={VENUE.mapsUrl}
@@ -325,7 +349,9 @@ function MenuPage() {
               className="flex items-center justify-center gap-3 bg-foreground px-6 py-4 text-background transition-all duration-300 hover:opacity-90 active:scale-95"
             >
               <MapPin className="size-5" />
-              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">{info.directions}</span>
+              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">
+                {info.directions}
+              </span>
             </a>
           </div>
 
@@ -338,7 +364,9 @@ function MenuPage() {
           <p className="display-caps text-sm text-brand">
             {baseMenu.restaurant.name} · {baseMenu.restaurant.subtitle}
           </p>
-          <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
+          <p className="mt-2">
+            Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco
+          </p>
           <p className="mt-3 text-[0.7rem] text-muted-foreground/70">
             Realizzato da <span className="font-semibold text-brand/80">DigitGS</span>
           </p>

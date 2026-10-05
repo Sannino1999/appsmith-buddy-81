@@ -59,7 +59,12 @@ const translatedCategoryCount = LANGUAGES.reduce((min, language) => {
   return Math.min(min, count);
 }, Number.POSITIVE_INFINITY);
 
-if (items.length !== 135 || categoryCount !== 13 || languageCount !== 7 || translatedCategoryCount < 13) {
+if (
+  items.length !== 135 ||
+  categoryCount !== 13 ||
+  languageCount !== 7 ||
+  translatedCategoryCount < 13
+) {
   throw new Error(
     `Catalogo inatteso: ${items.length} voci, ${categoryCount} categorie, ${languageCount} lingue, ${translatedCategoryCount} categorie tradotte.`,
   );
@@ -106,7 +111,12 @@ try {
     );
   }
 
-  const uiRows: { lang: string; namespace: string; translationKey: string; translationValue: string }[] = [];
+  const uiRows: {
+    lang: string;
+    namespace: string;
+    translationKey: string;
+    translationValue: string;
+  }[] = [];
 
   for (const language of LANGUAGES) {
     const lang = language.code;
@@ -117,26 +127,56 @@ try {
 
     const labels = MENU_LABELS[lang];
     for (const [key, value] of Object.entries(labels.macros)) {
-      uiRows.push({ lang, namespace: "macro", translationKey: key, translationValue: String(value) });
+      uiRows.push({
+        lang,
+        namespace: "macro",
+        translationKey: key,
+        translationValue: String(value),
+      });
     }
     for (const [key, value] of Object.entries(labels.categories)) {
-      uiRows.push({ lang, namespace: "category", translationKey: key, translationValue: value.name });
+      uiRows.push({
+        lang,
+        namespace: "category",
+        translationKey: key,
+        translationValue: value.name,
+      });
       if (value.eyebrow) {
-        uiRows.push({ lang, namespace: "category-eyebrow", translationKey: key, translationValue: value.eyebrow });
+        uiRows.push({
+          lang,
+          namespace: "category-eyebrow",
+          translationKey: key,
+          translationValue: value.eyebrow,
+        });
       }
     }
     for (const [key, value] of Object.entries(labels.groups)) {
-      uiRows.push({ lang, namespace: "group", translationKey: key, translationValue: String(value) });
+      uiRows.push({
+        lang,
+        namespace: "group",
+        translationKey: key,
+        translationValue: String(value),
+      });
     }
     for (const [key, value] of Object.entries(labels.tags)) {
       uiRows.push({ lang, namespace: "tag", translationKey: key, translationValue: String(value) });
     }
 
     for (const [key, value] of Object.entries(SERVICES[lang])) {
-      uiRows.push({ lang, namespace: "service", translationKey: key, translationValue: String(value) });
+      uiRows.push({
+        lang,
+        namespace: "service",
+        translationKey: key,
+        translationValue: String(value),
+      });
     }
     for (const [key, value] of Object.entries(INFO[lang])) {
-      uiRows.push({ lang, namespace: "info", translationKey: key, translationValue: String(value) });
+      uiRows.push({
+        lang,
+        namespace: "info",
+        translationKey: key,
+        translationValue: String(value),
+      });
     }
   }
 
