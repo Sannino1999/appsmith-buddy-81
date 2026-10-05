@@ -215,10 +215,9 @@ export async function bootstrapMysql() {
         for (const statement of splitSql(migration.sql)) {
           await connection.query(statement);
         }
-        await connection.execute(
-          "INSERT INTO schema_migrations (version) VALUES (?)",
-          [migration.version],
-        );
+        await connection.execute("INSERT INTO schema_migrations (version) VALUES (?)", [
+          migration.version,
+        ]);
         await connection.commit();
         console.log(`[db] migration applied: ${migration.version}`);
       } catch (error) {
@@ -236,9 +235,7 @@ export async function bootstrapMysql() {
       );
     }
 
-    const [countRows] = await pool.execute(
-      "SELECT COUNT(*) AS count FROM menu_catalog_items",
-    );
+    const [countRows] = await pool.execute("SELECT COUNT(*) AS count FROM menu_catalog_items");
     const count = Number((countRows as { count: number }[])[0]?.count ?? 0);
 
     if (count === 0) {
@@ -336,10 +333,7 @@ export async function bootstrapMysql() {
     console.log("[db] bootstrap complete.");
     return true;
   } catch (error) {
-    console.error(
-      "[db] bootstrap failed; application will continue with static fallback.",
-      error,
-    );
+    console.error("[db] bootstrap failed; application will continue with static fallback.", error);
     return false;
   } finally {
     await pool.end().catch(() => undefined);
