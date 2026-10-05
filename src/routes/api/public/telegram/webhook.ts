@@ -2,6 +2,21 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createHash, timingSafeEqual } from "crypto";
 
 import { baseMenu, formatPrice } from "@/lib/menu";
+import { isMySqlConfigured } from "@/lib/mysql.server";
+import {
+  countMenuOverrides,
+  deleteAllMenuOverrides,
+  deleteMenuOverride,
+  deleteMenuOverridesByKeys,
+  getAdminUserByTelegramChatId,
+  getMenuOverride,
+  insertAuditLog,
+  listAdminUsers,
+  listMenuOverrides,
+  upsertMenuOverride,
+  upsertMenuOverrides,
+  upsertTelegramAdmin,
+} from "@/lib/mysql.repository";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/telegram";
 const AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
@@ -20,6 +35,7 @@ async function sendMessage(chatId: number, text: string) {
   const apiKey = process.env["TELEGRAM_API_KEY"];
   const lovableKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey || !lovableKey) return;
+
   const res = await fetch(`${GATEWAY_URL}/sendMessage`, {
     method: "POST",
     headers: {
@@ -29,7 +45,10 @@ async function sendMessage(chatId: number, text: string) {
     },
     body: JSON.stringify({ chat_id: chatId, text }),
   });
-  if (!res.ok) console.error(`Telegram sendMessage failed [${res.status}]: ${await res.text()}`);
+
+  if (!res.ok) {
+    console.error(`Telegram sendMessage failed [${res.status}]: ${await res.text()}`);
+  }
 }
 
 type Command =
@@ -62,11 +81,12 @@ async function interpret(text: string): Promise<Command> {
           role: "system",
           content:
             "Sei l'assistente del menù di un pub. Ricevi un comando in italiano, il catalogo delle voci e l'elenco delle categorie. " +
-            'Rispondi SOLO con JSON: {"action":"set_price"|"set_description"|"set_available"|"reset_item"|"set_category_available"|"reset_category"|"unknown","item_key":string,"category_id":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
+            '{"action":"set_price"|"set_description"|"set_available"|"reset_item"|"set_category_available"|"reset_category"|"unknown","item_key":string,"category_id":string,"price_eur":number,"description":string,"available":boolean,"reason":string}. ' +
             "Usa reset_item quando l'utente chiede di ripristinare una singola voce. " +
-            "Usa set_category_available (con category_id e available) quando l'utente parla di un'INTERA categoria o sezione, per esempio 'togli tutte le focacce', 'nascondi i burger', 'rimetti gli hot dog'. " +
+            "Usa set_category_available con category_id e available per un'intera categoria. " +
             "Usa reset_category per riportare all'originale tutte le voci di una categoria. " +
-            "Scegli item_key dal catalogo o category_id dalle categorie con il match migliore sul nome. Se non trovi nulla o il comando non è chiaro usa action unknown con reason in italiano.",
+            "Scegli item_key dal catalogo o category_id dalle categorie con il match migliore. " +
+            "Se non trovi nulla o il comando non è chiaro usa action unknown con reason in italiano.",
         },
         {
           role: "user",
@@ -78,23 +98,33 @@ async function interpret(text: string): Promise<Command> {
   });
 
   if (!res.ok) {
-    const body = await res.text();
-    console.error(`AI command parsing failed [${res.status}]: ${body}`);
+    console.error(`AI command parsing failed [${res.status}]: ${await res.text()}`);
     throw new Error(`AI command parsing failed [${res.status}]`);
   }
+
   const payload = (await res.json()) as { choices?: { message?: { content?: string } }[] };
   return JSON.parse(payload.choices?.[0]?.message?.content ?? '{"action":"unknown"}') as Command;
 }
 
 function itemName(key: string) {
-  for (const c of baseMenu.categories)
-    for (const g of c.groups) for (const i of g.items) if (i.key === key) return i.name;
+  for (const c of baseMenu.categories) {
+    for (const g of c.groups) {
+      for (const i of g.items) {
+        if (i.key === key) return i.name;
+      }
+    }
+  }
   return key;
 }
 
 function baseItem(key: string) {
-  for (const c of baseMenu.categories)
-    for (const g of c.groups) for (const i of g.items) if (i.key === key) return i;
+  for (const c of baseMenu.categories) {
+    for (const g of c.groups) {
+      for (const i of g.items) {
+        if (i.key === key) return i;
+      }
+    }
+  }
   return null;
 }
 
@@ -124,18 +154,17 @@ const HELP = [
   "• togli tutte le focacce",
   "• nascondi i burger",
   "• rimetti gli hot dog",
-  "• /ripristina-categoria focacce — riporta all'originale l'intera categoria",
   "",
   "↩️ RIPRISTINARE COME ALL'INIZIO",
-  "• /ripristina alette di pollo — riporta una voce a prezzo e descrizione originali",
-  "• /ripristina-tutto — annulla TUTTE le modifiche (chiederò conferma)",
-  "• /modifiche — elenco delle modifiche attualmente attive",
+  "• /ripristina alette di pollo",
+  "• /ripristina-tutto — annulla TUTTE le modifiche (chiede conferma)",
+  "• /modifiche — elenco delle modifiche attive",
   "",
   "👥 OPERATORI",
-  "• /abilita 123456789 — aggiunge un operatore (o rispondi /abilita a un suo messaggio)",
+  "• /abilita 123456789",
   "• /operatori — elenco degli operatori autorizzati",
   "",
-  "ℹ️ /help per rivedere questa guida. Ogni modifica compare sul sito entro pochi secondi.",
+  "ℹ️ /help per rivedere questa guida.",
 ].join("\n");
 
 type TelegramUser = {
@@ -153,7 +182,136 @@ type TelegramMessage = {
   text?: string;
 };
 
-function adminName(admin: { chat_id: number | string; username: string | null; first_name?: string | null; last_name?: string | null }) {
+type AdminRecord = {
+  id?: string;
+  chat_id: number | string | null;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+};
+
+async function getAdmins(): Promise<AdminRecord[]> {
+  if (isMySqlConfigured()) {
+    return (await listAdminUsers()).map((admin) => ({
+      id: admin.id,
+      chat_id: admin.telegram_chat_id,
+      username: admin.username,
+      first_name: admin.first_name,
+      last_name: admin.last_name,
+    }));
+  }
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin
+    .from("telegram_admins")
+    .select("chat_id, username, first_name, last_name");
+  if (error) throw new Error(error.message);
+
+  return (data ?? []).map((admin) => ({
+    chat_id: admin.chat_id,
+    username: admin.username,
+    first_name: admin.first_name,
+    last_name: admin.last_name,
+  }));
+}
+
+async function registerAdmin(input: {
+  chatId: number;
+  username: string | null;
+  firstName: string | null;
+  lastName: string | null;
+}) {
+  if (isMySqlConfigured()) {
+    return upsertTelegramAdmin(input);
+  }
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin
+    .from("telegram_admins")
+    .upsert(
+      {
+        chat_id: input.chatId,
+        username: input.username,
+        first_name: input.firstName,
+        last_name: input.lastName,
+      },
+      { onConflict: "chat_id" },
+    )
+    .select("chat_id")
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data?.chat_id ?? null;
+}
+
+async function getOverrides() {
+  if (isMySqlConfigured()) return listMenuOverrides();
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin.from("menu_overrides").select("*");
+  if (error) throw new Error(error.message);
+  return (data ?? []).map((row) => ({
+    item_key: row.item_key,
+    name: row.name,
+    description: row.description,
+    price_eur: row.price_eur === null ? null : Number(row.price_eur),
+    available: row.available,
+  }));
+}
+
+async function deleteOverrides(keys?: string[]) {
+  if (isMySqlConfigured()) {
+    if (keys) return deleteMenuOverridesByKeys(keys);
+    return deleteAllMenuOverrides();
+  }
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  if (keys) {
+    if (keys.length === 0) return;
+    const { error } = await supabaseAdmin.from("menu_overrides").delete().in("item_key", keys);
+    if (error) throw new Error(error.message);
+    return;
+  }
+  const { error } = await supabaseAdmin.from("menu_overrides").delete().not("item_key", "is", null);
+  if (error) throw new Error(error.message);
+}
+
+async function upsertOverride(row: {
+  item_key: string;
+  name: string | null;
+  description: string | null;
+  price_eur: number | null;
+  available: boolean;
+}) {
+  if (isMySqlConfigured()) return upsertMenuOverride(row);
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { error } = await supabaseAdmin.from("menu_overrides").upsert(row, { onConflict: "item_key" });
+  if (error) throw new Error(error.message);
+}
+
+async function audit(actor: string, action: string, itemKey: string | null, details: Record<string, unknown>) {
+  if (isMySqlConfigured()) {
+    const admin = await getAdminUserByTelegramChatId(Number(actor.replace(/^@/, "")));
+    await insertAuditLog({
+      actor,
+      action,
+      itemKey,
+      details,
+      adminUserId: admin?.id ?? null,
+    });
+    return;
+  }
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  await supabaseAdmin.from("menu_edit_log").insert({
+    actor,
+    action,
+    item_key: itemKey,
+    details,
+  });
+}
+
+function adminName(admin: AdminRecord) {
   if (admin.username) return `@${admin.username}`;
   const name = [admin.first_name, admin.last_name].filter(Boolean).join(" ").trim();
   return name || String(admin.chat_id);
@@ -162,6 +320,7 @@ function adminName(admin: { chat_id: number | string; username: string | null; f
 function targetFromMessage(message: TelegramMessage, text: string) {
   const chatIdFromText = text.match(/^\/abilita(?:@\w+)?\s+(-?\d+)/i)?.[1];
   if (chatIdFromText) return { chatId: Number(chatIdFromText), user: null };
+
   const user = message.reply_to_message?.from ?? message.forward_from ?? null;
   const chatId = message.reply_to_message?.chat?.id ?? user?.id;
   return chatId ? { chatId, user } : null;
@@ -178,34 +337,33 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         const actual = request.headers.get("X-Telegram-Bot-Api-Secret-Token") ?? "";
         if (!safeEqual(actual, expected)) return new Response("Unauthorized", { status: 401 });
 
-        const update = (await request.json()) as { message?: TelegramMessage; edited_message?: TelegramMessage };
+        const update = (await request.json()) as {
+          message?: TelegramMessage;
+          edited_message?: TelegramMessage;
+        };
         const message = update.message;
         const chatId = message?.chat?.id;
         const text = message?.text?.trim();
         if (!chatId || !text) return Response.json({ ok: true, ignored: true });
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-        const { data: admins } = await supabaseAdmin
-          .from("telegram_admins")
-          .select("chat_id, username, first_name, last_name");
-        const isAdmin = (admins ?? []).some((a) => Number(a.chat_id) === chatId);
+        const admins = await getAdmins();
+        const isAdmin = admins.some((admin) => Number(admin.chat_id) === chatId);
 
         if (!isAdmin) {
           const bootstrapCode = process.env["TELEGRAM_BOOTSTRAP_CODE"];
           const providedCode = text.replace(/^\/start(?:@\w+)?/i, "").trim();
           const canBootstrap =
-            (admins ?? []).length === 0 &&
+            admins.length === 0 &&
             !!bootstrapCode &&
             providedCode.length === bootstrapCode.length &&
             safeEqual(providedCode, bootstrapCode);
 
           if (canBootstrap) {
-            await supabaseAdmin.from("telegram_admins").insert({
-              chat_id: chatId,
-              username: message?.from?.username ?? null,
-              first_name: message?.from?.first_name ?? null,
-              last_name: message?.from?.last_name ?? null,
+            await registerAdmin({
+              chatId,
+              username: message.from?.username ?? null,
+              firstName: message.from?.first_name ?? null,
+              lastName: message.from?.last_name ?? null,
             });
             await sendMessage(chatId, `Registrato come amministratore del menù.\n\n${HELP}`);
             return Response.json({ ok: true });
@@ -213,13 +371,15 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
           await sendMessage(
             chatId,
-            `Non sei autorizzato a modificare il menù.\n\nIl tuo codice chat è ${chatId}: invialo a un operatore già autorizzato, che potrà scrivere /abilita ${chatId}.`,
+            `Non sei autorizzato a modificare il menù.\n\nIl tuo codice chat è ${chatId}: invialo a un operatore già autorizzato.`,
           );
           return Response.json({ ok: true });
         }
 
         if (text.startsWith("/operatori")) {
-          const list = (admins ?? []).map((admin) => `• ${adminName(admin)} — ${admin.chat_id}`).join("\n");
+          const list = admins
+            .map((admin) => `• ${adminName(admin)} — ${admin.chat_id}`)
+            .join("\n");
           await sendMessage(chatId, list ? `Operatori autorizzati:\n${list}` : "Nessun operatore autorizzato.");
           return Response.json({ ok: true });
         }
@@ -227,28 +387,23 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         if (text.startsWith("/abilita")) {
           const target = targetFromMessage(message, text);
           if (!target || Number.isNaN(target.chatId)) {
-            await sendMessage(
-              chatId,
-              "Mandami /abilita seguito dal codice chat, oppure rispondi /abilita a un messaggio dell'operatore da abilitare.",
-            );
+            await sendMessage(chatId, "Usa /abilita seguito dal codice chat o rispondi a un messaggio.");
             return Response.json({ ok: true });
           }
 
-          const { error } = await supabaseAdmin.from("telegram_admins").upsert(
-            {
-              chat_id: target.chatId,
+          try {
+            await registerAdmin({
+              chatId: target.chatId,
               username: target.user?.username ?? null,
-              first_name: target.user?.first_name ?? null,
-              last_name: target.user?.last_name ?? null,
-            },
-            { onConflict: "chat_id" },
-          );
-          if (error) {
-            console.error(`Telegram admin upsert failed: ${error.message}`);
+              firstName: target.user?.first_name ?? null,
+              lastName: target.user?.last_name ?? null,
+            });
+            await sendMessage(chatId, `Operatore abilitato: ${target.chatId}`);
+          } catch (error) {
+            console.error("Telegram admin upsert failed:", error);
             await sendMessage(chatId, "Non riesco ad abilitare l'operatore in questo momento.");
             return Response.json({ ok: false }, { status: 500 });
           }
-          await sendMessage(chatId, `Operatore abilitato: ${target.chatId}`);
           return Response.json({ ok: true });
         }
 
@@ -258,19 +413,21 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         }
 
         if (text.startsWith("/modifiche")) {
-          const { data: rows } = await supabaseAdmin.from("menu_overrides").select("*");
-          if (!rows || rows.length === 0) {
+          const rows = await getOverrides();
+          if (rows.length === 0) {
             await sendMessage(chatId, "Nessuna modifica attiva: il menù è identico all'originale.");
             return Response.json({ ok: true });
           }
-          const lines = rows.map((r) => {
-            const base = baseItem(String(r.item_key));
+
+          const lines = rows.map((row) => {
+            const base = baseItem(String(row.item_key));
             const parts: string[] = [];
-            if (r.price_eur != null && base && Number(r.price_eur) !== base.price_eur)
-              parts.push(`prezzo ${formatPrice(base.price_eur)} → ${formatPrice(Number(r.price_eur))}`);
-            if (r.description) parts.push("descrizione modificata");
-            if (r.available === false) parts.push("tolta dal menù");
-            return `• ${itemName(String(r.item_key))}${parts.length ? ` — ${parts.join(", ")}` : ""}`;
+            if (row.price_eur != null && base && Number(row.price_eur) !== base.price_eur) {
+              parts.push(`prezzo ${formatPrice(base.price_eur)} → ${formatPrice(Number(row.price_eur))}`);
+            }
+            if (row.description) parts.push("descrizione modificata");
+            if (row.available === false) parts.push("tolta dal menù");
+            return `• ${itemName(String(row.item_key))}${parts.length ? ` — ${parts.join(", ")}` : ""}`;
           });
           await sendMessage(chatId, `Modifiche attive (${rows.length}):\n${lines.join("\n")}`);
           return Response.json({ ok: true });
@@ -278,50 +435,34 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
         if (text.startsWith("/ripristina-tutto") || text.startsWith("/ripristina_tutto")) {
           if (!/conferma/i.test(text)) {
-            const { count } = await supabaseAdmin
-              .from("menu_overrides")
-              .select("item_key", { count: "exact", head: true });
+            const count = isMySqlConfigured()
+              ? await countMenuOverrides()
+              : (await getOverrides()).length;
             await sendMessage(
               chatId,
-              `⚠️ Stai per annullare ${count ?? 0} modifiche e riportare tutto il menù come all'inizio.\n\nSe sei sicuro scrivi:\n/ripristina-tutto CONFERMA`,
+              `⚠️ Stai per annullare ${count} modifiche e riportare tutto il menù come all'inizio.\n\nSe sei sicuro scrivi:\n/ripristina-tutto CONFERMA`,
             );
             return Response.json({ ok: true });
           }
-          const { error: delErr } = await supabaseAdmin
-            .from("menu_overrides")
-            .delete()
-            .not("item_key", "is", null);
-          if (delErr) {
-            console.error(`Reset all failed: ${delErr.message}`);
-            await sendMessage(chatId, "Non riesco a ripristinare il menù in questo momento.");
-            return Response.json({ ok: false }, { status: 500 });
-          }
-          await supabaseAdmin.from("menu_edit_log").insert({
-            actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
-            action: "reset_all",
-            item_key: null,
-            details: { command: text },
-          });
+
+          await deleteOverrides();
+          await audit(String(chatId), "reset_all", null, { command: text });
           await sendMessage(chatId, "✅ Fatto: prezzi, descrizioni e disponibilità sono tornati come all'inizio.");
           return Response.json({ ok: true });
         }
-
 
         let prompt = text;
         if (/^\/ripristina[-_]categoria/i.test(text)) {
           const rest = text.replace(/^\/ripristina[-_]categoria(?:@\w+)?/i, "").trim();
           if (!rest) {
-            await sendMessage(chatId, "Scrivi /ripristina-categoria seguito dal nome, per esempio:\n/ripristina-categoria focacce");
+            await sendMessage(chatId, "Scrivi /ripristina-categoria seguito dal nome della categoria.");
             return Response.json({ ok: true });
           }
           prompt = `ripristina l'intera categoria all'originale: ${rest}`;
         } else if (text.startsWith("/ripristina")) {
           const rest = text.replace(/^\/ripristina(?:@\w+)?/i, "").trim();
           if (!rest) {
-            await sendMessage(
-              chatId,
-              "Scrivi /ripristina seguito dal nome della voce, per esempio:\n/ripristina alette di pollo\n\nPer annullare tutto: /ripristina-tutto",
-            );
+            await sendMessage(chatId, "Scrivi /ripristina seguito dal nome della voce.");
             return Response.json({ ok: true });
           }
           prompt = `ripristina la voce originale: ${rest}`;
@@ -335,7 +476,7 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
-        const actor = message?.from?.username ? `@${message.from.username}` : String(chatId);
+        const actor = String(chatId);
 
         if (command.action === "set_category_available" || command.action === "reset_category") {
           const category = findCategory(command.category_id ?? "");
@@ -343,62 +484,46 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
             await sendMessage(chatId, "Categoria non trovata. Scrivi /help per vedere gli esempi.");
             return Response.json({ ok: true });
           }
+
           const items = category.groups.flatMap((g) => g.items);
-          const keys = items.map((i) => i.key);
+          const keys = items.map((item) => item.key);
 
           if (command.action === "reset_category") {
-            const { error: cErr } = await supabaseAdmin.from("menu_overrides").delete().in("item_key", keys);
-            if (cErr) {
-              console.error(`Reset category failed: ${cErr.message}`);
-              await sendMessage(chatId, "Non riesco a ripristinare la categoria in questo momento.");
-              return Response.json({ ok: false }, { status: 500 });
-            }
-            await supabaseAdmin.from("menu_edit_log").insert({
-              actor,
-              action: "reset_category",
-              item_key: category.id,
-              details: { command: text, items: keys.length },
+            await deleteOverrides(keys);
+            await audit(actor, "reset_category", category.id, {
+              command: text,
+              items: keys.length,
             });
-            await sendMessage(chatId, `↩️ Categoria ${category.name}: ${keys.length} voci tornate all'originale.`);
+            await sendMessage(
+              chatId,
+              `↩️ Categoria ${category.name}: ${keys.length} voci tornate all'originale.`,
+            );
             return Response.json({ ok: true });
           }
 
-          const { data: existingRows } = await supabaseAdmin
-            .from("menu_overrides")
-            .select("*")
-            .in("item_key", keys);
-          const existingMap = new Map((existingRows ?? []).map((r) => [String(r.item_key), r]));
-          const now = new Date().toISOString();
+          const existingRows = await getOverrides();
+          const existingMap = new Map(existingRows.map((row) => [String(row.item_key), row]));
           const rows = items.map((item) => {
-            const prev = existingMap.get(item.key);
+            const previous = existingMap.get(item.key);
             return {
               item_key: item.key,
-              name: prev?.name ?? null,
-              description: prev?.description ?? null,
-              price_eur: prev?.price_eur ?? item.price_eur,
+              name: previous?.name ?? null,
+              description: previous?.description ?? null,
+              price_eur: previous?.price_eur ?? item.price_eur,
               available: command.available,
-              updated_at: now,
             };
           });
-          const { error: upErr } = await supabaseAdmin
-            .from("menu_overrides")
-            .upsert(rows, { onConflict: "item_key" });
-          if (upErr) {
-            console.error(`Category availability update failed: ${upErr.message}`);
-            await sendMessage(chatId, "Non riesco ad aggiornare la categoria in questo momento.");
-            return Response.json({ ok: false }, { status: 500 });
-          }
-          await supabaseAdmin.from("menu_edit_log").insert({
-            actor,
-            action: "set_category_available",
-            item_key: category.id,
-            details: { command: text, available: command.available, items: keys.length },
+
+          await upsertMenuOverrides(rows);
+          await audit(actor, "set_category_available", category.id, {
+            command: text,
+            available: command.available,
+            items: keys.length,
           });
+
           await sendMessage(
             chatId,
-            `${command.available ? "✅" : "🚫"} Categoria ${category.name}: ${keys.length} voci ${
-              command.available ? "di nuovo disponibili" : "tolte dal menù"
-            }.`,
+            `${command.available ? "✅" : "🚫"} Categoria ${category.name}: ${keys.length} voci ${command.available ? "di nuovo disponibili" : "tolte dal menù"}.`,
           );
           return Response.json({ ok: true });
         }
@@ -411,79 +536,59 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true });
         }
 
-
-        const existing = baseItem(command.item_key);
-        if (!existing) {
+        const existingBase = baseItem(command.item_key);
+        if (!existingBase) {
           await sendMessage(chatId, "Voce del menù non trovata.");
           return Response.json({ ok: true });
         }
 
         if (command.action === "reset_item") {
-          const { error: rErr } = await supabaseAdmin
-            .from("menu_overrides")
-            .delete()
-            .eq("item_key", command.item_key);
-          if (rErr) {
-            console.error(`Reset item failed: ${rErr.message}`);
-            await sendMessage(chatId, "Non riesco a ripristinare questa voce in questo momento.");
-            return Response.json({ ok: false }, { status: 500 });
-          }
-          await supabaseAdmin.from("menu_edit_log").insert({
-            actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
-            action: "reset_item",
-            item_key: command.item_key,
-            details: { command: text },
-          });
+          await deleteMenuOverride(command.item_key);
+          await audit(actor, "reset_item", command.item_key, { command: text });
           await sendMessage(
             chatId,
-            `↩️ ${itemName(command.item_key)} è tornata all'originale: ${formatPrice(existing.price_eur)}.`,
+            `↩️ ${itemName(command.item_key)} è tornata all'originale: ${formatPrice(existingBase.price_eur)}.`,
           );
           return Response.json({ ok: true });
         }
 
-        const { data: currentRows } = await supabaseAdmin
-          .from("menu_overrides")
-          .select("*")
-          .eq("item_key", command.item_key)
-          .maybeSingle();
+        const current = await (async () => {
+          if (isMySqlConfigured()) return getMenuOverride(command.item_key);
+          const rows = await getOverrides();
+          return rows.find((row) => row.item_key === command.item_key) ?? null;
+        })();
 
         const row = {
           item_key: command.item_key,
-          name: currentRows?.name ?? null,
-          description: currentRows?.description ?? null,
-          price_eur: currentRows?.price_eur ?? existing.price_eur,
-          available: currentRows?.available ?? true,
-          updated_at: new Date().toISOString(),
+          name: current?.name ?? null,
+          description: current?.description ?? null,
+          price_eur: current?.price_eur ?? existingBase.price_eur,
+          available: current?.available ?? true,
         };
 
         let reply = "";
         if (command.action === "set_price") {
+          if (!Number.isFinite(command.price_eur) || command.price_eur < 0 || command.price_eur > 1000) {
+            await sendMessage(chatId, "Prezzo non valido.");
+            return Response.json({ ok: true });
+          }
           row.price_eur = command.price_eur;
           reply = `Prezzo aggiornato: ${itemName(command.item_key)} → ${formatPrice(command.price_eur)}`;
         } else if (command.action === "set_description") {
-          row.description = command.description;
+          const description = command.description.trim();
+          if (description.length > 500) {
+            await sendMessage(chatId, "Descrizione troppo lunga.");
+            return Response.json({ ok: true });
+          }
+          row.description = description;
           reply = `Descrizione aggiornata: ${itemName(command.item_key)}`;
         } else if (command.action === "set_available") {
           row.available = command.available;
           reply = `${itemName(command.item_key)} → ${command.available ? "disponibile" : "non disponibile"}`;
         }
 
-        const { error } = await supabaseAdmin
-          .from("menu_overrides")
-          .upsert(row, { onConflict: "item_key" });
-        if (error) {
-          console.error(`Override upsert failed: ${error.message}`);
-          await sendMessage(chatId, "Errore nel salvataggio della modifica.");
-          return Response.json({ ok: false }, { status: 500 });
-        }
-
-        await supabaseAdmin.from("menu_edit_log").insert({
-          actor: message?.from?.username ? `@${message.from.username}` : String(chatId),
-          action: command.action,
-          item_key: command.item_key,
-          details: { command: text },
-        });
-
+        await upsertOverride(row);
+        await audit(actor, command.action, command.item_key, { command: text });
         await sendMessage(chatId, reply);
         return Response.json({ ok: true });
       },
