@@ -33,7 +33,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Formatta automaticamente il repository
-        if: github.event_name == 'push' && contains(fromJSON('["refs/heads/fix/fase-2-lint","refs/heads/fase-2-finalizzazione","refs/heads/fase-2-db-bootstrap"]'), github.ref)
+        if: github.event_name == 'push' && contains(fromJSON('["refs/heads/fix/fase-2-lint","refs/heads/fase-2-finalizzazione","refs/heads/fase-2-db-bootstrap","refs/heads/fix/hostinger-bootstrap-entry"]'), github.ref)
         run: |
           npx prettier --write .
           if git diff --quiet; then
