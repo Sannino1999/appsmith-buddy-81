@@ -39,6 +39,20 @@ jobs:
           git commit -m "fase 3: aggiorna package-lock dopo rimozione legacy"
           git push origin HEAD:${GITHUB_REF_NAME}
 
+      - name: Formatta i file della Fase 3
+        if: github.event_name == 'push'
+        run: |
+          npx prettier --write src/lib/menu.functions.ts src/routes/api/public/telegram/webhook.ts
+          if git diff --quiet; then
+            echo "File della Fase 3 già formattati."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/lib/menu.functions.ts src/routes/api/public/telegram/webhook.ts
+          git commit -m "fase 3: formatta moduli senza Supabase"
+          git push origin HEAD:${GITHUB_REF_NAME}
+
       - name: Installa dipendenze esatte
         run: npm ci --ignore-scripts --no-audit --no-fund
 
