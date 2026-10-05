@@ -394,23 +394,23 @@ function MenuPage() {
                 {g.items.map((item) => (
                   <li
                     key={item.key}
-                    className={`group transition-opacity duration-200 ${item.available ? "" : "opacity-50"}`}
+                    className={`group rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur-[2px] transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-black/35 ${item.available ? "" : "opacity-55"}`}
                   >
-                    <div className="flex items-end">
-                      <h3 className="display-caps text-lg leading-tight text-brand transition-colors duration-200 group-hover:text-primary">
+                    <div className="flex items-end gap-2">
+                      <h3 className="display-caps min-w-0 text-[1.03rem] leading-tight text-white sm:text-lg">
                         {item.name}
                       </h3>
                       <span className="leader" />
-                      <span className="display-caps shrink-0 text-lg text-brand transition-colors duration-200 group-hover:text-primary">
+                      <span className="display-caps shrink-0 text-base text-accent sm:text-lg">
                         {formatPrice(item.price_eur)}
                       </span>
                     </div>
                     {item.description && (
-                      <p className="mt-1 text-[0.95rem] leading-snug text-muted-foreground">
+                      <p className={`mt-2 text-sm leading-relaxed sm:text-[0.95rem] ${active?.id === "patate" ? "font-semibold text-accent" : "text-white/65"}`}>
                         {item.description}
                       </p>
                     )}
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <div className="mt-3 flex flex-wrap gap-1.5">
                       {!item.available && (
                         <span className="rounded-full border border-destructive px-2.5 py-0.5 text-xs text-destructive">
                           {t.unavailable}
@@ -419,7 +419,7 @@ function MenuPage() {
                       {item.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground transition-colors duration-200 hover:bg-secondary/70"
+                          className="rounded-full bg-white/8 px-2.5 py-1 text-[0.66rem] text-white/50"
                         >
                           {tag}
                         </span>
