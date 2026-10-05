@@ -98,11 +98,11 @@ export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
       "SELECT item_key, category_id, name, description, price_eur, available FROM menu_custom_items WHERE available = 1",
     ),
     mysqlQuery<SpecialRow>(
-      "SELECT id, title, description, price_eur, image_url, item_key
+      `SELECT id, title, description, price_eur, image_url, item_key
        FROM menu_specials
        WHERE active = 1
        ORDER BY updated_at DESC
-       LIMIT 1",
+       LIMIT 1`,
     ),
   ]);
 
