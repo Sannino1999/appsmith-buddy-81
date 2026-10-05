@@ -17,7 +17,9 @@ La Fase 3 rimuove dal percorso applicativo Hostinger le dipendenze legacy di Sup
 
 Il webhook Telegram non viene disattivato in questa fase, come stabilito dal piano. Rimane attivo fino alla Fase 5 e continua temporaneamente a usare il gateway Telegram/AI legacy per il parsing dei comandi.
 
-Le sue scritture dati passano esclusivamente dal repository MySQL. Se MySQL non è configurato, il webhook risponde con `503 Database not configured` invece di tornare a Supabase.
+Le sue scritture dati passano esclusivamente dal repository MySQL.
+
+Il lockfile npm è stato rigenerato dopo la rimozione delle dipendenze legacy, quindi il repository non mantiene più dipendenze runtime Supabase/PostgreSQL. Se MySQL non è configurato, il webhook risponde con `503 Database not configured` invece di tornare a Supabase.
 
 ## Traduzioni
 
