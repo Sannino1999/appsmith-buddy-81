@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
-import { Search, X, Globe, Phone, MapPin } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ExternalLink, Globe, Instagram, MapPin, MessageCircle, Phone, Search, Star, Utensils, Wifi, X } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.jpg";
 import logoVertical from "@/assets/lubrano-logo-vertical.png.asset.json";
@@ -33,13 +33,16 @@ export const Route = createFileRoute("/")({
 });
 
 function MenuPage() {
-  const [macro, setMacro] = useState<string>("beer");
-  const [categoryId, setCategoryId] = useState<string>("ale");
+  const [macro, setMacro] = useState<string>("food");
+  const [categoryId, setCategoryId] = useState<string>("stuzzicheria");
   const [lang, setLang] = useState<LangCode>("it");
   const [langOpen, setLangOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [specialClosed, setSpecialClosed] = useState(false);
+  const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const menuQuery = useQuery({
     queryKey: ["menu-catalog"],
