@@ -90,7 +90,7 @@ export async function mysqlQuery<T = unknown>(
   return rows as T[];
 }
 
-export async function mysqlExecute(sql: string, params: any[] = []) {
+export async function mysqlExecute(sql: string, params: ExecuteValues = []) {
   const [result] = await getMysqlPool().execute(sql, params);
   return result as { affectedRows?: number; insertId?: number };
 }
