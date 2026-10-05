@@ -249,15 +249,40 @@ function MenuPage() {
           />
         </header>
 
-        {searchOpen && (
-          <input
-            autoFocus
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t.search}
-            className="anim-fade mt-4 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-base outline-none transition-colors duration-200 focus:border-primary"
-          />
-        )}
+        <section
+          className={`anim-fade-up mt-5 rounded-2xl border border-white/10 bg-black/30 p-3 backdrop-blur-md ${searchOpen ? "" : "hidden"}`}
+          aria-label="Ricerca nel menù"
+        >
+          <label className="sr-only" htmlFor="menu-search">
+            {t.search}
+          </label>
+          <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4">
+            <Search className="size-5 shrink-0 text-accent" aria-hidden />
+            <input
+              id="menu-search"
+              ref={searchInputRef}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t.search}
+              className="min-h-12 w-full bg-transparent py-2 text-base text-white outline-none placeholder:text-white/40"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="menu-control grid size-9 place-items-center rounded-full text-white/60 hover:text-white"
+                aria-label="Cancella ricerca"
+              >
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
+          <p className="mt-2 px-1 text-xs text-white/50" aria-live="polite">
+            {query
+              ? `${searchResults.length} risultat${searchResults.length === 1 ? "o" : "i"}`
+              : "Cerca piatti, categorie o ingredienti"}
+          </p>
+        </section>
 
         <nav className="anim-fade-up stagger-1 mt-7 flex items-center justify-center gap-10">
           {menu.macros.map((m) => (
