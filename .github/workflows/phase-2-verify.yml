@@ -39,8 +39,10 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git stash push -u -m "prettier-autoformat"
           git fetch origin "${GITHUB_REF_NAME}"
           git rebase "origin/${GITHUB_REF_NAME}"
+          git stash pop
           git add -A
           git commit -m "chore: formatta repository con Prettier"
           git push origin HEAD:${GITHUB_REF_NAME}
