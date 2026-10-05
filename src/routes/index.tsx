@@ -192,10 +192,10 @@ function MenuPage() {
         style={{ backgroundImage: `url(${bgImage})` }}
         aria-hidden
       />
-      <div className="fixed inset-0 -z-10 bg-background/90" aria-hidden />
+      <div className="fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,14,12,0.92)_0%,rgba(20,14,12,0.84)_38%,rgba(20,14,12,0.96)_100%)]" aria-hidden />
 
-      <div className="mx-auto w-full max-w-2xl px-5 pb-24 pt-6">
-        <header className="anim-fade-up flex flex-col items-center gap-5">
+      <div className="mx-auto w-full max-w-4xl px-4 pb-24 pt-4 sm:px-6">
+        <header className="anim-fade-up flex flex-col items-center gap-4">
           <div className="flex w-full items-center justify-end gap-2">
             <QrButton onClick={() => setQrOpen(true)} />
             <button
@@ -245,7 +245,7 @@ function MenuPage() {
           <img
             src={logoVertical.url}
             alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`}
-            className="h-auto w-64 max-w-[80vw] drop-shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-transform duration-300 hover:scale-[1.02] sm:w-80"
+            className="h-auto w-56 max-w-[78vw] drop-shadow-[0_16px_40px_rgba(0,0,0,0.7)] transition-transform duration-300 hover:scale-[1.02] sm:w-72"
           />
         </header>
 
