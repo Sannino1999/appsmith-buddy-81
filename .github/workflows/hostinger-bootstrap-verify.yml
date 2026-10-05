@@ -11,6 +11,7 @@ on:
       - fase-2-finalizzazione
       - fix/hostinger-bootstrap-entry
       - fase-2-db-bootstrap
+      - fix/mysql-pool-lifecycle
 
 permissions:
   contents: write
