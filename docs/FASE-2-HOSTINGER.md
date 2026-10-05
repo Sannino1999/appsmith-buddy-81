@@ -5,6 +5,7 @@ Queste istruzioni descrivono le operazioni da eseguire **solo dopo il merge dell
 ## 1. Crea il database
 
 In Hostinger apri **Websites → Dashboard → Databases → Management** e crea un database MariaDB/MySQL dedicato all'applicazione. Conserva in modo sicuro:
+
 - nome database;
 - nome utente;
 - password;

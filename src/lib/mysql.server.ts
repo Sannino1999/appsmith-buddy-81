@@ -1,4 +1,5 @@
 import mysql, { type PoolOptions } from "mysql2/promise";
+import type { ExecuteValues } from "mysql2";
 
 type MysqlConfig = {
   host: string;
@@ -81,12 +82,15 @@ export function getMysqlPool() {
   return pool;
 }
 
-export async function mysqlQuery<T = unknown>(sql: string, params: any[] = []): Promise<T[]> {
+export async function mysqlQuery<T = unknown>(
+  sql: string,
+  params: ExecuteValues = [],
+): Promise<T[]> {
   const [rows] = await getMysqlPool().execute(sql, params);
   return rows as T[];
 }
 
-export async function mysqlExecute(sql: string, params: any[] = []) {
+export async function mysqlExecute(sql: string, params: ExecuteValues = []) {
   const [result] = await getMysqlPool().execute(sql, params);
   return result as { affectedRows?: number; insertId?: number };
 }

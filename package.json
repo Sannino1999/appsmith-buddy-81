@@ -19,7 +19,8 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "db:migrate": "node --experimental-strip-types scripts/migrate-mysql.ts",
-    "db:seed": "node --experimental-strip-types scripts/import-menu-data.ts"
+    "db:seed": "node --experimental-strip-types scripts/import-menu-data.ts",
+    "format:check": "prettier --check ."
   },
   "overrides": {
     "rolldown": "1.2.1"

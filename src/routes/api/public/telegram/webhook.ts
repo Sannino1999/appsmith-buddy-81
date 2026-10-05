@@ -292,7 +292,9 @@ async function upsertOverride(row: {
   if (isMySqlConfigured()) return upsertMenuOverride(row);
 
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { error } = await supabaseAdmin.from("menu_overrides").upsert(row, { onConflict: "item_key" });
+  const { error } = await supabaseAdmin
+    .from("menu_overrides")
+    .upsert(row, { onConflict: "item_key" });
   if (error) throw new Error(error.message);
 }
 
@@ -301,12 +303,7 @@ type AuditDetails = Record<
   string | number | boolean | null | string[] | number[] | boolean[]
 >;
 
-async function audit(
-  actor: string,
-  action: string,
-  itemKey: string | null,
-  details: AuditDetails,
-) {
+async function audit(actor: string, action: string, itemKey: string | null, details: AuditDetails) {
   if (isMySqlConfigured()) {
     const admin = await getAdminUserByTelegramChatId(Number(actor.replace(/^@/, "")));
     await insertAuditLog({
@@ -394,17 +391,21 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         }
 
         if (text.startsWith("/operatori")) {
-          const list = admins
-            .map((admin) => `• ${adminName(admin)} — ${admin.chat_id}`)
-            .join("\n");
-          await sendMessage(chatId, list ? `Operatori autorizzati:\n${list}` : "Nessun operatore autorizzato.");
+          const list = admins.map((admin) => `• ${adminName(admin)} — ${admin.chat_id}`).join("\n");
+          await sendMessage(
+            chatId,
+            list ? `Operatori autorizzati:\n${list}` : "Nessun operatore autorizzato.",
+          );
           return Response.json({ ok: true });
         }
 
         if (text.startsWith("/abilita")) {
           const target = targetFromMessage(message, text);
           if (!target || Number.isNaN(target.chatId)) {
-            await sendMessage(chatId, "Usa /abilita seguito dal codice chat o rispondi a un messaggio.");
+            await sendMessage(
+              chatId,
+              "Usa /abilita seguito dal codice chat o rispondi a un messaggio.",
+            );
             return Response.json({ ok: true });
           }
 
@@ -440,7 +441,9 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
             const base = baseItem(String(row.item_key));
             const parts: string[] = [];
             if (row.price_eur != null && base && Number(row.price_eur) !== base.price_eur) {
-              parts.push(`prezzo ${formatPrice(base.price_eur)} → ${formatPrice(Number(row.price_eur))}`);
+              parts.push(
+                `prezzo ${formatPrice(base.price_eur)} → ${formatPrice(Number(row.price_eur))}`,
+              );
             }
             if (row.description) parts.push("descrizione modificata");
             if (row.available === false) parts.push("tolta dal menù");
@@ -464,7 +467,10 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
           await deleteOverrides();
           await audit(String(chatId), "reset_all", null, { command: text });
-          await sendMessage(chatId, "✅ Fatto: prezzi, descrizioni e disponibilità sono tornati come all'inizio.");
+          await sendMessage(
+            chatId,
+            "✅ Fatto: prezzi, descrizioni e disponibilità sono tornati come all'inizio.",
+          );
           return Response.json({ ok: true });
         }
 
@@ -472,7 +478,10 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         if (/^\/ripristina[-_]categoria/i.test(text)) {
           const rest = text.replace(/^\/ripristina[-_]categoria(?:@\w+)?/i, "").trim();
           if (!rest) {
-            await sendMessage(chatId, "Scrivi /ripristina-categoria seguito dal nome della categoria.");
+            await sendMessage(
+              chatId,
+              "Scrivi /ripristina-categoria seguito dal nome della categoria.",
+            );
             return Response.json({ ok: true });
           }
           prompt = `ripristina l'intera categoria all'originale: ${rest}`;
@@ -489,7 +498,10 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         try {
           command = await interpret(prompt);
         } catch {
-          await sendMessage(chatId, "Non riesco a elaborare il comando in questo momento. Riprova.");
+          await sendMessage(
+            chatId,
+            "Non riesco a elaborare il comando in questo momento. Riprova.",
+          );
           return Response.json({ ok: true });
         }
 
@@ -585,7 +597,11 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
         let reply = "";
         if (command.action === "set_price") {
-          if (!Number.isFinite(command.price_eur) || command.price_eur < 0 || command.price_eur > 1000) {
+          if (
+            !Number.isFinite(command.price_eur) ||
+            command.price_eur < 0 ||
+            command.price_eur > 1000
+          ) {
             await sendMessage(chatId, "Prezzo non valido.");
             return Response.json({ ok: true });
           }

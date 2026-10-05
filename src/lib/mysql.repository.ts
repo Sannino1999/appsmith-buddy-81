@@ -84,31 +84,30 @@ function mapOverride(row: OverrideRow): MysqlOverride {
 }
 
 export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
-  const [overrideRows, categoryOverrideRows, customCategoryRows, customItemRows, specialRows] = await Promise.all([
-    mysqlQuery<OverrideRow>(
-      "SELECT item_key, name, description, price_eur, available FROM menu_overrides",
-    ),
-    mysqlQuery<CategoryOverrideRow>(
-      "SELECT category_id, name, available FROM menu_category_overrides",
-    ),
-    mysqlQuery<CustomCategoryRow>(
-      "SELECT id, macro, name, sort_order, active FROM menu_custom_categories WHERE active = 1 ORDER BY sort_order, id",
-    ),
-    mysqlQuery<CustomItemRow>(
-      "SELECT item_key, category_id, name, description, price_eur, available FROM menu_custom_items WHERE available = 1",
-    ),
-    mysqlQuery<SpecialRow>(
-      `SELECT id, title, description, price_eur, image_url, item_key
+  const [overrideRows, categoryOverrideRows, customCategoryRows, customItemRows, specialRows] =
+    await Promise.all([
+      mysqlQuery<OverrideRow>(
+        "SELECT item_key, name, description, price_eur, available FROM menu_overrides",
+      ),
+      mysqlQuery<CategoryOverrideRow>(
+        "SELECT category_id, name, available FROM menu_category_overrides",
+      ),
+      mysqlQuery<CustomCategoryRow>(
+        "SELECT id, macro, name, sort_order, active FROM menu_custom_categories WHERE active = 1 ORDER BY sort_order, id",
+      ),
+      mysqlQuery<CustomItemRow>(
+        "SELECT item_key, category_id, name, description, price_eur, available FROM menu_custom_items WHERE available = 1",
+      ),
+      mysqlQuery<SpecialRow>(
+        `SELECT id, title, description, price_eur, image_url, item_key
        FROM menu_specials
        WHERE active = 1
        ORDER BY updated_at DESC
        LIMIT 1`,
-    ),
-  ]);
+      ),
+    ]);
 
-  const categoryOverrides = new Map(
-    categoryOverrideRows.map((row) => [row.category_id, row]),
-  );
+  const categoryOverrides = new Map(categoryOverrideRows.map((row) => [row.category_id, row]));
 
   const baseCategories: MysqlDynamicCategory[] = baseMenu.categories.map((category, index) => {
     const override = categoryOverrides.get(category.id);
@@ -149,8 +148,7 @@ export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
     special: specialRows[0]
       ? {
           ...specialRows[0],
-          price_eur:
-            specialRows[0].price_eur === null ? null : Number(specialRows[0].price_eur),
+          price_eur: specialRows[0].price_eur === null ? null : Number(specialRows[0].price_eur),
         }
       : null,
   };
@@ -181,13 +179,7 @@ export async function upsertMenuOverride(row: MysqlOverride) {
        price_eur = VALUES(price_eur),
        available = VALUES(available),
        updated_at = CURRENT_TIMESTAMP(3)`,
-    [
-      row.item_key,
-      row.name,
-      row.description,
-      row.price_eur,
-      row.available ? 1 : 0,
-    ],
+    [row.item_key, row.name, row.description, row.price_eur, row.available ? 1 : 0],
   );
 }
 
@@ -202,10 +194,7 @@ export async function deleteMenuOverride(itemKey: string) {
 export async function deleteMenuOverridesByKeys(keys: string[]) {
   if (keys.length === 0) return;
   const placeholders = keys.map(() => "?").join(", ");
-  await mysqlExecute(
-    `DELETE FROM menu_overrides WHERE item_key IN (${placeholders})`,
-    keys,
-  );
+  await mysqlExecute(`DELETE FROM menu_overrides WHERE item_key IN (${placeholders})`, keys);
 }
 
 export async function deleteAllMenuOverrides() {
@@ -213,9 +202,7 @@ export async function deleteAllMenuOverrides() {
 }
 
 export async function countMenuOverrides() {
-  const rows = await mysqlQuery<{ count: number }>(
-    "SELECT COUNT(*) AS count FROM menu_overrides",
-  );
+  const rows = await mysqlQuery<{ count: number }>("SELECT COUNT(*) AS count FROM menu_overrides");
   return Number(rows[0]?.count ?? 0);
 }
 
@@ -345,12 +332,6 @@ export async function upsertTranslation(input: {
        description = VALUES(description),
        source_hash = VALUES(source_hash),
        created_at = CURRENT_TIMESTAMP(3)`,
-    [
-      input.itemKey,
-      input.lang,
-      input.name,
-      input.description,
-      input.sourceHash,
-    ],
+    [input.itemKey, input.lang, input.name, input.description, input.sourceHash],
   );
 }

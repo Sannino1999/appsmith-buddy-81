@@ -90,11 +90,7 @@ export function QrDialog({ open, onOpenChange, url, restaurantName }: QrDialogPr
         </div>
 
         <div className="mt-4 flex gap-2">
-          <Button
-            type="button"
-            onClick={downloadPng}
-            className="menu-control h-11 flex-1"
-          >
+          <Button type="button" onClick={downloadPng} className="menu-control h-11 flex-1">
             <Download className="size-4" />
             PNG
           </Button>
