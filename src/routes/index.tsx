@@ -651,6 +651,61 @@ function MenuPage() {
         url={typeof window !== "undefined" ? window.location.href : ""}
         restaurantName={baseMenu.restaurant.name}
       />
+
+      {wifiOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+          role="presentation"
+          onClick={() => setWifiOpen(false)}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="wifi-dialog-title"
+            className="anim-scale w-full max-w-sm rounded-3xl border border-accent/20 bg-card p-6 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="grid size-10 place-items-center rounded-full bg-accent/10 text-accent">
+                  <Wifi className="size-5" />
+                </div>
+                <div>
+                  <p className="text-[0.62rem] font-bold uppercase tracking-[0.24em] text-accent">
+                    Lubrano Guest
+                  </p>
+                  <h2 id="wifi-dialog-title" className="display-caps text-xl text-foreground">
+                    {services.wifi}
+                  </h2>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setWifiOpen(false)}
+                className="menu-control grid size-10 place-items-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
+                aria-label="Chiudi Wi-Fi"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <div className="mt-6 rounded-2xl border border-border bg-background/60 p-4">
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {services.wifiAsk}
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled
+              className="mt-4 flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-5 text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground opacity-60"
+            >
+              Copia password
+            </button>
+            <p className="mt-3 text-center text-xs text-muted-foreground/60">
+              La password verrà resa disponibile dall’area admin.
+            </p>
+          </section>
+        </div>
+      )}
     </div>
   );
 }
