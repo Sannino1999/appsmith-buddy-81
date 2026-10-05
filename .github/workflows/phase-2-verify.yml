@@ -9,6 +9,7 @@ on:
     branches:
       - fix/fase-2-lint
       - fase-2-finalizzazione
+      - fase-2-db-bootstrap
 
 permissions:
   contents: write
