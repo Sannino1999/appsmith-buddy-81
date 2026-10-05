@@ -14,14 +14,15 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
-    "start": "node .output/server/index.mjs",
+    "start": "node --experimental-strip-types scripts/bootstrap-mysql.ts && node .output/server/index.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "db:migrate": "node --experimental-strip-types scripts/migrate-mysql.ts",
     "db:seed": "node --experimental-strip-types scripts/import-menu-data.ts",
     "format:check": "prettier --check .",
-    "db:verify": "node --experimental-strip-types scripts/verify-mysql.ts"
+    "db:verify": "node --experimental-strip-types scripts/verify-mysql.ts",
+    "db:bootstrap": "node --experimental-strip-types scripts/bootstrap-mysql.ts"
   },
   "overrides": {
     "rolldown": "1.2.1"

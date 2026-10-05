@@ -67,3 +67,7 @@ Con `MYSQL_*` configurato, il menu pubblico legge il catalogo da `menu_catalog_i
 La password del database va inserita esclusivamente nelle environment variables. Il codice usa query parametrizzate e un pool server-side; le credenziali non vengono inviate al browser.
 
 Per il primo amministratore con password locale non faremo bootstrap automatico in questa Fase 2: l'autenticazione dell'area `/admin` viene costruita nella Fase 5, con password hash e sessioni.
+
+## Bootstrap automatico
+
+L'avvio Node esegue ora un bootstrap idempotente del database. Applica le migrazioni non ancora registrate e importa il catalogo solo quando `menu_catalog_items` è vuota. Non cancella dati esistenti e non ripete il seed a ogni riavvio. Se MySQL non è raggiungibile, l'applicazione continua l'avvio e il menu usa il fallback statico.
