@@ -326,7 +326,7 @@ function MenuPage() {
             <a href="#contatti">{nav.contact}</a>
           </nav>
           <div className="lubrano-topbar">
-            <div className="lubrano-brandline">
+            <div className="lubrano-brandline lubrano-brandline-main">
               <span className="lubrano-kicker">PUB · BRACERIA · NAPOLI</span>
               <span className="lubrano-status"><span className="lubrano-status-dot" /> MENÙ DIGITALE</span>
             </div>
@@ -359,7 +359,6 @@ function MenuPage() {
               <span className="lubrano-eyebrow">BENVENUTI DA</span>
               <h1 className="lubrano-hero-title">Lubrano</h1>
               <p className="lubrano-hero-subtitle">Pub & Braceria</p>
-              <div className="lubrano-rule"><span /></div>
               <p className="lubrano-hero-note">Sapori decisi, brace, burger e birre. Scopri il menù e scegli il tuo prossimo preferito.</p>
             </div>
             <div className="lubrano-logo-frame">
