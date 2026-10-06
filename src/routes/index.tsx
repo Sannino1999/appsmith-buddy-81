@@ -232,7 +232,7 @@ function MenuPage() {
     [publicCategories, overrides],
   );
 
-  const normalizedQuery = query.trim().toLocaleLowerCase("it");
+  const normalizedQuery = query.trim().toLocaleLowerCase(lang);
   const searchResults = useMemo(
     () =>
       normalizedQuery
@@ -242,7 +242,7 @@ function MenuPage() {
               (item.description ?? "").toLocaleLowerCase(lang).includes(normalizedQuery),
           )
         : [],
-    [allItems, normalizedQuery],
+    [allItems, normalizedQuery, lang],
   );
 
   const groups = useMemo(() => {
@@ -391,7 +391,15 @@ function MenuPage() {
           <nav className="lubrano-category-strip" aria-label="Categorie">
             {categories.map((c) => (
               <button key={c.id} ref={(element) => { categoryRefs.current[c.id] = element; }} type="button" onClick={() => setCategoryId(c.id)} aria-current={c.id === active?.id ? "page" : undefined} className={`lubrano-category-pill ${c.id === active?.id ? "is-active" : ""}`}>
-                {menuLabels.categories[c.id]?.name ?? c.name}
+                <span className="lubrano-category-thumb">
+                  <img
+                    src={categoryVisuals[c.id] ?? "/assets/menu-bg.webp"}
+                    alt=""
+                    loading="lazy"
+                    onError={(event) => { event.currentTarget.src = "/assets/menu-bg.webp"; }}
+                  />
+                </span>
+                <span>{menuLabels.categories[c.id]?.name ?? c.name}</span>
               </button>
             ))}
           </nav>
@@ -407,7 +415,7 @@ function MenuPage() {
             ) : (
               <div className="grid gap-3 md:grid-cols-2">
                 {searchResults.map((item) => (
-                  <button key={item.key} type="button" onClick={() => { const target = menu.categories.find((category) => category.id === item.categoryId); if (!target) return; setMacro(target.macro); setCategoryId(target.id); setQuery(""); }} className="lubrano-dish-card text-left">
+                  <button key={item.key} type="button" onClick={() => { const target = menu.categories.find((category) => category.id === item.categoryId); if (!target) return; setMacro(target.macro); setCategoryId(target.id); }} className="lubrano-dish-card text-left">
                     <div className="flex items-start gap-4">
                       <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
                       <div className="min-w-0 flex-1">
