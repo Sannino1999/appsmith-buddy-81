@@ -22,14 +22,6 @@ import {
 } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.webp";
-import menuBgJpg from "@/assets/menu-bg.jpg";
-import snacksVisual from "@/assets/category-stuzzicheria.webp";
-import burgerVisual from "@/assets/category-burger.webp";
-import stuzzicheriaVisual from "@/assets/category-stuzzicheria.webp";
-import patateVisual from "@/assets/category-patate.webp";
-import paniniVisual from "@/assets/category-panini.webp";
-import braceVisual from "@/assets/category-brace.webp";
-import dolciVisual from "@/assets/category-dolci.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { translateMenuText } from "@/lib/menu-translations";
 import {
@@ -44,14 +36,14 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
 const categoryVisuals: Record<string, string> = {
-  stuzzicheria: stuzzicheriaVisual,
-  patate: patateVisual,
-  hamburger: paniniVisual,
-  panini: paniniVisual,
-  brace: braceVisual,
-  braceria: braceVisual,
-  carne: braceVisual,
-  dolci: dolciVisual,
+  stuzzicheria: "/assets/category-stuzzicheria.webp",
+  patate: "/assets/category-patate.webp",
+  hamburger: "/assets/category-burger.webp",
+  panini: "/assets/category-panini.webp",
+  brace: "/assets/category-brace.webp",
+  braceria: "/assets/category-brace.webp",
+  carne: "/assets/category-brace.webp",
+  dolci: "/assets/category-dolci.webp",
 };
 
 export const Route = createFileRoute("/")({
@@ -196,6 +188,17 @@ function MenuPage() {
     const first = publicCategories.find((category) => category.macro === macro);
     if (first) setCategoryId(first.id);
   }, [categoryId, macro, publicCategories]);
+  useEffect(() => {
+    const activeButton = categoryRefs.current[categoryId];
+    if (!activeButton || window.matchMedia("(min-width: 721px)").matches) return;
+    requestAnimationFrame(() => {
+      activeButton.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    });
+  }, [categoryId]);
 
   useEffect(() => {
     const handleBeforeInstall = (event: Event) => {
