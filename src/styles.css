@@ -392,3 +392,118 @@
 .lubrano-main-nav a::after{content:"";position:absolute;left:50%;right:50%;bottom:-.42rem;height:2px;border-radius:999px;background:var(--lubrano-red);transition:.2s ease}
 .lubrano-main-nav a:hover::after{left:10%;right:10%}
 @media(max-width:720px){.lubrano-main-nav{gap:1rem;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}.lubrano-main-nav::-webkit-scrollbar{display:none}.lubrano-main-nav a{white-space:nowrap;font-size:.62rem}}
+
+/* Responsive category photography tabs */
+.lubrano-category-strip{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  overflow:visible;
+}
+.lubrano-category-pill{
+  display:flex;
+  min-width:0;
+  min-height:76px;
+  align-items:center;
+  justify-content:flex-start;
+  gap:.6rem;
+  overflow:hidden;
+  padding:.45rem .65rem;
+  text-align:left;
+}
+.lubrano-category-thumb{
+  position:relative;
+  flex:0 0 48px;
+  width:48px;
+  height:48px;
+  overflow:hidden;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.1);
+  background:#140b0e;
+}
+.lubrano-category-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.82;
+  transition:transform .45s ease,opacity .25s ease;
+}
+.lubrano-category-pill:hover .lubrano-category-thumb img,
+.lubrano-category-pill.is-active .lubrano-category-thumb img{
+  opacity:1;
+  transform:scale(1.08);
+}
+.lubrano-category-pill > span:last-child{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.1;
+}
+.lubrano-hours-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.4rem!important;
+  margin-top:.5rem;
+}
+.lubrano-hours-grid > div{
+  display:flex!important;
+  align-items:center;
+  justify-content:space-between;
+  gap:.7rem;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  padding:.65rem .75rem!important;
+  background:rgba(255,255,255,.025);
+}
+.lubrano-hours-grid > div.is-closed{
+  border-color:rgba(255,49,91,.2);
+  background:rgba(255,49,91,.045);
+}
+.lubrano-hours-grid b{color:rgba(255,255,255,.62)!important;text-transform:none!important}
+.lubrano-hours-grid strong{font-size:.78rem}
+@media(max-width:900px) and (min-width:721px){
+  .lubrano-category-strip{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .lubrano-category-pill{min-height:84px;}
+}
+@media(max-width:720px){
+  .lubrano-utility{
+    display:flex!important;
+    flex-direction:column;
+    align-items:stretch;
+    gap:.35rem;
+    overflow:hidden;
+    padding:.45rem .65rem;
+  }
+  .lubrano-utility-links{
+    flex-wrap:nowrap;
+    justify-content:flex-start;
+    overflow-x:auto;
+    scrollbar-width:none;
+    padding-bottom:1px;
+  }
+  .lubrano-utility-links::-webkit-scrollbar{display:none}
+  .lubrano-utility-links a,.lubrano-utility-links span{
+    flex:0 0 auto;
+    font-size:.61rem;
+  }
+  .lubrano-main-nav{
+    gap:.75rem;
+    justify-content:flex-start;
+    padding:.6rem .75rem;
+  }
+  .lubrano-category-strip{
+    display:flex;
+    min-width:max-content;
+    overflow-x:auto;
+    gap:.4rem;
+    scrollbar-width:none;
+  }
+  .lubrano-category-strip::-webkit-scrollbar{display:none}
+  .lubrano-category-pill{
+    width:170px;
+    min-height:62px;
+    flex:0 0 170px;
+  }
+  .lubrano-category-thumb{flex-basis:40px;width:40px;height:40px}
+  .lubrano-hours-grid{grid-template-columns:1fr!important}
+  .lubrano-hours-grid > div{min-height:48px}
+}
