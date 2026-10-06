@@ -333,6 +333,15 @@ export async function getAdminById(id: string): Promise<MysqlAdminUser | null> {
   return row ? { ...row, is_active: toBool(row.is_active) } : null;
 }
 
+export async function updateAdminPassword(adminId: string, passwordHash: string) {
+  await mysqlExecute(
+    `UPDATE admin_users
+     SET password_hash = ?, updated_at = CURRENT_TIMESTAMP(3)
+     WHERE id = ? AND is_active = 1`,
+    [passwordHash, adminId],
+  );
+}
+
 export async function upsertAdminUser(input: {
   id: string;
   username: string;
