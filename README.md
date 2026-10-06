@@ -6,7 +6,9 @@ Prodotto e realizzato da **DigitGS**.
 
 **App online (Hostinger)**: https://lightpink-magpie-211772.hostingersite.com
 
-## Repository\n\n**GitHub**: https://github.com/Sannino1999/appsmith-buddy-81\n\n## Cosa contiene
+## Repository
+
+**GitHub**: https://github.com/Sannino1999/appsmith-buddy-81\n\n## Cosa contiene
 
 - Menù completo (Birre e Food) con categorie, gruppi, prezzi, descrizioni e allergeni.
 - Traduzione in 7 lingue (it, en, es, fr, de, pt, zh) con salvataggio delle traduzioni disponibili.
