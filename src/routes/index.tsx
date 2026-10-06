@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CalendarDays,
+  Download,
   Check,
   Clock3,
   Copy,
@@ -30,7 +31,7 @@ import {
   getPublicWifiPassword,
   translateCategory,
 } from "@/lib/menu.functions";
-import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
+import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
@@ -76,6 +77,7 @@ function MenuPage() {
   const [specialClosed, setSpecialClosed] = useState(false);
   const [wifiOpen, setWifiOpen] = useState(false);
   const [wifiCopied, setWifiCopied] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -128,6 +130,7 @@ function MenuPage() {
   const t = UI[lang];
   const info = INFO[lang];
   const menuLabels = MENU_LABELS[lang];
+  const nav = NAVIGATION[lang];
   const services = SERVICES[lang];
   const special = liveMenuQuery.data?.special ?? null;
   const wifiPassword = wifiQuery.data ?? null;
@@ -184,6 +187,15 @@ function MenuPage() {
     const first = publicCategories.find((category) => category.macro === macro);
     if (first) setCategoryId(first.id);
   }, [categoryId, macro, publicCategories]);
+
+  useEffect(() => {
+    const handleBeforeInstall = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstall);
+    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+  }, []);
 
   useEffect(() => {
     if (!searchOpen) return;
@@ -286,9 +298,33 @@ function MenuPage() {
               <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
               <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp Lubrano"><MessageCircle className="size-4" /></a>
               <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" aria-label="Recensioni Lubrano"><Star className="size-4" /></a>
-              <a href={VENUE.phoneHref} className="lubrano-book-button"><CalendarDays className="size-3.5" /> Prenota un tavolo</a>
+              {installPrompt && (
+                <button
+                  type="button"
+                  className="lubrano-book-button"
+                  onClick={async () => {
+                    const prompt = installPrompt as Event & {
+                      prompt?: () => Promise<void>;
+                      userChoice?: Promise<{ outcome: "accepted" | "dismissed" }>;
+                    };
+                    if (!prompt.prompt) return;
+                    await prompt.prompt();
+                    const choice = await prompt.userChoice;
+                    if (!choice || choice.outcome === "accepted") setInstallPrompt(null);
+                  }}
+                >
+                  <Download className="size-3.5" /> {nav.install}
+                </button>
+              )}
+              <a href={VENUE.phoneHref} className="lubrano-book-button"><CalendarDays className="size-3.5" /> {nav.book}</a>
             </div>
           </div>
+          <nav className="lubrano-main-nav" aria-label="Navigazione">
+            <a href="#menu">{nav.menu}</a>
+            <a href="#speciale">{nav.special}</a>
+            <a href="#servizi">{nav.services}</a>
+            <a href="#contatti">{nav.contact}</a>
+          </nav>
           <div className="lubrano-topbar">
             <div className="lubrano-brandline">
               <span className="lubrano-kicker">PUB · BRACERIA · NAPOLI</span>
@@ -342,7 +378,7 @@ function MenuPage() {
           <p className="mt-2 px-1 text-xs text-white/40" aria-live="polite">{query ? `${searchResults.length} risultat${searchResults.length === 1 ? "o" : "i"}` : "Cerca nel menù"}</p>
         </section>
 
-        <section className="lubrano-menu-switcher anim-fade-up stagger-1" aria-label="Sezione menù">
+        <section id="menu" className="lubrano-menu-switcher anim-fade-up stagger-1" aria-label="Sezione menù">
           {menu.macros.map((m) => (
             <button key={m.id} type="button" onClick={() => pickMacro(m.id)} className={`lubrano-macro-button ${macro === m.id ? "is-active" : ""}`}>
               <span>{menuLabels.macros[m.id] ?? m.label}</span>
@@ -428,7 +464,7 @@ function MenuPage() {
         )}
 
         {special && !specialClosed && (
-          <section className="lubrano-special anim-fade-up">
+          <section id="speciale" className="lubrano-special anim-fade-up">
             <button type="button" onClick={() => setSpecialClosed(true)} className="absolute right-3 top-3 z-20 grid size-9 place-items-center rounded-full border border-white/15 bg-black/55 text-white/80 hover:bg-black/75" aria-label="Chiudi speciale del mese"><X className="size-4" /></button>
             <div className="relative min-h-64 overflow-hidden md:min-h-80">
               <img src={special.image_url || "/assets/category-burger.webp"} alt={translateMenuText(special.title, lang) ?? special.title} className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/category-burger.webp"; }} />
@@ -445,7 +481,7 @@ function MenuPage() {
           </section>
         )}
 
-        <section className="lubrano-services anim-fade-up">
+        <section id="servizi" className="lubrano-services anim-fade-up">
           <div className="lubrano-section-heading"><span>★</span><h2>{services.title}</h2></div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.review}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
@@ -456,7 +492,7 @@ function MenuPage() {
           <div className="lubrano-allergen"><strong>{services.allergenTitle}</strong><span>{services.allergenBody}</span></div>
         </section>
 
-        <section className="lubrano-venue anim-fade-up">
+        <section id="contatti" className="lubrano-venue anim-fade-up">
           <div className="lubrano-venue-copy"><span className="lubrano-eyebrow">{info.eyebrow}</span><h2>{info.title}</h2><p>{VENUE.address}</p><a href={VENUE.phoneHref}>{VENUE.phone}</a></div>
           <div className="lubrano-hours"><span>{info.hours}</span><div><b>{info.monday}</b><strong>{info.closed}</strong></div><div><b>{info.openDays}</b><strong>{info.openHours}</strong></div></div>
           <div className="grid gap-3 sm:grid-cols-2"><a href={VENUE.phoneHref} className="lubrano-cta lubrano-cta-primary"><Phone className="size-5" />{info.call}</a><a href={VENUE.mapsUrl} target="_blank" rel="noreferrer" className="lubrano-cta"><MapPin className="size-5" />{info.directions}</a></div>
