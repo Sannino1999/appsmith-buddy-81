@@ -22,6 +22,9 @@ import {
 } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.webp";
+import menuBgJpg from "@/assets/menu-bg.jpg";
+import snacksVisual from "@/assets/category-stuzzicheria.webp";
+import burgerVisual from "@/assets/category-burger.webp";
 import stuzzicheriaVisual from "@/assets/category-stuzzicheria.webp";
 import patateVisual from "@/assets/category-patate.webp";
 import paniniVisual from "@/assets/category-panini.webp";
@@ -383,13 +386,16 @@ function MenuPage() {
           <p className="mt-2 px-1 text-xs text-white/40" aria-live="polite">{query ? `${searchResults.length} risultat${searchResults.length === 1 ? "o" : "i"}` : "Cerca nel menù"}</p>
         </section>
 
-        <section id="menu" className="lubrano-menu-switcher anim-fade-up stagger-1" aria-label="Sezione menù">
+        <section id="menu" className="lubrano-menu-stage anim-fade-up stagger-1" aria-label="Sezione menù">
+          <div className="lubrano-primary-label"><span>{lang === "it" ? "MENÙ" : nav.menu}</span><small>{lang === "it" ? "Scegli la sezione" : nav.menu}</small></div>
+          <div className="lubrano-menu-switcher">
           {menu.macros.map((m) => (
             <button key={m.id} type="button" onClick={() => pickMacro(m.id)} className={`lubrano-macro-button ${macro === m.id ? "is-active" : ""}`}>
               <span>{menuLabels.macros[m.id] ?? m.label}</span>
               <small>{m.id === "food" ? "Burger · Brace · Cucina" : "Birre · Drink · Soft"}</small>
             </button>
           ))}
+          </div>
         </section>
 
         <div className="lubrano-category-wrap anim-fade-up stagger-2">
@@ -439,7 +445,7 @@ function MenuPage() {
           <div key={active?.id ?? "empty"} className="mt-8 anim-menu-change">
             {active && (
               <section className="lubrano-category-hero">
-                <img src={categoryVisuals[active.id] ?? bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/menu-bg.webp"; }} />
+                <img src={categoryVisuals[active.id] ?? bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = bgImage; }} />
                 <div className="lubrano-category-hero-overlay" />
                 <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
                   <span className="lubrano-eyebrow">{macro === "food" ? "DALLA CUCINA" : "DAL BANCO"}</span>
