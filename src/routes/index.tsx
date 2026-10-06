@@ -18,7 +18,7 @@ import {
   X,
 } from "lucide-react";
 
-import bgImage from "@/assets/menu-bg.jpg";
+import bgImage from "@/assets/menu-bg.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import {
   getLiveMenuData,
@@ -32,13 +32,13 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "data:image/png;base64,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";
 const categoryVisuals: Record<string, string> = {
-  stuzzicheria: "/assets/category-stuzzicheria.jpg",
-  patate: "/assets/category-stuzzicheria.jpg",
-  hamburger: "/assets/category-burger.jpg",
-  panini: "/assets/category-burger.jpg",
-  braceria: "/assets/category-brace.jpg",
-  carne: "/assets/category-brace.jpg",
-  dolci: "/assets/category-dolci.jpg",
+  stuzzicheria: "/assets/category-stuzzicheria.webp",
+  patate: "/assets/category-stuzzicheria.webp",
+  hamburger: "/assets/category-burger.webp",
+  panini: "/assets/category-burger.webp",
+  braceria: "/assets/category-brace.webp",
+  carne: "/assets/category-brace.webp",
+  dolci: "/assets/category-dolci.webp",
 };
 
 export const Route = createFileRoute("/")({
@@ -472,12 +472,12 @@ function MenuPage() {
             {active && (
               <div className="category-visual group relative isolate overflow-hidden rounded-3xl border border-white/10 bg-black/35 shadow-2xl shadow-black/25">
                 <img
-                  src={categoryVisuals[active.id] ?? "/assets/menu-bg.jpg"}
+                  src={categoryVisuals[active.id] ?? "/assets/menu-bg.webp"}
                   alt=""
                   loading="lazy"
                   className="h-36 w-full object-cover opacity-75 transition duration-700 ease-out group-hover:scale-105 group-hover:opacity-90 sm:h-44"
                   onError={(event) => {
-                    event.currentTarget.src = "/assets/menu-bg.jpg";
+                    event.currentTarget.src = "/assets/menu-bg.webp";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-black/20" />
@@ -555,7 +555,7 @@ function MenuPage() {
             <div className="grid md:grid-cols-[0.9fr_1.1fr]">
               <div className="relative min-h-60 overflow-hidden">
                 <img
-                  src={special.image_url || "/assets/category-burger.jpg"}
+                  src={special.image_url || "/assets/category-burger.webp"}
                   alt={special.title}
                   className="h-full w-full object-cover"
                 />
