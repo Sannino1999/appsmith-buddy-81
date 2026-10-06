@@ -16,6 +16,7 @@ import {
   deleteCustomItem,
   deleteMenuOverride,
   getActiveSpecial,
+  getAdminById,
   getCategoryOverride,
   getLatestAuditLogForAdmin,
   getMenuOverride,
@@ -114,7 +115,7 @@ export const adminChangePassword = createServerFn({ method: "POST" })
       adminUserId: admin.id,
       action: "Cambia password admin",
       itemKey: null,
-      details: JSON.stringify({ type: "password_change", before: "[REDACTED]", after: "[REDACTED]" }),
+      details: { type: "password_change", before: "[REDACTED]", after: "[REDACTED]" },
     });
 
     return { ok: true as const, message: "Password aggiornata correttamente." };
