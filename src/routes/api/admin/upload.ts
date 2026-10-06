@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createCsrfMiddleware } from "@tanstack/react-start";
 import { z } from "zod";
 import { mkdir, writeFile } from "fs/promises";
 import { randomUUID } from "crypto";
@@ -16,6 +17,7 @@ const ALLOWED_TYPES = new Map([
 
 export const Route = createFileRoute("/api/admin/upload")({
   server: {
+    middleware: [createCsrfMiddleware()],
     handlers: {
       POST: async ({ request }) => {
         const admin = await requireAdmin();
