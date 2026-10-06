@@ -29,12 +29,13 @@ import {
   upsertMenuOverride,
   upsertSpecial,
   setSetting,
+  deactivateAllSpecials,
 } from "./mysql.repository";
 import { isMySqlConfigured } from "./mysql.server";
 
 const loginInput = z.object({
   username: z.string().trim().min(1).max(190),
-  password: z.string().min(1).max(200),
+  password: z.string().min(1).max(72),
 });
 
 function ensureDatabase() {
@@ -145,6 +146,7 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z.object({
       command: z.string().trim().min(1).max(500),
+      confirm: z.boolean().default(false),
     }).parse(data),
   )
   .handler(async ({ data }) => {
@@ -155,6 +157,15 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
 
     const parsed = parseAdminCommand(data.command, baseMenu);
     const commandText = safeCommandText(data.command, parsed);
+    const readOnly = parsed.action === "show_history";
+    if (!readOnly && !data.confirm) {
+      return {
+        ok: false as const,
+        message: "Conferma obbligatoria: visualizza prima l'anteprima e conferma la modifica.",
+        parsed,
+        requiresConfirmation: true as const,
+      };
+    }
 
     if (parsed.action === "unknown") {
       await insertChatMessage({
@@ -237,7 +248,7 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
           item_key: string | null;
         } | null;
         if (!before) {
-          await (await import("./mysql.repository")).deactivateAllSpecials();
+          await deactivateAllSpecials();
         } else {
           await (await import("./mysql.repository")).deactivateAllSpecials();
           await upsertSpecial({
@@ -382,18 +393,18 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
       details = { ...details, undoAction: "custom_category", before: null, after: { id } };
     } else if (parsed.action === "create_item") {
       const id = randomUUID();
-      const itemKey = "custom:" + id;
+      const customItemKey = "custom:" + id;
       await createCustomItem({
         id,
-        itemKey,
+        itemKey: customItemKey,
         categoryId: parsed.categoryId,
         name: parsed.name,
         description: parsed.description,
         priceEur: parsed.priceEur,
       });
-      itemKey = itemKey;
+      itemKey = customItemKey;
       message = "✅ Piatto extra creato: " + parsed.name;
-      details = { ...details, undoAction: "custom_item", before: null, after: { id, itemKey } };
+      details = { ...details, undoAction: "custom_item", before: null, after: { id, itemKey: customItemKey } };
     } else if (parsed.action === "set_wifi") {
       await setSetting("wifi_password", parsed.password);
       message = "✅ Password Wi-Fi aggiornata.";
