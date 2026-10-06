@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
+import { registerPwaServiceWorker } from "../lib/pwa";
 
 import appCss from "../styles.css?url";
 
@@ -79,6 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Lubrano Pub & Braceria" },
       { name: "generator", content: "DigitGS" },
+      { name: "theme-color", content: "#17110f" },
       { property: "og:title", content: "Lubrano Pub & Braceria — Menù digitale" },
       {
         property: "og:description",
@@ -99,6 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap",
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
@@ -123,6 +126,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  if (typeof window !== "undefined") registerPwaServiceWorker();
 
   return (
     <QueryClientProvider client={queryClient}>
