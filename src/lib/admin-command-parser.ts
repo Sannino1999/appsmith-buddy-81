@@ -43,13 +43,20 @@ function normalize(value: string) {
 
 function numberFrom(value: string) {
   const cleaned = value.replace(/[€\s]/g, "").replace(",", ".");
-  if (!cleaned) return null;
   const parsed = Number(cleaned);
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function splitPipe(value: string) {
+  return value.split("|").map((part) => part.trim());
+}
+
+function part(parts: string[], index: number) {
+  return parts[index] ?? "";
+}
+
 function findItems(menu: Menu, needle: string) {
-  const n = normalize(needle);
+  const normalized = normalize(needle);
   const items = menu.categories.flatMap((category) =>
     category.groups.flatMap((group) =>
       group.items.map((item) => ({
@@ -61,42 +68,45 @@ function findItems(menu: Menu, needle: string) {
     ),
   );
 
-  const exact = items.filter((item) => item.normalizedName === n);
+  const exact = items.filter((item) => item.normalizedName === normalized);
   if (exact.length > 0) return exact;
 
-  return items.filter((item) => item.normalizedName.includes(n) || n.includes(item.normalizedName));
+  return items.filter(
+    (item) =>
+      item.normalizedName.includes(normalized) ||
+      normalized.includes(item.normalizedName),
+  );
 }
 
-function findCategory(menu: Menu, needle: string) {
-  const n = normalize(needle);
+function findCategories(menu: Menu, needle: string) {
+  const normalized = normalize(needle);
   return menu.categories.filter(
-    (category) => normalize(category.name).includes(n) || n.includes(normalize(category.name)),
+    (category) =>
+      normalize(category.name).includes(normalized) ||
+      normalized.includes(normalize(category.name)),
   );
 }
 
 function ambiguous(
   reason: string,
-  candidates: { key: string; name: string; category: string }[],
+  matches: { key: string; name: string; category: string }[],
 ): ParsedCommand {
-  return { action: "ambiguous", reason, candidates };
+  return { action: "ambiguous", reason, candidates: matches };
 }
 
 function parseSpecial(body: string): ParsedCommand {
-  const parts = body.split("|").map((value) => value.trim());
-  const title = parts[0] ?? "";
-  const description = parts[1] ?? "";
-  const priceText = parts[2] ?? "";
-  const imageUrl = parts[3] ?? "";
+  const parts = splitPipe(body);
+  const title = part(parts, 0);
+  const description = part(parts, 1) || null;
+  const priceText = part(parts, 2);
+  const imageUrl = part(parts, 3) || null;
 
-  if (!title || parts.length < 2) {
-    return {
-      action: "unknown",
-      reason: "Usa: speciale | titolo | descrizione | prezzo | immagine(opzionale)",
-    };
+  if (!title) {
+    return { action: "unknown", reason: "Titolo speciale mancante." };
   }
 
   const priceEur = priceText ? numberFrom(priceText) : null;
-  if (priceText && priceEur === null) {
+  if (priceText && (priceEur === null || priceEur < 0 || priceEur > 1000)) {
     return { action: "unknown", reason: "Prezzo speciale non valido." };
   }
 
@@ -107,27 +117,47 @@ function parseSpecial(body: string): ParsedCommand {
   return {
     action: "set_special",
     title,
-    description: description || null,
+    description,
     priceEur,
-    imageUrl: imageUrl || null,
+    imageUrl,
   };
 }
 
-function parseCreateItem(body: string, menu: Menu): ParsedCommand {
-  const parts = body.split("|").map((value) => value.trim());
-  const categoryName = parts[0] ?? "";
-  const name = parts[1] ?? "";
-  const priceText = parts[2] ?? "";
-  const description = parts[3] ?? null;
+function parseCreateCategory(body: string): ParsedCommand {
+  const parts = splitPipe(body);
+  const macroText = normalize(part(parts, 0));
+  const name = part(parts, 1);
 
-  if (!categoryName || !name || parts.length < 3) {
+  const macro =
+    macroText === "food" || macroText === "cibo"
+      ? "food"
+      : macroText === "drinks" || macroText === "bevande"
+        ? "drinks"
+        : null;
+
+  if (!macro) return { action: "unknown", reason: "Specificare CIBO o BEVANDE." };
+  if (name.length < 2 || name.length > 80) {
+    return { action: "unknown", reason: "Nome categoria non valido." };
+  }
+
+  return { action: "create_category", macro, name };
+}
+
+function parseCreateItem(body: string, menu: Menu): ParsedCommand {
+  const parts = splitPipe(body);
+  const categoryName = part(parts, 0);
+  const name = part(parts, 1);
+  const priceText = part(parts, 2);
+  const description = part(parts, 3) || null;
+
+  if (!categoryName || name.length < 2 || name.length > 120) {
     return {
       action: "unknown",
       reason: "Usa: aggiungi piatto | categoria | nome | prezzo | descrizione",
     };
   }
 
-  const categories = findCategory(menu, categoryName);
+  const categories = findCategories(menu, categoryName);
   if (categories.length !== 1) {
     return ambiguous(
       "Categoria non univoca.",
@@ -139,17 +169,48 @@ function parseCreateItem(body: string, menu: Menu): ParsedCommand {
     );
   }
 
-  const category = categories[0];
-  if (!category) {
-    return { action: "unknown", reason: "Categoria non trovata." };
+  const priceEur = priceText ? numberFrom(priceText) : null;
+  if (priceText && (priceEur === null || priceEur < 0 || priceEur > 1000)) {
+    return { action: "unknown", reason: "Prezzo non valido." };
   }
 
   return {
     action: "create_item",
-    categoryId: category.id,
+    categoryId: categories[0]?.id ?? "",
     name,
-    description: description || null,
-    priceEur: numberFrom(priceText),
+    description,
+    priceEur,
+  };
+}
+
+function parseItemAvailability(
+  raw: string,
+  verb: string,
+  needle: string,
+  menu: Menu,
+): ParsedCommand {
+  const matches = findItems(menu, needle);
+  if (matches.length !== 1) {
+    return matches.length
+      ? ambiguous(
+          "Ho trovato più voci compatibili.",
+          matches.map((item) => ({
+            key: item.key,
+            name: item.name,
+            category: item.category,
+          })),
+        )
+      : { action: "unknown", reason: "Voce non trovata." };
+  }
+
+  const match = matches[0];
+  if (!match) return { action: "unknown", reason: "Voce non trovata." };
+
+  return {
+    action: "set_available",
+    itemKey: match.key,
+    available: /disponibile|rimetti|riattiva/.test(verb),
+    label: match.name,
   };
 }
 
@@ -161,12 +222,12 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   if (lower === "annulla" || lower === "annulla ultima azione" || lower === "undo") {
     return { action: "undo_last" };
   }
-  if (lower === "storico" || lower === "modifiche") return { action: "show_history" };
-
+  if (lower === "storico" || lower === "modifiche") {
+    return { action: "show_history" };
+  }
   if (lower.startsWith("speciale |")) {
     return parseSpecial(raw.slice(raw.indexOf("|") + 1));
   }
-
   if (
     lower === "rimuovi speciale" ||
     lower === "rimuovi lo speciale" ||
@@ -174,42 +235,17 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   ) {
     return { action: "remove_special" };
   }
-
   if (lower.startsWith("wifi |") || lower.startsWith("wifi:")) {
     const separator = raw.includes("|") ? "|" : ":";
     const password = raw.slice(raw.indexOf(separator) + 1).trim();
     if (password.length < 8 || password.length > 63) {
-      return {
-        action: "unknown",
-        reason: "La password Wi-Fi deve avere tra 8 e 63 caratteri.",
-      };
+      return { action: "unknown", reason: "La password Wi-Fi deve avere tra 8 e 63 caratteri." };
     }
     return { action: "set_wifi", password };
   }
-
   if (lower.startsWith("aggiungi categoria |")) {
-    const parts = raw
-      .slice(raw.indexOf("|") + 1)
-      .split("|")
-      .map((v) => v.trim());
-    const macroText = normalize(parts[0] ?? "");
-    const name = parts[1] ?? "";
-    const macro =
-      macroText === "food" || macroText === "cibo"
-        ? "food"
-        : macroText === "drinks" || macroText === "bevande"
-          ? "drinks"
-          : null;
-
-    if (!macro) {
-      return { action: "unknown", reason: "Specificare CIBO o BEVANDE." };
-    }
-    if (name.length < 2 || name.length > 80) {
-      return { action: "unknown", reason: "Nome categoria non valido." };
-    }
-    return { action: "create_category", macro, name };
+    return parseCreateCategory(raw.slice(raw.indexOf("|") + 1));
   }
-
   if (lower.startsWith("aggiungi piatto |")) {
     return parseCreateItem(raw.slice(raw.indexOf("|") + 1), menu);
   }
@@ -226,22 +262,27 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
     }
 
     const matches = findItems(menu, needle);
-    const first = matches[0];
-    if (matches.length !== 1 || !first) {
-      return ambiguous(
-        "Ho trovato più voci compatibili.",
-        matches.map((item) => ({
-          key: item.key,
-          name: item.name,
-          category: item.category,
-        })),
-      );
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous(
+            "Ho trovato più voci compatibili.",
+            matches.map((item) => ({
+              key: item.key,
+              name: item.name,
+              category: item.category,
+            })),
+          )
+        : { action: "unknown", reason: "Voce non trovata." };
     }
+
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+
     return {
       action: "set_price",
-      itemKey: first.key,
+      itemKey: match.key,
       priceEur,
-      label: first.name,
+      label: match.name,
     };
   }
 
@@ -251,63 +292,59 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   if (availabilityMatch) {
     const verb = normalize(availabilityMatch[1] ?? "");
     const needle = availabilityMatch[2] ?? "";
-    const categoryMatches = findCategory(menu, needle);
 
-    if (categoryMatches.length === 1 && /nascondi|riattiva|rimetti|togli/.test(verb)) {
+    const categoryMatches = findCategories(menu, needle);
+    if (
+      categoryMatches.length === 1 &&
+      /(nascondi|riattiva|rimetti|togli)/.test(verb)
+    ) {
       const category = categoryMatches[0];
       if (!category) return { action: "unknown", reason: "Categoria non trovata." };
       return {
         action: "set_category_available",
         categoryId: category.id,
-        available: !/togli|nascondi/.test(verb),
+        available: !/(esaurito|finito|togli|nascondi)/.test(verb),
         label: category.name,
       };
     }
 
-    const matches = findItems(menu, needle);
-    const first = matches[0];
-    if (matches.length !== 1 || !first) {
-      return ambiguous(
-        "Ho trovato più voci compatibili.",
-        matches.map((item) => ({
-          key: item.key,
-          name: item.name,
-          category: item.category,
-        })),
-      );
-    }
-
-    return {
-      action: "set_available",
-      itemKey: first.key,
-      available: /disponibile|rimetti|riattiva/.test(verb),
-      label: first.name,
-    };
+    return parseItemAvailability(raw, verb, needle, menu);
   }
 
-  const resetMatch = raw.match(/^\s*ripristina\s+(categoria\s+)?(.+)$/i);
+  const resetMatch = raw.match(/^\s*ripristina\s+(?:categoria\s+)?(.+)$/i);
   if (resetMatch) {
-    const needle = resetMatch[2] ?? "";
-    const categories = findCategory(menu, needle);
-    if (resetMatch[1] && categories.length === 1) {
-      const category = categories[0];
-      if (!category) return { action: "unknown", reason: "Categoria non trovata." };
-      return { action: "reset_category", categoryId: category.id, label: category.name };
+    const needle = resetMatch[1] ?? "";
+    if (lower.includes("ripristina categoria")) {
+      const categories = findCategories(menu, needle);
+      if (categories.length === 1) {
+        const category = categories[0];
+        if (category) {
+          return {
+            action: "reset_category",
+            categoryId: category.id,
+            label: category.name,
+          };
+        }
+      }
     }
 
     const matches = findItems(menu, needle);
-    const first = matches[0];
-    if (matches.length !== 1 || !first) {
-      return ambiguous(
-        "Ho trovato più voci compatibili.",
-        matches.map((item) => ({
-          key: item.key,
-          name: item.name,
-          category: item.category,
-        })),
-      );
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous(
+            "Ho trovato più voci compatibili.",
+            matches.map((item) => ({
+              key: item.key,
+              name: item.name,
+              category: item.category,
+            })),
+          )
+        : { action: "unknown", reason: "Voce non trovata." };
     }
-    return { action: "reset_item", itemKey: first.key, label: first.name };
+
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+    return { action: "reset_item", itemKey: match.key, label: match.name };
   }
 
   return {
