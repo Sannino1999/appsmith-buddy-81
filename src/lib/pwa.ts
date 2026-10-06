@@ -1,9 +1,14 @@
+let registrationPromise: Promise<ServiceWorkerRegistration | undefined> | undefined;
+
 export function registerPwaServiceWorker() {
   if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
 
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch((error) => {
-      console.error("PWA service worker registration failed", error);
-    });
-  });
+  if (!registrationPromise) {
+    registrationPromise = navigator.serviceWorker
+      .register("/sw.js", { scope: "/", updateViaCache: "none" })
+      .catch((error) => {
+        console.error("PWA service worker registration failed", error);
+        return undefined;
+      });
+  }
 }
