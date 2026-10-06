@@ -381,7 +381,7 @@ async function ensureBootstrapAdmin() {
         `UPDATE admin_users
          SET password_hash = ?, is_active = 1, role = 'admin', updated_at = CURRENT_TIMESTAMP(3)
          WHERE id = ?`,
-        [passwordHash, existing[0].id],
+        [passwordHash, existing[0]?.id],
       );
       console.log(`[db] bootstrap admin password reset: ${username}`);
     }
