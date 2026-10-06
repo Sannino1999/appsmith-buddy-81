@@ -67,7 +67,7 @@ function parseSpecial(body: string): ParsedCommand {
   if (parts.length < 2) {
     return {
       action: "unknown",
-      reason: "Per lo speciale usa: speciale | titolo | descrizione | prezzo",
+      reason: "Per lo speciale usa: speciale | titolo | descrizione | prezzo | immagine(opzionale)",
     };
   }
 
@@ -80,12 +80,17 @@ function parseSpecial(body: string): ParsedCommand {
     return { action: "unknown", reason: "Prezzo speciale non valido." };
   }
 
+  const imageUrl = parts[3] || null;
+  if (imageUrl && !/^(https?:\/\/|\/uploads\/)[^\s]+$/i.test(imageUrl)) {
+    return { action: "unknown", reason: "URL immagine non valida." };
+  }
+
   return {
     action: "set_special",
     title,
     description,
     priceEur,
-    imageUrl: null,
+    imageUrl,
   };
 }
 
