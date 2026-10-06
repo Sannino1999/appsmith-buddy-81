@@ -411,6 +411,7 @@ type InfoStrings = {
   openHours: string;
   directions: string;
   call: string;
+  days: Array<{ day: string; hours: string; closed?: boolean }>;
 };
 
 export const INFO: Record<LangCode, InfoStrings> = {
@@ -424,6 +425,15 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "19:00 – 01:30",
     directions: "Come arrivare",
     call: "Chiama",
+    days: [
+      { day: "Lunedì", hours: "Chiuso", closed: true },
+      { day: "Martedì", hours: "19:00 – 01:30" },
+      { day: "Mercoledì", hours: "19:00 – 01:30" },
+      { day: "Giovedì", hours: "19:00 – 01:30" },
+      { day: "Venerdì", hours: "19:00 – 01:30" },
+      { day: "Sabato", hours: "19:00 – 01:30" },
+      { day: "Domenica", hours: "19:00 – 01:30" },
+    ],
   },
   en: {
     title: "Find us",
@@ -435,6 +445,15 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "7:00 pm – 1:30 am",
     directions: "Directions",
     call: "Call",
+    days: [
+      { day: "Monday", hours: "Closed", closed: true },
+      { day: "Tuesday", hours: "7:00 pm – 1:30 am" },
+      { day: "Wednesday", hours: "7:00 pm – 1:30 am" },
+      { day: "Thursday", hours: "7:00 pm – 1:30 am" },
+      { day: "Friday", hours: "7:00 pm – 1:30 am" },
+      { day: "Saturday", hours: "7:00 pm – 1:30 am" },
+      { day: "Sunday", hours: "7:00 pm – 1:30 am" },
+    ],
   },
   es: {
     title: "Dónde estamos",
@@ -446,6 +465,15 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "19:00 – 01:30",
     directions: "Cómo llegar",
     call: "Llamar",
+    days: [
+      { day: "Lunes", hours: "Cerrado", closed: true },
+      { day: "Martes", hours: "19:00 – 01:30" },
+      { day: "Miércoles", hours: "19:00 – 01:30" },
+      { day: "Jueves", hours: "19:00 – 01:30" },
+      { day: "Viernes", hours: "19:00 – 01:30" },
+      { day: "Sábado", hours: "19:00 – 01:30" },
+      { day: "Domingo", hours: "19:00 – 01:30" },
+    ],
   },
   fr: {
     title: "Nous trouver",
@@ -457,6 +485,15 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "19h00 – 01h30",
     directions: "Itinéraire",
     call: "Appeler",
+    days: [
+      { day: "Lundi", hours: "Fermé", closed: true },
+      { day: "Mardi", hours: "19h00 – 01h30" },
+      { day: "Mercredi", hours: "19h00 – 01h30" },
+      { day: "Jeudi", hours: "19h00 – 01h30" },
+      { day: "Vendredi", hours: "19h00 – 01h30" },
+      { day: "Samedi", hours: "19h00 – 01h30" },
+      { day: "Dimanche", hours: "19h00 – 01h30" },
+    ],
   },
   de: {
     title: "So finden Sie uns",
@@ -468,6 +505,15 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "19:00 – 01:30",
     directions: "Route",
     call: "Anrufen",
+    days: [
+      { day: "Montag", hours: "Geschlossen", closed: true },
+      { day: "Dienstag", hours: "19:00 – 01:30" },
+      { day: "Mittwoch", hours: "19:00 – 01:30" },
+      { day: "Donnerstag", hours: "19:00 – 01:30" },
+      { day: "Freitag", hours: "19:00 – 01:30" },
+      { day: "Samstag", hours: "19:00 – 01:30" },
+      { day: "Sonntag", hours: "19:00 – 01:30" },
+    ],
   },
   pt: {
     title: "Onde estamos",
@@ -479,6 +525,15 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "19:00 – 01:30",
     directions: "Como chegar",
     call: "Ligar",
+    days: [
+      { day: "Segunda", hours: "Fechado", closed: true },
+      { day: "Terça", hours: "19:00 – 01:30" },
+      { day: "Quarta", hours: "19:00 – 01:30" },
+      { day: "Quinta", hours: "19:00 – 01:30" },
+      { day: "Sexta", hours: "19:00 – 01:30" },
+      { day: "Sábado", hours: "19:00 – 01:30" },
+      { day: "Domingo", hours: "19:00 – 01:30" },
+    ],
   },
   zh: {
     title: "地址",
@@ -490,5 +545,14 @@ export const INFO: Record<LangCode, InfoStrings> = {
     openHours: "19:00 – 01:30",
     directions: "导航",
     call: "致电",
+    days: [
+      { day: "周一", hours: "休息", closed: true },
+      { day: "周二", hours: "19:00 – 01:30" },
+      { day: "周三", hours: "19:00 – 01:30" },
+      { day: "周四", hours: "19:00 – 01:30" },
+      { day: "周五", hours: "19:00 – 01:30" },
+      { day: "周六", hours: "19:00 – 01:30" },
+      { day: "周日", hours: "19:00 – 01:30" },
+    ],
   },
 };
