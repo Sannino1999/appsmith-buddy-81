@@ -30,7 +30,7 @@ import {
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
-const localLogo = "/branding/lubrano-logo-512.png";
+const localLogo = "/icon-512.svg";
 const categoryVisuals: Record<string, string> = {
   stuzzicheria: "/assets/category-stuzzicheria.webp",
   patate: "/assets/category-stuzzicheria.webp",
