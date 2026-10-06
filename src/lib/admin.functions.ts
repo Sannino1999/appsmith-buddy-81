@@ -31,6 +31,8 @@ import {
 } from "./mysql.repository";
 import { isMySqlConfigured } from "./mysql.server";
 
+const pendingConfirmations = new Map<string, { command: string; expiresAt: number }>();
+
 const loginInput = z.object({
   username: z.string().trim().min(1).max(190),
   password: z.string().min(1).max(72),
@@ -135,10 +137,17 @@ export const previewAdminCommand = createServerFn({ method: "POST" })
     ensureDatabase();
 
     const parsed = parseAdminCommand(data.command, baseMenu);
+    const requiresConfirmation = !["unknown", "ambiguous", "show_history"].includes(parsed.action);
+    if (requiresConfirmation) {
+      pendingConfirmations.set(admin.id, {
+        command: data.command,
+        expiresAt: Date.now() + 5 * 60 * 1000,
+      });
+    }
     return {
       parsed,
       safeCommand: safeCommandText(data.command, parsed),
-      requiresConfirmation: !["unknown", "ambiguous", "show_history"].includes(parsed.action),
+      requiresConfirmation,
     };
   });
 
@@ -158,13 +167,22 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
     const parsed = parseAdminCommand(data.command, baseMenu);
     const commandText = safeCommandText(data.command, parsed);
     const readOnly = parsed.action === "show_history";
-    if (!readOnly && !data.confirm) {
-      return {
-        ok: false as const,
-        message: "Conferma obbligatoria: visualizza prima l'anteprima e conferma la modifica.",
-        parsed,
-        requiresConfirmation: true as const,
-      };
+    if (!readOnly) {
+      const pending = pendingConfirmations.get(admin.id);
+      const validPending =
+        data.confirm &&
+        pending &&
+        pending.command === data.command &&
+        pending.expiresAt > Date.now();
+      if (!validPending) {
+        return {
+          ok: false as const,
+          message: "Conferma obbligatoria: crea una nuova anteprima per questa modifica.",
+          parsed,
+          requiresConfirmation: true as const,
+        };
+      }
+      pendingConfirmations.delete(admin.id);
     }
 
     if (parsed.action === "unknown") {
