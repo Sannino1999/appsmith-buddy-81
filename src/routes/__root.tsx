@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { registerPwaServiceWorker } from "../lib/pwa";
 
 import appCss from "../styles.css?url";
@@ -128,7 +128,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
-  if (typeof window !== "undefined") registerPwaServiceWorker();
+  useEffect(() => {\n    registerPwaServiceWorker();\n  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
