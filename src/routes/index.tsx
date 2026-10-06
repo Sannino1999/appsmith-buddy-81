@@ -3,7 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  CalendarDays,
   Check,
+  Clock3,
   Copy,
   ExternalLink,
   Globe,
@@ -20,6 +22,7 @@ import {
 
 import bgImage from "@/assets/menu-bg.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
+import { translateMenuText } from "@/lib/menu-translations";
 import {
   getLiveMenuData,
   getOverrides,
@@ -206,8 +209,8 @@ function MenuPage() {
               categoryId: category.id,
               categoryName: category.name,
               groupName: group.name,
-              name: override?.name ?? item.name,
-              description: override?.description ?? item.description,
+              name: translateMenuText(override?.name ?? item.name, lang) ?? item.name,
+              description: translateMenuText(override?.description ?? item.description, lang),
               price_eur: override?.price_eur ?? item.price_eur,
               available: override?.available ?? item.available,
             };
@@ -273,6 +276,19 @@ function MenuPage() {
       <div className="lubrano-backdrop fixed inset-0 -z-10" aria-hidden />
       <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-3 sm:px-6 lg:px-8">
         <header className="lubrano-header anim-fade-up">
+          <div className="lubrano-utility">
+            <div className="lubrano-utility-links">
+              <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer"><MapPin className="size-3.5" /> {VENUE.address}</a>
+              <span><Clock3 className="size-3.5" /> Lun–Dom · 18:00–02:00</span>
+              <a href={VENUE.phoneHref}><Phone className="size-3.5" /> {VENUE.phone}</a>
+            </div>
+            <div className="lubrano-utility-links">
+              <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
+              <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp Lubrano"><MessageCircle className="size-4" /></a>
+              <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" aria-label="Recensioni Lubrano"><Star className="size-4" /></a>
+              <a href={VENUE.phoneHref} className="lubrano-book-button"><CalendarDays className="size-3.5" /> Prenota un tavolo</a>
+            </div>
+          </div>
           <div className="lubrano-topbar">
             <div className="lubrano-brandline">
               <span className="lubrano-kicker">PUB · BRACERIA · NAPOLI</span>
@@ -311,7 +327,7 @@ function MenuPage() {
               <p className="lubrano-hero-note">Sapori decisi, brace, burger e birre. Scopri il menù e scegli il tuo prossimo preferito.</p>
             </div>
             <div className="lubrano-logo-frame">
-              <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo" width={512} height={512} />
+              <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo lubrano-logo-original" width={512} height={512} />
             </div>
           </div>
         </header>
@@ -415,7 +431,7 @@ function MenuPage() {
           <section className="lubrano-special anim-fade-up">
             <button type="button" onClick={() => setSpecialClosed(true)} className="absolute right-3 top-3 z-20 grid size-9 place-items-center rounded-full border border-white/15 bg-black/55 text-white/80 hover:bg-black/75" aria-label="Chiudi speciale del mese"><X className="size-4" /></button>
             <div className="relative min-h-64 overflow-hidden md:min-h-80">
-              <img src={special.image_url || "/assets/category-burger.webp"} alt={special.title} className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/category-burger.webp"; }} />
+              <img src={special.image_url || "/assets/category-burger.webp"} alt={translateMenuText(special.title, lang) ?? special.title} className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/category-burger.webp"; }} />
               <div className="lubrano-special-overlay" />
               <div className="relative z-10 flex min-h-64 flex-col justify-end p-6 md:min-h-80 md:p-8">
                 <span className="lubrano-special-badge"><Star className="size-3.5 fill-current" /> {services.special}</span>
@@ -423,7 +439,7 @@ function MenuPage() {
                   <div><p className="lubrano-eyebrow">LIMITED · LUBRANO</p><h2 className="lubrano-special-title">{special.title}</h2></div>
                   {special.price_eur !== null && <span className="lubrano-special-price">{formatPrice(special.price_eur)}</span>}
                 </div>
-                {special.description && <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75">{special.description}</p>}
+                {special.description && <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75">{translateMenuText(special.description, lang)}</p>}
               </div>
             </div>
           </section>
