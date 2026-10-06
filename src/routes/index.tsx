@@ -229,7 +229,7 @@ function MenuPage() {
           }),
         ),
       ),
-    [publicCategories, overrides],
+    [publicCategories, overrides, lang],
   );
 
   const normalizedQuery = query.trim().toLocaleLowerCase(lang);
