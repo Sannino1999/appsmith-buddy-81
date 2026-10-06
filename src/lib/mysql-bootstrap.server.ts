@@ -351,16 +351,21 @@ export async function bootstrapMysql(options: { closePool?: boolean } = {}) {
 }
 
 async function ensureBootstrapAdmin() {
-  const username = process.env["ADMIN_BOOTSTRAP_USERNAME"]?.trim();
+  const username = process.env["ADMIN_BOOTSTRAP_USERNAME"]?.trim() || "admin";
   const password = process.env["ADMIN_BOOTSTRAP_PASSWORD"];
-  if (!username || !password) {
-    console.log("[db] admin bootstrap skipped: ADMIN_BOOTSTRAP_USERNAME/PASSWORD not configured.");
+  const resetPassword = process.env["ADMIN_BOOTSTRAP_RESET_PASSWORD"];
+  const passwordToUse = resetPassword || password;
+
+  if (!passwordToUse) {
+    console.log(
+      "[db] admin bootstrap skipped: set ADMIN_BOOTSTRAP_PASSWORD for the first admin account.",
+    );
     return;
   }
-  if (password.length < 12) {
+  if (passwordToUse.length < 12) {
     throw new Error("ADMIN_BOOTSTRAP_PASSWORD must be at least 12 characters.");
   }
-  if (bcrypt.truncates(password)) {
+  if (bcrypt.truncates(passwordToUse)) {
     throw new Error("ADMIN_BOOTSTRAP_PASSWORD exceeds bcrypt's 72-byte limit.");
   }
 
@@ -368,11 +373,21 @@ async function ensureBootstrapAdmin() {
     "SELECT id FROM admin_users WHERE username = ? LIMIT 1",
     [username],
   );
+  const passwordHash = await bcrypt.hash(passwordToUse, 12);
+
   if (existing.length > 0) {
+    if (resetPassword) {
+      await mysqlExecute(
+        `UPDATE admin_users
+         SET password_hash = ?, is_active = 1, role = 'admin', updated_at = CURRENT_TIMESTAMP(3)
+         WHERE id = ?`,
+        [passwordHash, existing[0].id],
+      );
+      console.log(`[db] bootstrap admin password reset: ${username}`);
+    }
     return;
   }
 
-  const passwordHash = await bcrypt.hash(password, 12);
   await mysqlExecute(
     `INSERT INTO admin_users
       (id, username, password_hash, role, is_active, created_at, updated_at)
