@@ -308,7 +308,7 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
     }
 
     let message = "Modifica applicata.";
-    let action = parsed.action;
+    const action = parsed.action;
     let itemKey: string | null = null;
     let details: Record<string, unknown> = { command: commandText };
 
