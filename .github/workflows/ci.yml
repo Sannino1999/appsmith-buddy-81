@@ -41,7 +41,7 @@ jobs:
       - name: Scan for legacy platform references
         shell: bash
         run: |
-          if grep -RniE 'lovable\.app|lovable\.dev|@lovable|__l5e|\.lovable' .             --exclude-dir=.git             --exclude='package-lock.json'; then
+          if git grep -niE 'lovable\.app|lovable\.dev|@lovable|__l5e|\.lovable' -- . ':(exclude).github' ':(exclude)package-lock.json'; then
             echo "Legacy platform reference found."
             exit 1
           fi
