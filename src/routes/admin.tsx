@@ -303,6 +303,30 @@ function AdminPage() {
               </div>
             </div>
 
+            <div className="mt-5 max-h-72 space-y-3 overflow-y-auto rounded-2xl border border-white/10 bg-black/20 p-3">
+              {(!data.messages || data.messages.length === 0) && (
+                <div className="rounded-xl bg-accent/5 p-4 text-sm leading-relaxed text-white/60">
+                  <p className="font-semibold text-white/80">Ciao 👋</p>
+                  <p className="mt-1">
+                    Scrivimi cosa vuoi cambiare. Prima ti mostro l'anteprima, poi devi confermare.
+                  </p>
+                </div>
+              )}
+              {(data.messages ?? []).map((entry) => (
+                <div
+                  key={entry.id}
+                  className={entry.role === "user" ? "ml-6 rounded-xl bg-primary/10 p-3" : "mr-6 rounded-xl bg-white/[0.04] p-3"}
+                >
+                  <p className="text-[0.62rem] font-bold uppercase tracking-[0.16em] text-white/35">
+                    {entry.role === "user" ? "Tu" : "Lubrano Admin"}
+                  </p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-white/75">
+                    {entry.message}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             <div className="mt-5 flex flex-wrap gap-2">
               {EXAMPLES.map((example) => (
                 <button
