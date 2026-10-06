@@ -72,9 +72,7 @@ function findItems(menu: Menu, needle: string) {
   if (exact.length > 0) return exact;
 
   return items.filter(
-    (item) =>
-      item.normalizedName.includes(normalized) ||
-      normalized.includes(item.normalizedName),
+    (item) => item.normalizedName.includes(normalized) || normalized.includes(item.normalizedName),
   );
 }
 
@@ -294,10 +292,7 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
     const needle = availabilityMatch[2] ?? "";
 
     const categoryMatches = findCategories(menu, needle);
-    if (
-      categoryMatches.length === 1 &&
-      /(nascondi|riattiva|rimetti|togli)/.test(verb)
-    ) {
+    if (categoryMatches.length === 1 && /(nascondi|riattiva|rimetti|togli)/.test(verb)) {
       const category = categoryMatches[0];
       if (!category) return { action: "unknown", reason: "Categoria non trovata." };
       return {
