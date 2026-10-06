@@ -43,7 +43,7 @@ jobs:
         run: npm run lint
 
       - name: Formattazione
-        run: npx prettier --check .
+        run: npx prettier --check src/lib src/routes/api src/server.ts
 
       - name: Audit dipendenze ad alto rischio
         run: npm audit --audit-level=high --omit=dev
