@@ -148,6 +148,9 @@ function AdminPage() {
             <p className="mt-3 text-center text-sm leading-relaxed text-white/55">
               Accesso riservato. Le modifiche vengono confermate e registrate nello storico.
             </p>
+            <p className="mt-4 rounded-xl border border-white/8 bg-white/[0.025] px-4 py-3 text-center text-xs leading-relaxed text-white/40">
+              Credenziali gestite esclusivamente dall'ambiente Hostinger. Per il primo accesso usa l'account admin configurato in <code className="text-white/65">ADMIN_BOOTSTRAP_USERNAME/PASSWORD</code>.
+            </p>
 
             <div className="mt-8 space-y-3">
               <label className="block">
