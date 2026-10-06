@@ -142,8 +142,8 @@ function AdminPage() {
       <div className="min-h-screen bg-[#160f0c] px-4 py-10 text-white">
         <div className="mx-auto max-w-md">
           <div className="rounded-[2rem] border border-white/10 bg-black/35 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-            <div className="mx-auto grid size-16 place-items-center rounded-2xl bg-accent/10 text-accent">
-              <ShieldCheck className="size-8" />
+            <div className="mx-auto grid size-24 place-items-center rounded-3xl border border-[#8ff5cf]/15 bg-black/30 p-3 shadow-xl shadow-[#8e1833]/20">
+              <img src="/lubrano-logo.png" alt="Lubrano Pub & Braceria" className="h-full w-full object-contain" width={256} height={256} />
             </div>
             <p className="mt-6 text-center text-[0.66rem] font-bold uppercase tracking-[0.3em] text-accent">
               Lubrano Admin
@@ -272,11 +272,12 @@ function AdminPage() {
     <div className="min-h-screen bg-[#160f0c] text-white">
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#160f0c]/92 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div>
-            <p className="text-[0.62rem] font-bold uppercase tracking-[0.25em] text-accent">
-              Lubrano Admin
-            </p>
-            <h1 className="display-caps mt-0.5 text-xl">Console del menù</h1>
+          <div className="flex items-center gap-3">
+            <img src="/lubrano-logo.png" alt="" className="size-11 rounded-full object-cover ring-1 ring-[#8ff5cf]/20" width={128} height={128} />
+            <div>
+              <p className="text-[0.62rem] font-bold uppercase tracking-[0.25em] text-accent">Lubrano Admin</p>
+              <h1 className="display-caps mt-0.5 text-xl">Console del menù</h1>
+            </div>
           </div>
           <button
             type="button"
