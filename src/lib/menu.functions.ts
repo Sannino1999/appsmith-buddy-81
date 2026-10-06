@@ -8,6 +8,7 @@ import {
   getLiveMenuDataFromMysql,
   getMenuFromMysql,
   getTranslationCache,
+  getSetting,
   listMenuOverrides,
 } from "./mysql.repository";
 
@@ -61,6 +62,17 @@ export const getPublicMenu = createServerFn({ method: "GET" }).handler(async () 
   } catch (error) {
     console.error("MySQL catalog unavailable; serving the original menu catalog.", error);
     return baseMenu;
+  }
+});
+
+export const getPublicWifiPassword = createServerFn({ method: "GET" }).handler(async () => {
+  if (!isMySqlConfigured()) return null;
+  try {
+    const value = await getSetting("wifi_password");
+    return value?.trim() || null;
+  } catch (error) {
+    console.error("MySQL Wi-Fi setting unavailable:", error);
+    return null;
   }
 });
 

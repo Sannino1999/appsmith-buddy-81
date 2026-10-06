@@ -1,6 +1,15 @@
+import bcrypt from "bcryptjs";
+import { randomUUID } from "crypto";
+
 import { baseMenu } from "./menu";
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI } from "./i18n";
-import { closeMysqlPool, getMysqlPool, isMySqlConfigured } from "./mysql.server";
+import {
+  closeMysqlPool,
+  getMysqlPool,
+  isMySqlConfigured,
+  mysqlExecute,
+  mysqlQuery,
+} from "./mysql.server";
 
 type Migration = { version: string; sql: string };
 
@@ -330,6 +339,7 @@ export async function bootstrapMysql(options: { closePool?: boolean } = {}) {
       console.log(`[db] catalog already initialized (${count} items); seed skipped.`);
     }
 
+    await ensureBootstrapAdmin();
     console.log("[db] bootstrap complete.");
     return true;
   } catch (error) {
@@ -338,4 +348,36 @@ export async function bootstrapMysql(options: { closePool?: boolean } = {}) {
   } finally {
     if (options.closePool) await closeMysqlPool();
   }
+}
+
+async function ensureBootstrapAdmin() {
+  const username = process.env["ADMIN_BOOTSTRAP_USERNAME"]?.trim();
+  const password = process.env["ADMIN_BOOTSTRAP_PASSWORD"];
+  if (!username || !password) {
+    console.log("[db] admin bootstrap skipped: ADMIN_BOOTSTRAP_USERNAME/PASSWORD not configured.");
+    return;
+  }
+  if (password.length < 12) {
+    throw new Error("ADMIN_BOOTSTRAP_PASSWORD must be at least 12 characters.");
+  }
+  if (bcrypt.truncates(password)) {
+    throw new Error("ADMIN_BOOTSTRAP_PASSWORD exceeds bcrypt's 72-byte limit.");
+  }
+
+  const existing = await mysqlQuery<{ id: string }>(
+    "SELECT id FROM admin_users WHERE username = ? LIMIT 1",
+    [username],
+  );
+  if (existing.length > 0) {
+    return;
+  }
+
+  const passwordHash = await bcrypt.hash(password, 12);
+  await mysqlExecute(
+    `INSERT INTO admin_users
+      (id, username, password_hash, role, is_active, created_at, updated_at)
+     VALUES (?, ?, ?, 'admin', 1, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))`,
+    [randomUUID(), username, passwordHash],
+  );
+  console.log(`[db] bootstrap admin created: ${username}`);
 }

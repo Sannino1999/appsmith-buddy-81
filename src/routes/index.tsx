@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Check,
+  Copy,
   ExternalLink,
   Globe,
   Instagram,
@@ -24,6 +26,7 @@ import {
   getLiveMenuData,
   getOverrides,
   getPublicMenu,
+  getPublicWifiPassword,
   translateCategory,
 } from "@/lib/menu.functions";
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
@@ -60,6 +63,7 @@ function MenuPage() {
   const [query, setQuery] = useState("");
   const [specialClosed, setSpecialClosed] = useState(false);
   const [wifiOpen, setWifiOpen] = useState(false);
+  const [wifiCopied, setWifiCopied] = useState(false);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -76,6 +80,13 @@ function MenuPage() {
     queryFn: () => getLiveMenuData(),
     staleTime: 30_000,
     refetchOnWindowFocus: true,
+  });
+
+  const wifiQuery = useQuery({
+    queryKey: ["wifi-public"],
+    queryFn: () => getPublicWifiPassword(),
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
   });
 
   const overridesQuery = useQuery({
@@ -107,16 +118,60 @@ function MenuPage() {
   const menuLabels = MENU_LABELS[lang];
   const services = SERVICES[lang];
   const special = liveMenuQuery.data?.special ?? null;
+  const wifiPassword = wifiQuery.data ?? null;
 
-  const categories = menu.categories.filter((c) => c.macro === macro);
+  const publicCategories = useMemo(() => {
+    const liveCategories = liveMenuQuery.data?.categories ?? [];
+    const liveById = new Map(liveCategories.map((category) => [category.id, category]));
+    const baseCategories = menu.categories
+      .map((category) => {
+        const live = liveById.get(category.id);
+        if (live && !live.available) return null;
+        return {
+          ...category,
+          name: live?.name ?? category.name,
+          macro: live?.macro ?? category.macro,
+        };
+      })
+      .filter((category): category is MenuCategory => category !== null);
+
+    const baseIds = new Set(baseCategories.map((category) => category.id));
+    const customCategories = liveCategories
+      .filter((category) => category.custom && !baseIds.has(category.id))
+      .map((category) => ({
+        id: category.id,
+        macro: category.macro,
+        name: category.name,
+        eyebrow: null,
+        groups: [
+          {
+            name: "",
+            items: (liveMenuQuery.data?.customItems ?? [])
+              .filter((item) => item.category_id === category.id)
+              .map((item) => ({
+                key: item.item_key,
+                name: item.name,
+                description: item.description,
+                price_eur: item.price_eur,
+                tags: [],
+                available: item.available,
+              })),
+          },
+        ],
+      }));
+
+    return [...baseCategories, ...customCategories];
+  }, [liveMenuQuery.data, menu.categories]);
+
+  const categories = publicCategories.filter((c) => c.macro === macro);
   const active: MenuCategory | undefined =
     categories.find((c) => c.id === categoryId) ?? categories[0];
 
   useEffect(() => {
-    if (menu.categories.some((category) => category.id === categoryId)) return;
-    const first = menu.categories.find((category) => category.macro === macro);
+    if (publicCategories.some((category) => category.id === categoryId)) return;
+    const first = publicCategories.find((category) => category.macro === macro);
     if (first) setCategoryId(first.id);
-  }, [categoryId, macro, menu.categories]);
+  }, [categoryId, macro, publicCategories]);
 
   useEffect(() => {
     if (!searchOpen) return;
@@ -133,7 +188,7 @@ function MenuPage() {
 
   const allItems = useMemo(
     () =>
-      menu.categories.flatMap((category) =>
+      publicCategories.flatMap((category) =>
         category.groups.flatMap((group) =>
           group.items.map((item) => {
             const override = overrides.get(item.key);
@@ -150,7 +205,7 @@ function MenuPage() {
           }),
         ),
       ),
-    [menu.categories, overrides],
+    [publicCategories, overrides],
   );
 
   const normalizedQuery = query.trim().toLocaleLowerCase("it");
@@ -198,7 +253,7 @@ function MenuPage() {
 
   function pickMacro(id: string) {
     setMacro(id);
-    const first = menu.categories.find((c) => c.macro === id);
+    const first = publicCategories.find((c) => c.macro === id);
     if (first) setCategoryId(first.id);
     setQuery("");
   }
@@ -564,7 +619,7 @@ function MenuPage() {
               <span className="flex-1 text-left">
                 {services.wifi}
                 <span className="mt-0.5 block text-xs font-normal text-white/45">
-                  {services.wifiAsk}
+                  {wifiPassword ? "Lubrano-Guest · tocca per mostrare" : services.wifiAsk}
                 </span>
               </span>
             </button>
@@ -717,14 +772,32 @@ function MenuPage() {
               </button>
             </div>
             <div className="mt-6 rounded-2xl border border-border bg-background/60 p-4">
-              <p className="text-sm leading-relaxed text-muted-foreground">{services.wifiAsk}</p>
+              {wifiPassword ? (
+                <>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                    Lubrano-Guest
+                  </p>
+                  <p className="mt-2 break-all rounded-xl bg-background px-3 py-2 font-mono text-base text-foreground">
+                    {wifiPassword}
+                  </p>
+                </>
+              ) : (
+                <p className="text-sm leading-relaxed text-muted-foreground">{services.wifiAsk}</p>
+              )}
             </div>
             <button
               type="button"
-              disabled
-              className="mt-4 flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-5 text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground opacity-60"
+              onClick={async () => {
+                if (!wifiPassword || !navigator.clipboard) return;
+                await navigator.clipboard.writeText(wifiPassword);
+                setWifiCopied(true);
+                window.setTimeout(() => setWifiCopied(false), 1600);
+              }}
+              disabled={!wifiPassword}
+              className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground disabled:opacity-50"
             >
-              Copia password
+              {wifiCopied ? <Check className="size-4" /> : <Copy className="size-4" />}
+              {wifiCopied ? "Copiata" : "Copia password"}
             </button>
             <p className="mt-3 text-center text-xs text-muted-foreground/60">
               La password verrà resa disponibile dall’area admin.

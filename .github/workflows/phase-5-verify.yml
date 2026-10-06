@@ -1,0 +1,84 @@
+name: Verifica Fase 5
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - fase-5-admin-chat
+
+permissions:
+  contents: write
+# Fase 5: pipeline di verifica separata dal deploy Hostinger.
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installa dipendenze
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Test parser e permessi
+        run: npm run admin:test
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Formatta file Fase 5
+        if: github.event_name == 'push'
+        run: |
+          npx prettier --write \
+            src/lib/admin-auth.server.ts \
+            src/lib/admin-command-parser.ts \
+            src/lib/admin.functions.ts \
+            src/lib/menu.functions.ts \
+            src/lib/mysql-bootstrap.server.ts \
+            src/lib/mysql.repository.ts \
+            src/routes/admin.tsx \
+            src/routes/index.tsx
+          if git diff --quiet -- src/lib/admin-auth.server.ts src/lib/admin-command-parser.ts src/lib/admin.functions.ts src/lib/menu.functions.ts src/lib/mysql-bootstrap.server.ts src/lib/mysql.repository.ts src/routes/admin.tsx src/routes/index.tsx; then
+            echo "Nessuna modifica di formattazione."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            src/lib/admin-auth.server.ts \
+            src/lib/admin-command-parser.ts \
+            src/lib/admin.functions.ts \
+            src/lib/menu.functions.ts \
+            src/lib/mysql-bootstrap.server.ts \
+            src/lib/mysql.repository.ts \
+            src/routes/admin.tsx \
+            src/routes/index.tsx
+          git commit -m "fase 5: formatta file admin"
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+      - name: Formattazione Fase 5
+        run: |
+          npx prettier --check \
+            src/lib/admin-auth.server.ts \
+            src/lib/admin-command-parser.ts \
+            src/lib/admin.functions.ts \
+            src/lib/menu.functions.ts \
+            src/lib/mysql-bootstrap.server.ts \
+            src/lib/mysql.repository.ts \
+            src/routes/admin.tsx \
+            src/routes/index.tsx
