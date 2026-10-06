@@ -30,7 +30,7 @@ import {
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
-const localLogo = "data:image/png;base64,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";
+const localLogo = "/branding/lubrano-logo-512.png";
 const categoryVisuals: Record<string, string> = {
   stuzzicheria: "/assets/category-stuzzicheria.webp",
   patate: "/assets/category-stuzzicheria.webp",
@@ -268,198 +268,101 @@ function MenuPage() {
   }
 
   return (
-    <div className="relative min-h-screen">
-      <div
-        className="menu-backdrop fixed inset-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: `url(${bgImage})` }}
-        aria-hidden
-      />
-      <div
-        className="fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,14,12,0.92)_0%,rgba(20,14,12,0.84)_38%,rgba(20,14,12,0.96)_100%)]"
-        aria-hidden
-      />
-
-      <div className="mx-auto w-full max-w-4xl px-4 pb-24 pt-4 sm:px-6">
-        <header className="anim-fade-up flex flex-col items-center gap-4">
-          <div className="flex w-full items-center justify-end gap-2">
-            <QrButton onClick={() => setQrOpen(true)} />
-            <button
-              type="button"
-              aria-label={t.search}
-              onClick={() => {
-                setSearchOpen((v) => !v);
-                setQuery("");
-              }}
-              className="grid size-10 place-items-center rounded-lg border border-border bg-background/60 text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
-            >
-              {searchOpen ? <X className="size-4" /> : <Search className="size-4" />}
-            </button>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setLangOpen((v) => !v)}
-                className="flex h-10 items-center gap-1 rounded-lg border border-border bg-background/60 px-3 text-sm transition-all duration-200 hover:bg-secondary hover:scale-105 active:scale-95"
-              >
-                <Globe className="size-4" />
-                {lang.toUpperCase()}
+    <div className="lubrano-shell relative min-h-screen overflow-x-clip">
+      <div className="menu-backdrop fixed inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }} aria-hidden />
+      <div className="lubrano-backdrop fixed inset-0 -z-10" aria-hidden />
+      <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-3 sm:px-6 lg:px-8">
+        <header className="lubrano-header anim-fade-up">
+          <div className="lubrano-topbar">
+            <div className="lubrano-brandline">
+              <span className="lubrano-kicker">PUB · BRACERIA · NAPOLI</span>
+              <span className="lubrano-status"><span className="lubrano-status-dot" /> MENÙ DIGITALE</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <QrButton onClick={() => setQrOpen(true)} />
+              <button type="button" aria-label={t.search} onClick={() => { setSearchOpen((v) => !v); setQuery(""); }} className="lubrano-icon-button">
+                {searchOpen ? <X className="size-4" /> : <Search className="size-4" />}
               </button>
-              {langOpen && (
-                <ul className="anim-scale absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
-                  {LANGUAGES.map((l) => (
-                    <li key={l.code}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setLang(l.code);
-                          setLangOpen(false);
-                        }}
-                        className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-secondary ${
-                          l.code === lang ? "text-primary" : ""
-                        }`}
-                      >
-                        <span>{l.flag}</span>
-                        {l.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div className="relative">
+                <button type="button" onClick={() => setLangOpen((v) => !v)} className="lubrano-lang-button" aria-expanded={langOpen}>
+                  <Globe className="size-4" /> {lang.toUpperCase()}
+                </button>
+                {langOpen && (
+                  <ul className="anim-scale absolute right-0 z-40 mt-2 w-44 overflow-hidden rounded-2xl border border-white/10 bg-[#160d10]/95 p-1 shadow-2xl backdrop-blur-xl">
+                    {LANGUAGES.map((l) => (
+                      <li key={l.code}>
+                        <button type="button" onClick={() => { setLang(l.code); setLangOpen(false); }} className={`flex w-full items-center gap-2 rounded-xl px-4 py-3 text-left text-sm transition-colors hover:bg-white/5 ${l.code === lang ? "text-[#ff315b]" : "text-white/75"}`}>
+                          <span>{l.flag}</span>{l.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
 
-          <img
-            src={localLogo}
-            alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`}
-            className="h-auto w-56 max-w-[78vw] drop-shadow-[0_16px_40px_rgba(0,0,0,0.7)] transition-transform duration-300 hover:scale-[1.02] sm:w-72"
-          />
+          <div className="lubrano-hero">
+            <div className="lubrano-hero-copy">
+              <span className="lubrano-eyebrow">BENVENUTI DA</span>
+              <h1 className="lubrano-hero-title">Lubrano</h1>
+              <p className="lubrano-hero-subtitle">Pub & Braceria</p>
+              <div className="lubrano-rule"><span /></div>
+              <p className="lubrano-hero-note">Sapori decisi, brace, burger e birre. Scopri il menù e scegli il tuo prossimo preferito.</p>
+            </div>
+            <div className="lubrano-logo-frame">
+              <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo" width={512} height={512} />
+            </div>
+          </div>
         </header>
 
-        <section
-          className={`anim-fade-up mt-5 rounded-2xl border border-white/10 bg-black/30 p-3 backdrop-blur-md ${searchOpen ? "" : "hidden"}`}
-          aria-label="Ricerca nel menù"
-        >
-          <label className="sr-only" htmlFor="menu-search">
-            {t.search}
-          </label>
-          <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4">
-            <Search className="size-5 shrink-0 text-accent" aria-hidden />
-            <input
-              id="menu-search"
-              ref={searchInputRef}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t.search}
-              className="min-h-12 w-full bg-transparent py-2 text-base text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-accent/70"
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="menu-control grid size-9 place-items-center rounded-full text-white/60 hover:text-white"
-                aria-label="Cancella ricerca"
-              >
-                <X className="size-4" />
-              </button>
-            )}
+        <section className={`lubrano-search-panel anim-fade-up ${searchOpen ? "is-open" : ""}`} aria-label="Ricerca nel menù">
+          <div className="lubrano-search-inner">
+            <Search className="size-5 shrink-0 text-[#ff315b]" aria-hidden />
+            <label className="sr-only" htmlFor="menu-search">{t.search}</label>
+            <input id="menu-search" ref={searchInputRef} value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cerca piatti, ingredienti o categorie" className="min-h-12 w-full bg-transparent py-2 text-base text-white outline-none placeholder:text-white/35" />
+            {query && <button type="button" onClick={() => setQuery("")} className="grid size-9 place-items-center rounded-full text-white/50 hover:bg-white/5 hover:text-white" aria-label="Cancella ricerca"><X className="size-4" /></button>}
           </div>
-          <p className="mt-2 px-1 text-xs text-white/50" aria-live="polite">
-            {query
-              ? `${searchResults.length} risultat${searchResults.length === 1 ? "o" : "i"}`
-              : "Cerca piatti, categorie o ingredienti"}
-          </p>
+          <p className="mt-2 px-1 text-xs text-white/40" aria-live="polite">{query ? `${searchResults.length} risultat${searchResults.length === 1 ? "o" : "i"}` : "Cerca nel menù"}</p>
         </section>
 
-        <nav className="anim-fade-up stagger-1 mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-black/25 p-1.5 backdrop-blur-md">
+        <section className="lubrano-menu-switcher anim-fade-up stagger-1" aria-label="Sezione menù">
           {menu.macros.map((m) => (
-            <button
-              key={m.id}
-              type="button"
-              onClick={() => pickMacro(m.id)}
-              className={`menu-control min-h-12 rounded-xl px-4 text-base font-extrabold uppercase tracking-[0.16em] transition-all duration-200 ${
-                macro === m.id
-                  ? "bg-primary text-primary-foreground shadow-lg"
-                  : "text-white/55 hover:bg-white/5 hover:text-white"
-              }`}
-            >
-              {menuLabels.macros[m.id] ?? m.label}
+            <button key={m.id} type="button" onClick={() => pickMacro(m.id)} className={`lubrano-macro-button ${macro === m.id ? "is-active" : ""}`}>
+              <span>{menuLabels.macros[m.id] ?? m.label}</span>
+              <small>{m.id === "food" ? "Burger · Brace · Cucina" : "Birre · Drink · Soft"}</small>
             </button>
           ))}
-        </nav>
+        </section>
 
-        <div className="anim-fade-up stagger-2 sticky top-2 z-20 mt-3 overflow-x-auto rounded-2xl border border-white/10 bg-black/45 px-2 py-2 shadow-lg backdrop-blur-xl">
-          <div className="flex min-w-max gap-2">
+        <div className="lubrano-category-wrap anim-fade-up stagger-2">
+          <div className="lubrano-category-label">ESPLORA</div>
+          <nav className="lubrano-category-strip" aria-label="Categorie">
             {categories.map((c) => (
-              <button
-                key={c.id}
-                ref={(element) => {
-                  categoryRefs.current[c.id] = element;
-                }}
-                type="button"
-                onClick={() => setCategoryId(c.id)}
-                aria-current={c.id === active?.id ? "page" : undefined}
-                className={`pill shrink-0 ${c.id === active?.id ? "pill-active" : ""}`}
-              >
+              <button key={c.id} ref={(element) => { categoryRefs.current[c.id] = element; }} type="button" onClick={() => setCategoryId(c.id)} aria-current={c.id === active?.id ? "page" : undefined} className={`lubrano-category-pill ${c.id === active?.id ? "is-active" : ""}`}>
                 {menuLabels.categories[c.id]?.name ?? c.name}
               </button>
             ))}
-          </div>
+          </nav>
         </div>
 
-        {active?.eyebrow && (
-          <p className="anim-fade mt-5 text-center text-sm italic text-muted-foreground">
-            {menuLabels.categories[active.id]?.eyebrow ?? active.eyebrow}
-          </p>
-        )}
-
-        {lang !== "it" && translationQuery.isFetching && (
-          <p className="anim-fade mt-5 text-center text-sm text-primary">…</p>
-        )}
+        {active?.eyebrow && <p className="anim-fade mt-4 text-center text-sm italic text-white/55">{menuLabels.categories[active.id]?.eyebrow ?? active.eyebrow}</p>}
+        {lang !== "it" && translationQuery.isFetching && <p className="mt-4 text-center text-xs font-bold uppercase tracking-[0.25em] text-[#ff315b]">Traduzione…</p>}
 
         {query.trim() ? (
-          <section className="anim-fade mt-7" aria-label="Risultati ricerca globale">
+          <section className="anim-fade mt-8" aria-label="Risultati ricerca globale">
             {searchResults.length === 0 ? (
-              <div className="rounded-2xl border border-white/10 bg-black/30 px-6 py-12 text-center">
-                <Search className="mx-auto size-8 text-accent" />
-                <p className="mt-3 font-semibold text-white">{t.noResults}</p>
-              </div>
+              <div className="lubrano-empty"><Search className="mx-auto size-8 text-[#ff315b]" /><p className="mt-3 font-semibold text-white">{t.noResults}</p></div>
             ) : (
-              <div className="space-y-3">
+              <div className="grid gap-3 md:grid-cols-2">
                 {searchResults.map((item) => (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => {
-                      const target = menu.categories.find(
-                        (category) => category.id === item.categoryId,
-                      );
-                      if (!target) return;
-                      setMacro(target.macro);
-                      setCategoryId(target.id);
-                      setQuery("");
-                    }}
-                    className="group w-full rounded-2xl border border-white/10 bg-black/35 p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-black/45"
-                  >
+                  <button key={item.key} type="button" onClick={() => { const target = menu.categories.find((category) => category.id === item.categoryId); if (!target) return; setMacro(target.macro); setCategoryId(target.id); setQuery(""); }} className="lubrano-dish-card text-left">
                     <div className="flex items-start gap-4">
-                      <div className="mt-1 grid size-10 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                        <Utensils className="size-4" />
-                      </div>
+                      <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-3">
-                          <h3 className="display-caps text-base text-white group-hover:text-accent">
-                            {item.name}
-                          </h3>
-                          <span className="display-caps shrink-0 text-base text-accent">
-                            {formatPrice(item.price_eur)}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-xs uppercase tracking-[0.12em] text-white/40">
-                          {menuLabels.categories[item.categoryId]?.name ?? item.categoryName}
-                        </p>
-                        {item.description && (
-                          <p className="mt-2 text-sm leading-relaxed text-white/65">
-                            {item.description}
-                          </p>
-                        )}
+                        <div className="flex items-start justify-between gap-3"><h3 className="lubrano-dish-name">{item.name}</h3><span className="lubrano-price">{formatPrice(item.price_eur)}</span></div>
+                        <p className="mt-1 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#ff315b]/75">{menuLabels.categories[item.categoryId]?.name ?? item.categoryName}</p>
+                        {item.description && <p className="mt-2 text-sm leading-relaxed text-white/60">{item.description}</p>}
                       </div>
                     </div>
                   </button>
@@ -468,370 +371,106 @@ function MenuPage() {
             )}
           </section>
         ) : (
-          <div key={active?.id ?? "empty"} className="mt-8 space-y-10 anim-menu-change">
+          <div key={active?.id ?? "empty"} className="mt-8 anim-menu-change">
             {active && (
-              <div className="category-visual group relative isolate overflow-hidden rounded-3xl border border-white/10 bg-black/35 shadow-2xl shadow-black/25">
-                <img
-                  src={categoryVisuals[active.id] ?? "/assets/menu-bg.webp"}
-                  alt=""
-                  loading="lazy"
-                  className="h-36 w-full object-cover opacity-75 transition duration-700 ease-out group-hover:scale-105 group-hover:opacity-90 sm:h-44"
-                  onError={(event) => {
-                    event.currentTarget.src = "/assets/menu-bg.webp";
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-black/20" />
-                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                  <span className="text-[0.68rem] font-bold uppercase tracking-[0.28em] text-accent/90">Lubrano · {macro === "food" ? "Food" : "Drinks"}</span>
-                  <h2 className="display-caps mt-1 text-2xl text-white sm:text-3xl">{menuLabels.categories[active.id]?.name ?? active.name}</h2>
+              <section className="lubrano-category-hero">
+                <img src={categoryVisuals[active.id] ?? "/assets/menu-bg.webp"} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/menu-bg.webp"; }} />
+                <div className="lubrano-category-hero-overlay" />
+                <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
+                  <span className="lubrano-eyebrow">{macro === "food" ? "DALLA CUCINA" : "DAL BANCO"}</span>
+                  <h2 className="lubrano-category-title">{menuLabels.categories[active.id]?.name ?? active.name}</h2>
+                  <div className="mt-3 h-px w-16 bg-[#ff315b]" />
                 </div>
-              </div>
-            )}
-            {groups.length === 0 && (
-              <p className="text-center text-muted-foreground">{t.noResults}</p>
-            )}
-            {groups.map((g, gi) => (
-              <section key={g.name} className={`menu-section-reveal stagger-${Math.min(gi + 1, 6)}`}>
-                {g.name && (
-                  <h2 className="display-caps mb-5 inline-block border-b-4 border-accent text-xl text-brand">
-                    {g.name}
-                  </h2>
-                )}
-                <ul className="space-y-6">
-                  {g.items.map((item) => (
-                    <li
-                      key={item.key}
-                      className={`menu-item-card group rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-black/40 ${item.available ? "" : "opacity-55"}`}
-                    >
-                      <div className="flex items-end gap-2">
-                        <h3 className="display-caps min-w-0 text-[1.03rem] leading-tight text-white sm:text-lg">
-                          {item.name}
-                        </h3>
-                        <span className="leader" />
-                        <span className="display-caps shrink-0 text-base text-accent sm:text-lg">
-                          {formatPrice(item.price_eur)}
-                        </span>
-                      </div>
-                      {item.description && (
-                        <p
-                          className={`mt-2 text-sm leading-relaxed sm:text-[0.95rem] ${active?.id === "patate" ? "font-semibold text-accent" : "text-white/65"}`}
-                        >
-                          {item.description}
-                        </p>
-                      )}
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {!item.available && (
-                          <span className="rounded-full border border-destructive px-2.5 py-0.5 text-xs text-destructive">
-                            {t.unavailable}
-                          </span>
-                        )}
-                        {item.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-white/8 px-2.5 py-1 text-[0.66rem] text-white/50"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
               </section>
-            ))}
+            )}
+            <div className="mt-9">
+              {groups.length === 0 && <p className="text-center text-white/45">{t.noResults}</p>}
+              {groups.map((g, gi) => (
+                <section key={g.name || `group-${gi}`} className={`lubrano-menu-section menu-section-reveal stagger-${Math.min(gi + 1, 6)}`}>
+                  {g.name && <div className="lubrano-section-heading"><span>{String(gi + 1).padStart(2, "0")}</span><h2>{g.name}</h2></div>}
+                  <ul className="grid gap-3 md:grid-cols-2">
+                    {g.items.map((item) => (
+                      <li key={item.key} className={`lubrano-dish-card ${item.available ? "" : "is-unavailable"}`}>
+                        <div className="flex items-start gap-3">
+                          <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-start justify-between gap-3"><h3 className="lubrano-dish-name">{item.name}</h3><span className="lubrano-price">{formatPrice(item.price_eur)}</span></div>
+                            {item.description && <p className={`mt-2 text-sm leading-relaxed ${active?.id === "patate" ? "font-semibold text-[#8ff5cf]" : "text-white/58"}`}>{item.description}</p>}
+                            <div className="mt-3 flex flex-wrap gap-1.5">
+                              {!item.available && <span className="rounded-full border border-[#ff315b]/50 bg-[#ff315b]/10 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-[#ff315b]">{t.unavailable}</span>}
+                              {item.tags.map((tag) => <span key={tag} className="rounded-full bg-white/[0.05] px-2.5 py-1 text-[0.64rem] text-white/45">{tag}</span>)}
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
           </div>
         )}
 
         {special && !specialClosed && (
-          <section className="anim-fade-up relative mt-12 overflow-hidden rounded-[1.75rem] border border-accent/30 bg-black/55 shadow-2xl backdrop-blur-md">
-            <button
-              type="button"
-              onClick={() => setSpecialClosed(true)}
-              className="menu-control absolute right-3 top-3 z-10 grid size-10 place-items-center rounded-full border border-white/15 bg-black/45 text-white"
-              aria-label="Chiudi speciale del mese"
-            >
-              <X className="size-4" />
-            </button>
-            <div className="grid md:grid-cols-[0.9fr_1.1fr]">
-              <div className="relative min-h-60 overflow-hidden">
-                <img
-                  src={special.image_url || "/assets/category-burger.webp"}
-                  alt={special.title}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1.5 text-xs font-black uppercase tracking-[0.12em] text-accent-foreground">
-                  <Star className="size-3.5 fill-current" />
-                  {services.special}
-                </span>
-              </div>
-              <div className="p-6 sm:p-7">
-                <p className="text-[0.68rem] font-bold uppercase tracking-[0.3em] text-accent">
-                  Speciale del Mese
-                </p>
-                <div className="mt-2 flex items-start justify-between gap-4">
-                  <h2 className="display-caps text-2xl text-white sm:text-3xl">{special.title}</h2>
-                  {special.price_eur !== null && (
-                    <span className="display-caps shrink-0 text-xl text-accent">
-                      {formatPrice(special.price_eur)}
-                    </span>
-                  )}
+          <section className="lubrano-special anim-fade-up">
+            <button type="button" onClick={() => setSpecialClosed(true)} className="absolute right-3 top-3 z-20 grid size-9 place-items-center rounded-full border border-white/15 bg-black/55 text-white/80 hover:bg-black/75" aria-label="Chiudi speciale del mese"><X className="size-4" /></button>
+            <div className="relative min-h-64 overflow-hidden md:min-h-80">
+              <img src={special.image_url || "/assets/category-burger.webp"} alt={special.title} className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/category-burger.webp"; }} />
+              <div className="lubrano-special-overlay" />
+              <div className="relative z-10 flex min-h-64 flex-col justify-end p-6 md:min-h-80 md:p-8">
+                <span className="lubrano-special-badge"><Star className="size-3.5 fill-current" /> {services.special}</span>
+                <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
+                  <div><p className="lubrano-eyebrow">LIMITED · LUBRANO</p><h2 className="lubrano-special-title">{special.title}</h2></div>
+                  {special.price_eur !== null && <span className="lubrano-special-price">{formatPrice(special.price_eur)}</span>}
                 </div>
-                {special.description && (
-                  <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <p className="text-[0.66rem] font-bold uppercase tracking-[0.22em] text-white/45">
-                      Ingredienti
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-white/70">
-                      {special.description}
-                    </p>
-                  </div>
-                )}
+                {special.description && <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75">{special.description}</p>}
               </div>
             </div>
           </section>
         )}
 
-        <section className="anim-fade-up mt-12 rounded-[1.75rem] border border-white/10 bg-black/45 p-5 shadow-2xl backdrop-blur-md sm:p-7">
-          <div className="flex items-center gap-3">
-            <div className="grid size-11 place-items-center rounded-full bg-accent/10 text-accent">
-              <Star className="size-5" />
-            </div>
-            <div>
-              <p className="text-[0.62rem] font-bold uppercase tracking-[0.28em] text-accent">
-                Lubrano con te
-              </p>
-              <h2 className="display-caps mt-1 text-xl text-white">{services.title}</h2>
-            </div>
+        <section className="lubrano-services anim-fade-up">
+          <div className="lubrano-section-heading"><span>★</span><h2>{services.title}</h2></div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.review}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Instagram className="size-5 text-[#ff315b]" /><span>{services.instagram}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><MessageCircle className="size-5 text-[#ff315b]" /><span>{services.whatsapp}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <button type="button" onClick={() => setWifiOpen(true)} className="lubrano-service-card text-left" aria-haspopup="dialog"><Wifi className="size-5 text-[#ff315b]" /><span className="min-w-0 flex-1">{services.wifi}<small className="mt-1 block truncate text-xs font-normal text-white/35">{wifiPassword ? "Lubrano-Guest · tocca per mostrare" : services.wifiAsk}</small></span></button>
           </div>
-
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <a
-              href={VENUE.reviewUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
-            >
-              <Star className="size-4 text-accent" />
-              <span className="flex-1">{services.review}</span>
-              <ExternalLink className="size-4 text-white/35" />
-            </a>
-            <a
-              href={VENUE.instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
-            >
-              <Instagram className="size-4 text-accent" />
-              <span className="flex-1">{services.instagram}</span>
-              <ExternalLink className="size-4 text-white/35" />
-            </a>
-            <a
-              href={VENUE.whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
-            >
-              <MessageCircle className="size-4 text-accent" />
-              <span className="flex-1">{services.whatsapp}</span>
-              <ExternalLink className="size-4 text-white/35" />
-            </a>
-            <button
-              type="button"
-              onClick={() => setWifiOpen(true)}
-              className="menu-control flex min-h-14 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
-              aria-haspopup="dialog"
-            >
-              <Wifi className="size-4 text-accent" />
-              <span className="flex-1 text-left">
-                {services.wifi}
-                <span className="mt-0.5 block text-xs font-normal text-white/45">
-                  {wifiPassword ? "Lubrano-Guest · tocca per mostrare" : services.wifiAsk}
-                </span>
-              </span>
-            </button>
-          </div>
-
-          <div className="mt-6 rounded-xl border border-accent/20 bg-accent/5 p-4">
-            <p className="text-sm font-bold text-accent">{services.allergenTitle}</p>
-            <p className="mt-1 text-sm leading-relaxed text-white/65">{services.allergenBody}</p>
-          </div>
+          <div className="lubrano-allergen"><strong>{services.allergenTitle}</strong><span>{services.allergenBody}</span></div>
         </section>
 
-        <section className="anim-fade-up relative mt-16 border border-border/60 bg-background/70 p-8 shadow-2xl sm:p-10">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-0 top-0 size-7 border-l-2 border-t-2 border-brand"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute right-0 top-0 size-7 border-r-2 border-t-2 border-brand"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 left-0 size-7 border-b-2 border-l-2 border-brand"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 right-0 size-7 border-b-2 border-r-2 border-brand"
-          />
-
-          <div className="text-center">
-            <span className="block text-[0.65rem] font-bold uppercase tracking-[0.3em] text-accent">
-              {info.eyebrow}
-            </span>
-            <h2 className="display-caps mt-2 text-3xl text-brand">{info.title}</h2>
-            <div className="mx-auto mt-4 h-px w-16 bg-brand" />
-          </div>
-
-          <div className="mt-7 text-center">
-            <p className="text-lg font-medium tracking-wide text-foreground">{VENUE.address}</p>
-            <a
-              href={VENUE.phoneHref}
-              className="mt-3 inline-block text-lg font-semibold text-accent underline decoration-border underline-offset-8 transition-colors duration-200 hover:text-foreground"
-            >
-              {VENUE.phone}
-            </a>
-          </div>
-
-          <div className="my-8 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-5">
-            <h3 className="mb-4 text-center text-[0.6rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {info.hours}
-            </h3>
-            <div className="grid gap-2 sm:grid-cols-2 sm:gap-y-2">
-              <span className="text-right text-sm uppercase text-muted-foreground">
-                {info.monday}
-              </span>
-              <span className="display-caps text-left text-sm font-bold uppercase tracking-widest text-brand">
-                {info.closed}
-              </span>
-              <span className="text-right text-sm uppercase text-foreground/80">
-                {info.openDays}
-              </span>
-              <span className="text-left text-sm font-semibold text-foreground">
-                {info.openHours}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <a
-              href={VENUE.phoneHref}
-              className="flex items-center justify-center gap-3 bg-primary px-6 py-4 text-primary-foreground transition-all duration-300 hover:bg-primary/90 active:scale-95"
-            >
-              <Phone className="size-5" />
-              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">
-                {info.call}
-              </span>
-            </a>
-            <a
-              href={VENUE.mapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-3 bg-foreground px-6 py-4 text-background transition-all duration-300 hover:opacity-90 active:scale-95"
-            >
-              <MapPin className="size-5" />
-              <span className="display-caps text-xs font-black uppercase tracking-[0.2em]">
-                {info.directions}
-              </span>
-            </a>
-          </div>
-
-          <p className="mt-8 text-center text-[0.6rem] uppercase tracking-widest text-muted-foreground/70">
-            {menu.restaurant.name} · Napoli
-          </p>
+        <section className="lubrano-venue anim-fade-up">
+          <div className="lubrano-venue-copy"><span className="lubrano-eyebrow">{info.eyebrow}</span><h2>{info.title}</h2><p>{VENUE.address}</p><a href={VENUE.phoneHref}>{VENUE.phone}</a></div>
+          <div className="lubrano-hours"><span>{info.hours}</span><div><b>{info.monday}</b><strong>{info.closed}</strong></div><div><b>{info.openDays}</b><strong>{info.openHours}</strong></div></div>
+          <div className="grid gap-3 sm:grid-cols-2"><a href={VENUE.phoneHref} className="lubrano-cta lubrano-cta-primary"><Phone className="size-5" />{info.call}</a><a href={VENUE.mapsUrl} target="_blank" rel="noreferrer" className="lubrano-cta"><MapPin className="size-5" />{info.directions}</a></div>
         </section>
 
-        <footer className="anim-fade-up mt-10 text-center text-xs text-muted-foreground">
-          <p className="display-caps text-sm text-brand">
-            {menu.restaurant.name} · {menu.restaurant.subtitle}
-          </p>
-          <p className="mt-2">
-            Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco
-          </p>
-          <p className="mt-3 text-[0.7rem] text-muted-foreground/70">
-            Realizzato da <span className="font-semibold text-brand/80">DigitGS</span>
-          </p>
+        <footer className="lubrano-footer">
+          <img src={localLogo} alt="" className="mx-auto mb-4 size-16 rounded-full object-cover opacity-80" width={512} height={512} />
+          <p className="font-bold uppercase tracking-[0.2em] text-white/75">{menu.restaurant.name} · {menu.restaurant.subtitle}</p>
+          <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
+          <p className="mt-3 text-[0.7rem]">Realizzato da <span className="font-semibold text-[#ff315b]">DigitGS</span></p>
         </footer>
       </div>
 
-      <QrDialog
-        open={qrOpen}
-        onOpenChange={setQrOpen}
-        url={typeof window !== "undefined" ? window.location.href : ""}
-        restaurantName={baseMenu.restaurant.name}
-      />
+      <QrDialog open={qrOpen} onOpenChange={setQrOpen} url={typeof window !== "undefined" ? window.location.href : ""} restaurantName={baseMenu.restaurant.name} />
 
       {wifiOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
-          role="presentation"
-          onClick={() => setWifiOpen(false)}
-        >
-          <section
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="wifi-dialog-title"
-            className="anim-scale w-full max-w-sm rounded-3xl border border-accent/20 bg-card p-6 shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-          >
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="presentation" onClick={() => setWifiOpen(false)}>
+          <section role="dialog" aria-modal="true" aria-labelledby="wifi-dialog-title" className="anim-scale w-full max-w-sm rounded-3xl border border-[#ff315b]/25 bg-[#160d10] p-6 shadow-2xl" onClick={(event) => event.stopPropagation()}>
             <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="grid size-10 place-items-center rounded-full bg-accent/10 text-accent">
-                  <Wifi className="size-5" />
-                </div>
-                <div>
-                  <p className="text-[0.62rem] font-bold uppercase tracking-[0.24em] text-accent">
-                    Lubrano Guest
-                  </p>
-                  <h2 id="wifi-dialog-title" className="display-caps text-xl text-foreground">
-                    {services.wifi}
-                  </h2>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setWifiOpen(false)}
-                className="menu-control grid size-10 place-items-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
-                aria-label="Chiudi Wi-Fi"
-              >
-                <X className="size-4" />
-              </button>
+              <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-full bg-[#ff315b]/10 text-[#ff315b]"><Wifi className="size-5" /></div><div><p className="text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[#ff315b]">Lubrano Guest</p><h2 id="wifi-dialog-title" className="display-caps text-xl text-white">{services.wifi}</h2></div></div>
+              <button type="button" onClick={() => setWifiOpen(false)} className="grid size-10 place-items-center rounded-full text-white/50 hover:bg-white/5 hover:text-white" aria-label="Chiudi Wi-Fi"><X className="size-4" /></button>
             </div>
-            <div className="mt-6 rounded-2xl border border-border bg-background/60 p-4">
-              {wifiPassword ? (
-                <>
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                    Lubrano-Guest
-                  </p>
-                  <p className="mt-2 break-all rounded-xl bg-background px-3 py-2 font-mono text-base text-foreground">
-                    {wifiPassword}
-                  </p>
-                </>
-              ) : (
-                <p className="text-sm leading-relaxed text-muted-foreground">{services.wifiAsk}</p>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={async () => {
-                if (!wifiPassword || !navigator.clipboard) return;
-                await navigator.clipboard.writeText(wifiPassword);
-                setWifiCopied(true);
-                window.setTimeout(() => setWifiCopied(false), 1600);
-              }}
-              disabled={!wifiPassword}
-              className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground disabled:opacity-50"
-            >
-              {wifiCopied ? <Check className="size-4" /> : <Copy className="size-4" />}
-              {wifiCopied ? "Copiata" : "Copia password"}
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-4">{wifiPassword ? <><p className="text-xs font-bold uppercase tracking-[0.16em] text-white/40">Lubrano-Guest</p><p className="mt-2 break-all rounded-xl bg-black/40 px-3 py-2 font-mono text-base text-white">{wifiPassword}</p></> : <p className="text-sm leading-relaxed text-white/55">{services.wifiAsk}</p>}</div>
+            <button type="button" onClick={async () => { if (!wifiPassword || !navigator.clipboard) return; await navigator.clipboard.writeText(wifiPassword); setWifiCopied(true); window.setTimeout(() => setWifiCopied(false), 1600); }} disabled={!wifiPassword} className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#ff315b] px-5 text-sm font-bold uppercase tracking-[0.14em] text-white disabled:opacity-50">
+              {wifiCopied ? <Check className="size-4" /> : <Copy className="size-4" />}{wifiCopied ? "Copiata" : "Copia password"}
             </button>
-            <p className="mt-3 text-center text-xs text-muted-foreground/60">
-              La password verrà resa disponibile dall’area admin.
-            </p>
           </section>
         </div>
       )}
     </div>
   );
+
 }
