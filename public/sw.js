@@ -1,17 +1,22 @@
-const CACHE_NAME = "lubrano-pub-v3";
+const CACHE_NAME = "lubrano-pub-v4";
 const STATIC_ASSETS = [
-  "/favicon.png",
+  "/",
   "/manifest.webmanifest",
+  "/lubrano-logo.png",
   "/icon-192.svg",
   "/icon-512.svg",
+  "/favicon.png",
   "/assets/menu-bg.webp",
   "/assets/category-burger.webp",
   "/assets/category-stuzzicheria.webp",
+  "/assets/category-brace.webp",
+  "/assets/category-dolci.webp",
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches
+      .open(CACHE_NAME)
       .then((cache) => cache.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting()),
   );
@@ -19,10 +24,15 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)),
-      ))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key.startsWith("lubrano-pub-") && key !== CACHE_NAME)
+            .map((key) => caches.delete(key)),
+        ),
+      )
       .then(() => self.clients.claim()),
   );
 });
@@ -34,18 +44,27 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Never cache API/server-function responses: they may contain live or private data.
-  if (url.pathname.startsWith("/api/") || url.pathname.includes("__data") || url.pathname.includes("__server")) {
+  // Never cache APIs, server functions, admin pages or personalized responses.
+  if (
+    url.pathname.startsWith("/api/") ||
+    url.pathname.startsWith("/admin") ||
+    url.pathname.includes("__data") ||
+    url.pathname.includes("__server")
+  ) {
     return;
   }
 
+  // Only the public menu route gets an offline HTML fallback. This prevents an
+  // authenticated/admin response from ever being stored under the "/" cache key.
   if (request.mode === "navigate") {
+    if (url.pathname !== "/") return;
+
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: "no-store" })
         .then((response) => {
-          if (response.ok) {
+          if (response.ok && response.headers.get("content-type")?.includes("text/html")) {
             const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put("/", copy));
+            void caches.open(CACHE_NAME).then((cache) => cache.put("/", copy));
           }
           return response;
         })
@@ -54,14 +73,18 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (STATIC_ASSETS.includes(url.pathname) || url.pathname.startsWith("/assets/")) {
+  if (
+    STATIC_ASSETS.includes(url.pathname) ||
+    url.pathname.startsWith("/assets/") ||
+    url.pathname.startsWith("/uploads/")
+  ) {
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached;
         return fetch(request).then((response) => {
           if (response.ok) {
             const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            void caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           }
           return response;
         });

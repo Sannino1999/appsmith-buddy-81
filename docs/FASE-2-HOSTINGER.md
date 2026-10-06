@@ -27,7 +27,7 @@ MYSQL_PASSWORD=<password-da-inserire-in-hostinger>
 
 Non inserirle in GitHub, nel codice o in `.env.example`. Hostinger prevede le variabili d'ambiente nella configurazione della Node.js Web App.
 
-Le variabili legacy di Lovable/Supabase/Telegram restano necessarie temporaneamente finché non chiudiamo le Fasi 3 e 5.
+Le variabili legacy di legacy hosting/Supabase/Telegram restano necessarie temporaneamente finché non chiudiamo le Fasi 3 e 5.
 
 ## 3. Esegui le migrazioni
 

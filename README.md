@@ -4,14 +4,16 @@ Menù digitale multilingua di **Lubrano Pub & Braceria** (Napoli): birre artigia
 
 Prodotto e realizzato da **DigitGS**.
 
-**App online**: https://lubranopub.lovable.app
+**App online (Hostinger)**: https://lightpink-magpie-211772.hostingersite.com
 
-## Cosa contiene
+## Repository
+
+**GitHub**: https://github.com/Sannino1999/appsmith-buddy-81\n\n## Cosa contiene
 
 - Menù completo (Birre e Food) con categorie, gruppi, prezzi, descrizioni e allergeni.
-- Traduzione automatica in 7 lingue (it, en, es, fr, de, pt, zh) con salvataggio delle traduzioni.
+- Traduzione in 7 lingue (it, en, es, fr, de, pt, zh) con salvataggio delle traduzioni disponibili.
 - Ricerca rapida e codice QR da esporre in sala.
-- Bot Telegram per gli operatori: modifica prezzi, descrizioni e disponibilità in linguaggio naturale, con registro delle modifiche.
+- Console amministrativa protetta con comandi deterministici, conferma esplicita, audit log, undo e upload immagini.
 
 ## Struttura del progetto
 
