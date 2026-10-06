@@ -111,12 +111,13 @@ export async function authenticateAdmin(input: unknown) {
   clearLoginFailures(key);
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(now() + SESSION_TTL_SECONDS * 1000);
+  const userAgent = getRequestHeader("user-agent");
   await createAdminSession({
     id: hashSessionToken(token),
     adminUserId: admin.id,
     expiresAt,
-    ipAddress: clientKey(),
-    userAgent: getRequestHeader("user-agent"),
+    ...(clientKey() ? { ipAddress: clientKey() } : {}),
+    ...(userAgent ? { userAgent } : {}),
   });
   setSessionCookie(token);
 
