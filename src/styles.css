@@ -767,3 +767,58 @@
     height:44px;
   }
 }
+
+
+/* iPhone: touch-first category carousel. Keep one horizontal lane and make the
+   gesture area explicit so Safari never treats clipped cards as a fixed row. */
+@media (max-width:720px){
+  .lubrano-category-wrap{
+    position:relative;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    overflow:hidden;
+  }
+  .lubrano-category-strip{
+    display:flex !important;
+    flex-direction:row;
+    flex-wrap:nowrap !important;
+    align-items:stretch;
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    overflow-x:scroll !important;
+    overflow-y:hidden !important;
+    gap:.55rem;
+    padding:.2rem 1rem .45rem;
+    margin:0;
+    touch-action:pan-x !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:1rem;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    cursor:grab;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .lubrano-category-strip::-webkit-scrollbar{display:none;width:0;height:0}
+  .lubrano-category-pill{
+    box-sizing:border-box;
+    flex:0 0 min(82vw, 220px) !important;
+    width:min(82vw, 220px) !important;
+    min-width:min(82vw, 220px) !important;
+    min-height:72px;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+  }
+  .lubrano-category-thumb{
+    flex:0 0 46px;
+    width:46px;
+    height:46px;
+  }
+  .lubrano-category-label{
+    padding-inline:1rem;
+  }
+}
