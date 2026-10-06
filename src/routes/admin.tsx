@@ -139,9 +139,9 @@ function AdminPage() {
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-[#160f0c] px-4 py-10 text-white">
+      <div className="lubrano-admin-shell px-4 py-10 text-white">
         <div className="mx-auto max-w-md">
-          <div className="rounded-[2rem] border border-white/10 bg-black/35 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+          <div className="lubrano-admin-card p-6 sm:p-8">
             <div className="mx-auto grid size-24 place-items-center rounded-3xl border border-[#8ff5cf]/15 bg-black/30 p-3 shadow-xl shadow-[#8e1833]/20">
               <img src="/lubrano-logo.png" alt="Lubrano Pub & Braceria" className="h-full w-full object-contain" width={256} height={256} />
             </div>
@@ -269,7 +269,7 @@ function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#160f0c] text-white">
+    <div className="lubrano-admin-shell text-white">
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#160f0c]/92 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
@@ -293,7 +293,7 @@ function AdminPage() {
 
       <main className="mx-auto grid max-w-6xl gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[1.65fr_0.9fr]">
         <section className="min-w-0">
-          <div className="rounded-[1.75rem] border border-white/10 bg-black/25 p-4 shadow-2xl backdrop-blur-md sm:p-6">
+          <div className="lubrano-admin-card p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="grid size-11 place-items-center rounded-full bg-accent/10 text-accent">
                 <Sparkles className="size-5" />
@@ -450,7 +450,7 @@ function AdminPage() {
         </section>
 
         <aside className="space-y-5">
-          <div className="rounded-[1.75rem] border border-white/10 bg-black/25 p-5 shadow-2xl backdrop-blur-md">
+          <div className="lubrano-admin-card p-5">
             <div className="flex items-center gap-3">
               <div className="grid size-10 place-items-center rounded-xl bg-accent/10 text-accent">
                 <History className="size-5" />
