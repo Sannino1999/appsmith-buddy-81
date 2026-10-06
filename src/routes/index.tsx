@@ -291,7 +291,7 @@ function MenuPage() {
           <div className="lubrano-utility">
             <div className="lubrano-utility-links">
               <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer"><MapPin className="size-3.5" /> {VENUE.address}</a>
-              <span><Clock3 className="size-3.5" /> Lun–Dom · 18:00–02:00</span>
+              <span><Clock3 className="size-3.5" /> {info.openDays} · {info.openHours}</span>
               <a href={VENUE.phoneHref}><Phone className="size-3.5" /> {VENUE.phone}</a>
             </div>
             <div className="lubrano-utility-links">
