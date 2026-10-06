@@ -15,15 +15,12 @@ import {
   deleteMenuOverride,
   getActiveSpecial,
   getCategoryOverride,
-  getCustomItemByKey,
   getLatestAuditLogForAdmin,
   getMenuOverride,
-  getSetting,
   insertAuditLog,
   insertChatMessage,
   listAuditLog,
   listChatMessages,
-  listCategoryOverrides,
   listMenuOverrides,
   upsertCategoryOverride,
   upsertMenuOverride,
@@ -95,7 +92,7 @@ export const adminChatData = createServerFn({ method: "GET" }).handler(async () 
   assertCapability(admin.role, "read");
 
   const [messages, history, overrides] = await Promise.all([
-    listChatMessages(100),
+    listChatMessages(admin.id, 100),
     listAuditLog(100),
     listMenuOverrides(),
   ]);
