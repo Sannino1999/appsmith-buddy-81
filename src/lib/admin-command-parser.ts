@@ -108,7 +108,7 @@ function parseSpecial(body: string): ParsedCommand {
     return { action: "unknown", reason: "Prezzo speciale non valido." };
   }
 
-  if (imageUrl && !/^(https?:\/\/|\/uploads\/)[^\s]+$/i.test(imageUrl)) {
+  if (imageUrl && !/^\/uploads\/[A-Za-z0-9._-]+\.(?:jpe?g|png|webp)$/i.test(imageUrl)) {
     return { action: "unknown", reason: "URL immagine non valida." };
   }
 
