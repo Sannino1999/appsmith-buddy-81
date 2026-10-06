@@ -142,9 +142,6 @@ function AdminPage() {
       <div className="lubrano-admin-shell px-4 py-10 text-white">
         <div className="mx-auto max-w-md">
           <div className="lubrano-admin-card p-6 sm:p-8">
-            <div className="mx-auto grid size-24 place-items-center rounded-3xl border border-[#8ff5cf]/15 bg-black/30 p-3 shadow-xl shadow-[#8e1833]/20">
-              <img src="/lubrano-logo.png" alt="Lubrano Pub & Braceria" className="h-full w-full object-contain" width={256} height={256} />
-            </div>
             <p className="mt-6 text-center text-[0.66rem] font-bold uppercase tracking-[0.3em] text-accent">
               Lubrano Admin
             </p>
@@ -180,6 +177,67 @@ function AdminPage() {
                   autoComplete="current-password"
                 />
               </label>
+            </div>
+
+            {message && (
+              <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                {message}
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => void login()}
+              disabled={busy || !username || !password}
+              className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+            >
+              <ShieldCheck className="size-4" />
+              Accedi
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="lubrano-admin-shell text-white">
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#160f0c]/92 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <div className="flex items-center gap-3">
+            <img src="/lubrano-logo.png" alt="" className="size-11 rounded-full object-cover ring-1 ring-[#8ff5cf]/20" width={128} height={128} />
+            <div>
+              <p className="text-[0.62rem] font-bold uppercase tracking-[0.25em] text-accent">Lubrano Admin</p>
+              <h1 className="display-caps mt-0.5 text-xl">Console del menù</h1>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => void logout()}
+            disabled={busy}
+            className="menu-control flex min-h-10 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white/75"
+          >
+            <LogOut className="size-4" />
+            Esci
+          </button>
+        </div>
+      </header>
+
+      <main className="mx-auto grid max-w-6xl gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[1.65fr_0.9fr]">
+        <section className="min-w-0">
+          <div className="lubrano-admin-card p-4 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="grid size-11 place-items-center rounded-full bg-accent/10 text-accent">
+                <Sparkles className="size-5" />
+              </div>
+            <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-[#8ff5cf]/10 bg-black/20 p-3">
+              <div className="flex items-center gap-3">
+                <img src="/lubrano-logo.png" alt="" className="size-14 rounded-full object-cover ring-1 ring-[#8ff5cf]/20" width={128} height={128} />
+                <div>
+                  <p className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-accent">Area riservata</p>
+                  <p className="mt-1 text-sm text-white/55">Gestisci il menù e pubblica le modifiche.</p>
+                </div>
+              </div>
             </div>
 
             <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
@@ -247,57 +305,6 @@ function AdminPage() {
               )}
             </div>
 
-            {message && (
-              <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                {message}
-              </div>
-            )}
-
-            <button
-              type="button"
-              onClick={() => void login()}
-              disabled={busy || !username || !password}
-              className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
-            >
-              <ShieldCheck className="size-4" />
-              Accedi
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="lubrano-admin-shell text-white">
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#160f0c]/92 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <img src="/lubrano-logo.png" alt="" className="size-11 rounded-full object-cover ring-1 ring-[#8ff5cf]/20" width={128} height={128} />
-            <div>
-              <p className="text-[0.62rem] font-bold uppercase tracking-[0.25em] text-accent">Lubrano Admin</p>
-              <h1 className="display-caps mt-0.5 text-xl">Console del menù</h1>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => void logout()}
-            disabled={busy}
-            className="menu-control flex min-h-10 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white/75"
-          >
-            <LogOut className="size-4" />
-            Esci
-          </button>
-        </div>
-      </header>
-
-      <main className="mx-auto grid max-w-6xl gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[1.65fr_0.9fr]">
-        <section className="min-w-0">
-          <div className="lubrano-admin-card p-4 sm:p-6">
-            <div className="flex items-center gap-3">
-              <div className="grid size-11 place-items-center rounded-full bg-accent/10 text-accent">
-                <Sparkles className="size-5" />
-              </div>
               <div>
                 <p className="text-[0.62rem] font-bold uppercase tracking-[0.25em] text-accent">
                   Chat guidata
