@@ -371,7 +371,7 @@ function AdminPage() {
                       </div>
                     )}
 
-                    {preview.requiresConfirmation && preview.parsed.action !== "ambiguous" && (
+                    {preview.parsed.action !== "ambiguous" && (
                       <div className="mt-4 flex gap-2">
                         <button
                           type="button"
@@ -380,7 +380,7 @@ function AdminPage() {
                           className="flex min-h-11 items-center gap-2 rounded-xl bg-accent px-4 font-bold text-accent-foreground"
                         >
                           <Check className="size-4" />
-                          Conferma
+                          {preview.requiresConfirmation ? "Conferma" : "Esegui"}
                         </button>
                         <button
                           type="button"
