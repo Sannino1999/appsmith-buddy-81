@@ -1,10 +1,6 @@
 import bcrypt from "bcryptjs";
 import { createHash, randomBytes } from "crypto";
-import {
-  getCookie,
-  getRequestHeader,
-  setResponseHeader,
-} from "@tanstack/react-start/server";
+import { getCookie, getRequestHeader, setResponseHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 
 import {
@@ -101,7 +97,11 @@ export async function authenticateAdmin(input: unknown) {
 
   const admin = await getAdminByUsername(data.username);
   const passwordHash = admin?.password_hash ?? null;
-  const valid = !!admin && !!passwordHash && admin.is_active && (await bcrypt.compare(data.password, passwordHash));
+  const valid =
+    !!admin &&
+    !!passwordHash &&
+    admin.is_active &&
+    (await bcrypt.compare(data.password, passwordHash));
 
   if (!valid) {
     recordLoginFailure(key);

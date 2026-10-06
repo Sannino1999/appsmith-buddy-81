@@ -65,7 +65,6 @@ export const getPublicMenu = createServerFn({ method: "GET" }).handler(async () 
   }
 });
 
-
 export const getPublicWifiPassword = createServerFn({ method: "GET" }).handler(async () => {
   if (!isMySqlConfigured()) return null;
   try {

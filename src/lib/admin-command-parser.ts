@@ -64,19 +64,13 @@ function findItems(menu: Menu, needle: string) {
   const exact = items.filter((item) => item.normalizedName === n);
   if (exact.length > 0) return exact;
 
-  return items.filter(
-    (item) =>
-      item.normalizedName.includes(n) ||
-      n.includes(item.normalizedName),
-  );
+  return items.filter((item) => item.normalizedName.includes(n) || n.includes(item.normalizedName));
 }
 
 function findCategory(menu: Menu, needle: string) {
   const n = normalize(needle);
   return menu.categories.filter(
-    (category) =>
-      normalize(category.name).includes(n) ||
-      n.includes(normalize(category.name)),
+    (category) => normalize(category.name).includes(n) || n.includes(normalize(category.name)),
   );
 }
 
@@ -194,7 +188,10 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   }
 
   if (lower.startsWith("aggiungi categoria |")) {
-    const parts = raw.slice(raw.indexOf("|") + 1).split("|").map((v) => v.trim());
+    const parts = raw
+      .slice(raw.indexOf("|") + 1)
+      .split("|")
+      .map((v) => v.trim());
     const macroText = normalize(parts[0] ?? "");
     const name = parts[1] ?? "";
     const macro =
@@ -256,10 +253,7 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
     const needle = availabilityMatch[2] ?? "";
     const categoryMatches = findCategory(menu, needle);
 
-    if (
-      categoryMatches.length === 1 &&
-      /nascondi|riattiva|rimetti|togli/.test(verb)
-    ) {
+    if (categoryMatches.length === 1 && /nascondi|riattiva|rimetti|togli/.test(verb)) {
       const category = categoryMatches[0];
       if (!category) return { action: "unknown", reason: "Categoria non trovata." };
       return {

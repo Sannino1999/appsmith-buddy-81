@@ -364,7 +364,13 @@ export async function createAdminSession(input: {
     `INSERT INTO admin_sessions
       (id, admin_user_id, expires_at, ip_address, user_agent, created_at, last_seen_at)
      VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))`,
-    [input.id, input.adminUserId, input.expiresAt, input.ipAddress ?? null, input.userAgent ?? null],
+    [
+      input.id,
+      input.adminUserId,
+      input.expiresAt,
+      input.ipAddress ?? null,
+      input.userAgent ?? null,
+    ],
   );
 }
 
@@ -386,10 +392,9 @@ export async function getAdminSessionById(id: string) {
 }
 
 export async function touchAdminSession(id: string) {
-  await mysqlExecute(
-    "UPDATE admin_sessions SET last_seen_at = CURRENT_TIMESTAMP(3) WHERE id = ?",
-    [id],
-  );
+  await mysqlExecute("UPDATE admin_sessions SET last_seen_at = CURRENT_TIMESTAMP(3) WHERE id = ?", [
+    id,
+  ]);
 }
 
 export async function deleteAdminSession(id: string) {

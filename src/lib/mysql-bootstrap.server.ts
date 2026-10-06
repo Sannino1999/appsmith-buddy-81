@@ -3,7 +3,13 @@ import { randomUUID } from "crypto";
 
 import { baseMenu } from "./menu";
 import { INFO, LANGUAGES, MENU_LABELS, SERVICES, UI } from "./i18n";
-import { closeMysqlPool, getMysqlPool, isMySqlConfigured, mysqlExecute, mysqlQuery } from "./mysql.server";
+import {
+  closeMysqlPool,
+  getMysqlPool,
+  isMySqlConfigured,
+  mysqlExecute,
+  mysqlQuery,
+} from "./mysql.server";
 
 type Migration = { version: string; sql: string };
 

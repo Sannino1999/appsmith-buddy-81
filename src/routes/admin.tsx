@@ -50,7 +50,9 @@ function AdminPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [command, setCommand] = useState("");
-  const [preview, setPreview] = useState<Awaited<ReturnType<typeof previewAdminCommand>> | null>(null);
+  const [preview, setPreview] = useState<Awaited<ReturnType<typeof previewAdminCommand>> | null>(
+    null,
+  );
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
@@ -146,9 +148,7 @@ function AdminPage() {
             <p className="mt-6 text-center text-[0.66rem] font-bold uppercase tracking-[0.3em] text-accent">
               Lubrano Admin
             </p>
-            <h1 className="display-caps mt-2 text-center text-3xl text-white">
-              Console del menù
-            </h1>
+            <h1 className="display-caps mt-2 text-center text-3xl text-white">Console del menù</h1>
             <p className="mt-3 text-center text-sm leading-relaxed text-white/55">
               Accesso riservato. Le modifiche vengono confermate e registrate nello storico.
             </p>
@@ -191,9 +191,7 @@ function AdminPage() {
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
                     Foto speciale
                   </p>
-                  <p className="mt-1 text-xs text-white/40">
-                    JPG, PNG o WebP · massimo 2 MB
-                  </p>
+                  <p className="mt-1 text-xs text-white/40">JPG, PNG o WebP · massimo 2 MB</p>
                 </div>
               </div>
               <label className="mt-4 flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white/75 hover:bg-white/10">
@@ -215,7 +213,11 @@ function AdminPage() {
                         method: "POST",
                         body: form,
                       });
-                      const payload = (await response.json()) as { ok?: boolean; url?: string; message?: string };
+                      const payload = (await response.json()) as {
+                        ok?: boolean;
+                        url?: string;
+                        message?: string;
+                      };
                       if (!response.ok || !payload.ok || !payload.url) {
                         setUploadMessage(payload.message ?? "Upload non riuscito.");
                         return;
@@ -315,7 +317,11 @@ function AdminPage() {
               {(data.messages ?? []).map((entry) => (
                 <div
                   key={entry.id}
-                  className={entry.role === "user" ? "ml-6 rounded-xl bg-primary/10 p-3" : "mr-6 rounded-xl bg-white/[0.04] p-3"}
+                  className={
+                    entry.role === "user"
+                      ? "ml-6 rounded-xl bg-primary/10 p-3"
+                      : "mr-6 rounded-xl bg-white/[0.04] p-3"
+                  }
                 >
                   <p className="text-[0.62rem] font-bold uppercase tracking-[0.16em] text-white/35">
                     {entry.role === "user" ? "Tu" : "Lubrano Admin"}
@@ -458,7 +464,10 @@ function AdminPage() {
 
             <div className="mt-4 space-y-3">
               {(data.history ?? []).slice(0, 8).map((entry) => (
-                <div key={entry.id} className="rounded-xl border border-white/8 bg-white/[0.03] p-3">
+                <div
+                  key={entry.id}
+                  className="rounded-xl border border-white/8 bg-white/[0.03] p-3"
+                >
                   <div className="flex items-center gap-2 text-xs text-white/35">
                     <Clock3 className="size-3.5" />
                     {new Date(entry.createdAt).toLocaleString("it-IT")}
@@ -494,15 +503,7 @@ function AdminPage() {
   );
 }
 
-function InfoCard({
-  icon,
-  title,
-  body,
-}: {
-  icon: ReactNode;
-  title: string;
-  body: string;
-}) {
+function InfoCard({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur-md">
       <div className="text-accent">{icon}</div>

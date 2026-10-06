@@ -108,8 +108,7 @@ export const adminChatData = createServerFn({ method: "GET" }).handler(async () 
     messages: messages.reverse().map((message) => ({
       id: message.id,
       role: message.role,
-      message:
-        message.message,
+      message: message.message,
       createdAt: message.created_at.toISOString(),
     })),
     history: history.map((entry) => ({
@@ -129,7 +128,9 @@ export const adminChatData = createServerFn({ method: "GET" }).handler(async () 
 });
 
 export const previewAdminCommand = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => z.object({ command: z.string().trim().min(1).max(500) }).parse(data))
+  .inputValidator((data: unknown) =>
+    z.object({ command: z.string().trim().min(1).max(500) }).parse(data),
+  )
   .handler(async ({ data }) => {
     const admin = await getCurrentAdmin();
     if (!admin) throw new Response("Unauthorized", { status: 401 });
@@ -153,10 +154,12 @@ export const previewAdminCommand = createServerFn({ method: "POST" })
 
 export const executeAdminCommand = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
-    z.object({
-      command: z.string().trim().min(1).max(500),
-      confirm: z.boolean().default(false),
-    }).parse(data),
+    z
+      .object({
+        command: z.string().trim().min(1).max(500),
+        confirm: z.boolean().default(false),
+      })
+      .parse(data),
   )
   .handler(async ({ data }) => {
     const admin = await getCurrentAdmin();
@@ -312,7 +315,12 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
     let itemKey: string | null = null;
     let details: Record<string, unknown> = { command: commandText };
 
-    if (parsed.action === "set_price" || parsed.action === "set_available" || parsed.action === "set_description" || parsed.action === "reset_item") {
+    if (
+      parsed.action === "set_price" ||
+      parsed.action === "set_available" ||
+      parsed.action === "set_description" ||
+      parsed.action === "reset_item"
+    ) {
       const target = await getMenuOverride(parsed.itemKey);
       const base = itemFromKey(parsed.itemKey)?.item;
       if (!base) return { ok: false as const, message: "Voce non trovata.", parsed };
@@ -357,11 +365,7 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
         await deleteCategoryOverride(parsed.categoryId);
         message = "↩️ Categoria " + category.name + " ripristinata.";
       } else {
-        await upsertCategoryOverride(
-          parsed.categoryId,
-          parsed.available,
-          previous?.name ?? null,
-        );
+        await upsertCategoryOverride(parsed.categoryId, parsed.available, previous?.name ?? null);
         message =
           (parsed.available ? "✅ Categoria riattivata: " : "🚫 Categoria nascosta: ") +
           category.name;
@@ -372,7 +376,10 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
         ...details,
         undoAction: "category_override",
         before: previous
-          ? { name: previous.name, available: previous.available === true || previous.available === 1 }
+          ? {
+              name: previous.name,
+              available: previous.available === true || previous.available === 1,
+            }
           : null,
         after: await getCategoryOverride(parsed.categoryId),
       };
@@ -422,7 +429,12 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
       });
       itemKey = customItemKey;
       message = "✅ Piatto extra creato: " + parsed.name;
-      details = { ...details, undoAction: "custom_item", before: null, after: { id, itemKey: customItemKey } };
+      details = {
+        ...details,
+        undoAction: "custom_item",
+        before: null,
+        after: { id, itemKey: customItemKey },
+      };
     } else if (parsed.action === "set_wifi") {
       await setSetting("wifi_password", parsed.password);
       message = "✅ Password Wi-Fi aggiornata.";
