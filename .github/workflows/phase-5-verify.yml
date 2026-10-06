@@ -53,7 +53,7 @@ jobs:
             src/lib/mysql.repository.ts \
             src/routes/admin.tsx \
             src/routes/index.tsx
-          if git diff --quiet --; then
+          if git diff --quiet -- src/lib/admin-auth.server.ts src/lib/admin-command-parser.ts src/lib/admin.functions.ts src/lib/menu.functions.ts src/lib/mysql-bootstrap.server.ts src/lib/mysql.repository.ts src/routes/admin.tsx src/routes/index.tsx; then
             echo "Nessuna modifica di formattazione."
             exit 0
           fi
