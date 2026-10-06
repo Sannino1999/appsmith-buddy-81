@@ -166,10 +166,10 @@ function MenuPage() {
     categories.find((c) => c.id === categoryId) ?? categories[0];
 
   useEffect(() => {
-    if (menu.categories.some((category) => category.id === categoryId)) return;
-    const first = menu.categories.find((category) => category.macro === macro);
+    if (publicCategories.some((category) => category.id === categoryId)) return;
+    const first = publicCategories.find((category) => category.macro === macro);
     if (first) setCategoryId(first.id);
-  }, [categoryId, macro, menu.categories]);
+  }, [categoryId, macro, publicCategories]);
 
   useEffect(() => {
     if (!searchOpen) return;
@@ -251,7 +251,7 @@ function MenuPage() {
 
   function pickMacro(id: string) {
     setMacro(id);
-    const first = menu.categories.find((c) => c.macro === id);
+    const first = publicCategories.find((c) => c.macro === id);
     if (first) setCategoryId(first.id);
     setQuery("");
   }
