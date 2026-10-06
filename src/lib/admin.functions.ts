@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { setResponseHeader } from "@tanstack/react-start/server";
 import { randomUUID } from "crypto";
 import { z } from "zod";
 
@@ -79,12 +80,14 @@ export const adminLogout = createServerFn({ method: "POST" }).handler(async () =
 });
 
 export const adminSession = createServerFn({ method: "GET" }).handler(async () => {
+  setResponseHeader("Cache-Control", "private, no-store");
   ensureDatabase();
   const admin = await getCurrentAdmin();
   return { authenticated: !!admin, admin };
 });
 
 export const adminChatData = createServerFn({ method: "GET" }).handler(async () => {
+  setResponseHeader("Cache-Control", "private, no-store");
   const admin = await getCurrentAdmin();
   if (!admin) return { authenticated: false as const };
 
