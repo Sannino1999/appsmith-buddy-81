@@ -1,5 +1,5 @@
-const CACHE_NAME = "lubrano-pub-v1";
-const APP_SHELL = ["/", "/favicon.png", "/manifest.webmanifest"];
+const CACHE_NAME = "lubrano-pub-v2";
+const APP_SHELL = ["/", "/favicon.png", "/manifest.webmanifest", "/assets/menu-bg.webp", "/assets/category-burger.webp", "/assets/category-stuzzicheria.webp"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
