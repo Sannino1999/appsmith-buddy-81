@@ -4,6 +4,7 @@ import { z } from "zod";
 import { baseMenu } from "./menu";
 import { LANGUAGES, type LangCode } from "./i18n";
 import { isMySqlConfigured } from "./mysql.server";
+import { translateMenuText } from "./menu-translations";
 import {
   getLiveMenuDataFromMysql,
   getMenuFromMysql,
@@ -191,8 +192,8 @@ export const translateCategory = createServerFn({ method: "POST" })
         };
       } else {
         result[entry.key] = {
-          name: entry.name,
-          description: entry.description,
+          name: translateMenuText(entry.name, lang) ?? entry.name,
+          description: translateMenuText(entry.description, lang),
         };
       }
     }
