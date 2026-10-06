@@ -22,7 +22,8 @@
     "db:seed": "node --experimental-strip-types scripts/import-menu-data.ts",
     "format:check": "prettier --check .",
     "db:verify": "node --experimental-strip-types scripts/verify-mysql.ts",
-    "db:bootstrap": "node --experimental-strip-types scripts/bootstrap-mysql.ts"
+    "db:bootstrap": "node --experimental-strip-types scripts/bootstrap-mysql.ts",
+    "admin:test": "node --experimental-strip-types scripts/test-admin.ts"
   },
   "overrides": {
     "rolldown": "1.2.1"
