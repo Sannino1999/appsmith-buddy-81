@@ -213,9 +213,9 @@ export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
 
   return {
     overrides: overrideRows.map(mapOverride),
-    categories: [...baseCategories, ...customCategories]
-      .filter((category) => category.available)
-      .sort((a, b) => a.sort_order - b.sort_order),
+    categories: [...baseCategories, ...customCategories].sort(
+      (a, b) => a.sort_order - b.sort_order,
+    ),
     customItems: customItemRows
       .filter((row) => toBool(row.available))
       .map((row) => ({
