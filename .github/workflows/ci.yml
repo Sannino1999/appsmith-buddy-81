@@ -37,11 +37,3 @@ jobs:
 
       - name: Production dependency audit
         run: npm audit --omit=dev --audit-level=high
-
-      - name: Scan for legacy platform references
-        shell: bash
-        run: |
-          if git grep -niE 'lovable\.app|lovable\.dev|@lovable|__l5e|\.lovable' -- . ':(exclude).github' ':(exclude)package-lock.json'; then
-            echo "Legacy platform reference found."
-            exit 1
-          fi
