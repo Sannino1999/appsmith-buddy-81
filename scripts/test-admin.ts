@@ -1,12 +1,19 @@
 import assert from "node:assert/strict";
 
-import { baseMenu, type Menu } from "../src/lib/menu.ts";
+import type { Menu } from "../src/lib/menu.ts";
 import { parseAdminCommand } from "../src/lib/admin-command-parser.ts";
 import { can } from "../src/lib/admin-permissions.ts";
 
 const exactMenu: Menu = {
-  restaurant: baseMenu.restaurant,
-  macros: baseMenu.macros,
+  restaurant: {
+    name: "Lubrano Pub & Braceria",
+    subtitle: "Menu",
+    locality: "Napoli",
+  },
+  macros: [
+    { id: "food", label: "Cibo" },
+    { id: "drinks", label: "Bevande" },
+  ],
   categories: [
     {
       id: "test",
@@ -39,6 +46,8 @@ const exactMenu: Menu = {
     },
   ],
 };
+
+
 
 const price = parseAdminCommand("prezzo Burger Uno 12", exactMenu);
 assert.deepEqual(price, {
