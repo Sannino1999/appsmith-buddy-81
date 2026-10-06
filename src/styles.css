@@ -332,13 +332,13 @@
 .lubrano-icon-button,.lubrano-lang-button{display:inline-flex;align-items:center;justify-content:center;min-height:2.55rem;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035);color:rgba(255,255,255,.75);transition:.2s ease}
 .lubrano-icon-button{width:2.55rem}.lubrano-lang-button{gap:.4rem;padding:0 .75rem;font-size:.78rem;font-weight:800}
 .lubrano-icon-button:hover,.lubrano-lang-button:hover{border-color:rgba(255,49,91,.42);color:#fff;background:rgba(255,49,91,.08);transform:translateY(-1px)}
-.lubrano-hero{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:1rem;min-height:350px;padding:2rem}
-.lubrano-hero-copy{padding:1rem 0 1rem .5rem}.lubrano-hero-title{margin:.15rem 0 0;font-family:var(--font-display);font-size:clamp(4rem,10vw,7.4rem);line-height:.82;font-weight:700;letter-spacing:.015em;text-transform:uppercase;background:linear-gradient(180deg,#fff,#a6ffe0 62%,#62d9ae);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lubrano-hero{display:grid;grid-template-columns:1fr;justify-items:center;gap:.35rem;min-height:420px;padding:2rem;text-align:center}
+.lubrano-hero-copy{order:2;max-width:40rem;padding:0 0 1rem}.lubrano-hero-title{margin:.15rem 0 0;font-family:var(--font-display);font-size:clamp(4rem,10vw,7.4rem);line-height:.82;font-weight:700;letter-spacing:.015em;text-transform:uppercase;background:linear-gradient(180deg,#fff,#a6ffe0 62%,#62d9ae);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lubrano-hero-subtitle{margin:.55rem 0 0;font-family:var(--font-display);font-size:clamp(1.2rem,2.5vw,2rem);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fff}
 .lubrano-rule{display:flex;align-items:center;width:170px;height:1px;margin:1rem 0;background:linear-gradient(90deg,transparent,var(--lubrano-red))}.lubrano-rule span{width:42px;height:3px;background:var(--lubrano-red);box-shadow:0 0 16px rgba(255,49,91,.65)}
 .lubrano-hero-note{max-width:32rem;color:rgba(255,255,255,.58);font-size:.92rem;line-height:1.7}
-.lubrano-logo-frame{display:grid;place-items:center;justify-self:end;width:min(290px,68vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(143,245,207,.1),transparent 67%);box-shadow:0 0 70px rgba(255,49,91,.12)}
-.lubrano-logo{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(0,0,0,.5));transition:transform .35s ease}.lubrano-logo:hover{transform:scale(1.025) rotate(.4deg)}
+.lubrano-logo-frame{order:1;display:grid;place-items:center;justify-self:center;width:min(290px,68vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(143,245,207,.1),transparent 67%);box-shadow:0 0 70px rgba(255,49,91,.12)}
+.lubrano-logo{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(0,0,0,.5));mix-blend-mode:screen;transition:transform .35s ease}.lubrano-logo:hover{transform:scale(1.025) rotate(.4deg)}
 .lubrano-search-panel{max-height:0;opacity:0;overflow:hidden;transform:translateY(-8px);transition:max-height .3s ease,opacity .25s ease,transform .3s ease}.lubrano-search-panel.is-open{max-height:160px;opacity:1;transform:translateY(0);margin-top:1rem}
 .lubrano-search-inner{display:flex;align-items:center;gap:.75rem;border:1px solid rgba(255,49,91,.25);border-radius:18px;background:rgba(15,8,10,.9);padding:0 1rem;box-shadow:0 15px 45px rgba(0,0,0,.22);backdrop-filter:blur(14px)}
 .lubrano-menu-switcher{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem;padding:.45rem;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:rgba(9,9,9,.78);backdrop-filter:blur(18px)}
@@ -359,3 +359,21 @@
 .lubrano-cta{display:flex;min-height:56px;align-items:center;justify-content:center;gap:.6rem;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.045);color:#fff;font-family:var(--font-display);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:.2s ease}.lubrano-cta:hover{border-color:rgba(143,245,207,.3);background:rgba(143,245,207,.08);transform:translateY(-1px)}.lubrano-cta-primary{border-color:transparent;background:linear-gradient(135deg,#9b1b39,#6e1026);box-shadow:0 12px 28px rgba(142,24,51,.28)}
 .lubrano-footer{margin:3rem 0 1rem;text-align:center;color:rgba(255,255,255,.32);font-size:.7rem;line-height:1.6}
 @media(max-width:720px){.lubrano-topbar{padding:.75rem}.lubrano-hero{grid-template-columns:1fr;min-height:auto;padding:1.2rem}.lubrano-hero-copy{order:2;padding:.2rem 0 1rem;text-align:center}.lubrano-hero-title{font-size:clamp(3.3rem,17vw,5.2rem)}.lubrano-hero-subtitle{font-size:1rem}.lubrano-rule{margin:1rem auto}.lubrano-hero-note{margin:0 auto;max-width:24rem;font-size:.82rem}.lubrano-logo-frame{order:1;justify-self:center;width:min(245px,68vw)}.lubrano-kicker{font-size:.54rem;letter-spacing:.16em}.lubrano-status{display:none}}
+
+
+/* Lubrano Admin — same brand system, distinct operational layout */
+.lubrano-admin-shell{
+  min-height:100vh;
+  color:var(--lubrano-cream);
+  background:
+    radial-gradient(circle at 15% 0%,rgba(143,245,207,.06),transparent 28%),
+    radial-gradient(circle at 85% 0%,rgba(255,49,91,.13),transparent 30%),
+    #0a0b0a;
+}
+.lubrano-admin-card{
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(25,11,15,.92),rgba(10,11,10,.9));
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  backdrop-filter:blur(16px);
+}
