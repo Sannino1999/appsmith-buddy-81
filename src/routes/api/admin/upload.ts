@@ -25,7 +25,7 @@ export const Route = createFileRoute("/api/admin/upload")({
 
         const contentType = request.headers.get("content-type") ?? "";
         if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
-          return Response.json({ ok: false, message: "Content-Type non valido." }, { status: 415 });
+          return new Response(JSON.stringify({ ok: false, message: "Content-Type non valido." }, { status: 415 });
         }
 
         const form = await request.formData();
@@ -82,7 +82,7 @@ export const Route = createFileRoute("/api/admin/upload")({
         const filename = safeId + extension;
         const uploadDir = path.resolve(process.cwd(), "public", "uploads");
         await mkdir(uploadDir, { recursive: true });
-        await writeFile(path.join(uploadDir, filename), Buffer.from(bytes));
+        await writeFile(path.join(uploadDir, filename), Buffer.from(bytes), { flag: "wx", mode: 0o644 });
 
         return Response.json({
           ok: true,
