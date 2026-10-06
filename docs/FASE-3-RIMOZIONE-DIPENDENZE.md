@@ -5,12 +5,12 @@ La Fase 3 rimuove dal percorso applicativo Hostinger le dipendenze legacy di Sup
 ## Rimosso
 
 - client browser/server Supabase e middleware di autenticazione Supabase;
-- storage di autenticazione per preview Lovable;
+- storage di autenticazione per preview legacy hosting;
 - tipi/generated artifacts Supabase;
 - configurazione e migrazioni Drizzle/PostgreSQL non più usate;
 - driver PostgreSQL;
-- `src/lib/translate.server.ts` e il relativo gateway AI Lovable;
-- reporting errori Lovable;
+- `src/lib/translate.server.ts` e il relativo gateway AI legacy hosting;
+- reporting errori legacy hosting;
 - `bun.lock` legacy.
 
 ## Mantenuto intenzionalmente
