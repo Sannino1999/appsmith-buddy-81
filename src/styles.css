@@ -624,3 +624,146 @@
     padding-inline:.65rem;
   }
 }
+
+/* Final responsive menu hierarchy */
+.lubrano-menu-stage{
+  margin-top:1.15rem;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:.7rem;
+  background:linear-gradient(145deg,rgba(18,8,11,.92),rgba(8,9,9,.9));
+  box-shadow:0 22px 60px rgba(0,0,0,.22);
+}
+.lubrano-primary-label{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.15rem .35rem .65rem;
+}
+.lubrano-primary-label span{
+  font-family:var(--font-display);
+  font-size:.74rem;
+  font-weight:800;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(143,245,207,.9);
+}
+.lubrano-primary-label small{
+  font-size:.65rem;
+  color:rgba(255,255,255,.28);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+.lubrano-menu-stage .lubrano-menu-switcher{
+  margin-top:0;
+  padding:.25rem;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+.lubrano-menu-stage .lubrano-macro-button{
+  min-height:96px;
+  padding:1rem 1.25rem;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:18px;
+}
+.lubrano-menu-stage .lubrano-macro-button span{
+  font-size:clamp(1.35rem,2.4vw,1.75rem);
+}
+.lubrano-menu-stage .lubrano-macro-button small{
+  font-size:.7rem;
+}
+.lubrano-category-wrap{
+  min-width:0;
+  overflow:hidden;
+}
+.lubrano-category-strip{
+  width:100%;
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  overflow:visible;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.lubrano-category-pill{
+  min-width:0;
+}
+.lubrano-category-thumb{
+  flex-basis:52px;
+  width:52px;
+  height:52px;
+}
+.lubrano-category-thumb img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+@media (min-width:721px){
+  .lubrano-category-strip{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+@media (min-width:1100px){
+  .lubrano-category-strip{
+    grid-template-columns:repeat(7,minmax(0,1fr));
+  }
+}
+@media (max-width:720px){
+  .lubrano-hero{
+    min-height:350px;
+    padding:1.3rem 1rem 1.4rem;
+  }
+  .lubrano-logo-frame{
+    width:min(235px,62vw);
+  }
+  .lubrano-hero-title{
+    font-size:clamp(3.35rem,15vw,5.2rem);
+  }
+  .lubrano-hero-subtitle{font-size:1rem;letter-spacing:.13em}
+  .lubrano-menu-stage{
+    margin-top:.8rem;
+    padding:.55rem;
+  }
+  .lubrano-primary-label{
+    padding:.1rem .25rem .5rem;
+  }
+  .lubrano-primary-label small{font-size:.56rem}
+  .lubrano-menu-stage .lubrano-menu-switcher{
+    gap:.45rem;
+  }
+  .lubrano-menu-stage .lubrano-macro-button{
+    min-height:82px;
+    padding:.75rem .8rem;
+    border-radius:16px;
+  }
+  .lubrano-menu-stage .lubrano-macro-button span{font-size:1.25rem}
+  .lubrano-menu-stage .lubrano-macro-button small{font-size:.6rem}
+  .lubrano-category-strip{
+    display:flex;
+    width:max-content;
+    max-width:none;
+    overflow-x:auto;
+    overflow-y:hidden;
+    gap:.45rem;
+    padding:.15rem .15rem .3rem;
+    touch-action:pan-x;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-inline:contain;
+    scroll-snap-type:x proximity;
+  }
+  .lubrano-category-pill{
+    width:184px;
+    min-width:184px;
+    flex:0 0 184px;
+    min-height:68px;
+    scroll-snap-align:start;
+  }
+  .lubrano-category-thumb{
+    flex-basis:44px;
+    width:44px;
+    height:44px;
+  }
+}
