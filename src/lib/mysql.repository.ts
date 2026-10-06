@@ -553,6 +553,34 @@ export async function setSetting(key: string, value: string | null) {
     [key, value],
   );
 }
+export async function getCategoryOverride(categoryId: string) {
+  const rows = await mysqlQuery<CategoryOverrideRow>(
+    "SELECT category_id, name, available FROM menu_category_overrides WHERE category_id = ? LIMIT 1",
+    [categoryId],
+  );
+  return rows[0] ?? null;
+}
+
+export async function deleteCategoryOverride(categoryId: string) {
+  await mysqlExecute("DELETE FROM menu_category_overrides WHERE category_id = ?", [categoryId]);
+}
+
+export async function deleteCustomCategory(id: string) {
+  await mysqlExecute("DELETE FROM menu_custom_categories WHERE id = ?", [id]);
+}
+
+export async function deleteCustomItem(id: string) {
+  await mysqlExecute("DELETE FROM menu_custom_items WHERE id = ?", [id]);
+}
+
+export async function getCustomItemByKey(itemKey: string) {
+  const rows = await mysqlQuery<CustomItemRow>(
+    "SELECT item_key, category_id, name, description, price_eur, available FROM menu_custom_items WHERE item_key = ? LIMIT 1",
+    [itemKey],
+  );
+  return rows[0] ?? null;
+}
+
 export async function listAdminUsers(): Promise<MysqlAdminUser[]> {
   const rows = await mysqlQuery<MysqlAdminUser & { is_active: BoolLike }>(
     `SELECT id, username, password_hash, telegram_chat_id, first_name, last_name, role, is_active
