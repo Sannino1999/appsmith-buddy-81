@@ -18,6 +18,7 @@ import {
 
 import {
   adminChatData,
+  adminChangePassword,
   adminLogin,
   adminLogout,
   executeAdminCommand,
@@ -55,6 +56,9 @@ function AdminPage() {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
 
   const data = sessionQuery.data;
   const authenticated = data?.authenticated === true;
@@ -414,6 +418,55 @@ function AdminPage() {
               }} />
             </label>
             {uploadMessage && <p className="mt-2 text-xs text-white/45" aria-live="polite">{uploadMessage}</p>}
+          </div>
+
+          <div className="mt-5 rounded-2xl border border-[#8ff5cf]/10 bg-black/20 p-4">
+            <div className="flex items-center gap-3">
+              <div className="grid size-10 place-items-center rounded-xl bg-[#8ff5cf]/10 text-[#8ff5cf]">
+                <ShieldCheck className="size-5" />
+              </div>
+              <div>
+                <p className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-[#8ff5cf]">Sicurezza account</p>
+                <p className="mt-1 text-sm text-white/55">Cambia la password direttamente dalla console dopo l'accesso.</p>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <label className="block">
+                <span className="text-xs font-bold uppercase tracking-[0.14em] text-white/40">Password attuale</span>
+                <input type="password" autoComplete="current-password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} className="mt-2 min-h-11 w-full rounded-xl border border-white/10 bg-white/5 px-3 text-white outline-none focus-visible:ring-2 focus-visible:ring-accent/70" />
+              </label>
+              <label className="block">
+                <span className="text-xs font-bold uppercase tracking-[0.14em] text-white/40">Nuova password</span>
+                <input type="password" autoComplete="new-password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} className="mt-2 min-h-11 w-full rounded-xl border border-white/10 bg-white/5 px-3 text-white outline-none focus-visible:ring-2 focus-visible:ring-accent/70" />
+              </label>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                disabled={busy || currentPassword.length < 1 || newPassword.length < 12}
+                onClick={async () => {
+                  setBusy(true);
+                  setPasswordMessage("");
+                  try {
+                    const result = await adminChangePassword({ data: { currentPassword, newPassword } });
+                    setPasswordMessage(result.message);
+                    if (result.ok) {
+                      setCurrentPassword("");
+                      setNewPassword("");
+                    }
+                  } catch {
+                    setPasswordMessage("Impossibile aggiornare la password.");
+                  } finally {
+                    setBusy(false);
+                  }
+                }}
+                className="min-h-11 rounded-xl bg-[#8ff5cf] px-4 text-sm font-bold text-[#102019] disabled:opacity-50"
+              >
+                Aggiorna password
+              </button>
+              <span className="text-xs text-white/35">Minimo 12 caratteri. Non viene salvata nello storico.</span>
+            </div>
+            {passwordMessage && <p className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white/65">{passwordMessage}</p>}
           </div>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
