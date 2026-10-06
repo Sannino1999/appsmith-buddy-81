@@ -385,3 +385,10 @@
 .lubrano-book-button{border:1px solid rgba(255,49,91,.42);border-radius:999px;background:rgba(142,24,51,.18);padding:.4rem .7rem;color:#fff!important;font-weight:800}
 .lubrano-logo-original{mix-blend-mode:screen;clip-path:circle(49.2% at 50% 50%);}
 @media(max-width:720px){.lubrano-utility{display:none}}
+
+.lubrano-main-nav{display:flex;align-items:center;justify-content:center;gap:2rem;border-bottom:1px solid rgba(255,255,255,.05);padding:.7rem 1rem;color:rgba(255,255,255,.55)}
+.lubrano-main-nav a{position:relative;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:.2s ease}
+.lubrano-main-nav a:hover{color:#fff}
+.lubrano-main-nav a::after{content:"";position:absolute;left:50%;right:50%;bottom:-.42rem;height:2px;border-radius:999px;background:var(--lubrano-red);transition:.2s ease}
+.lubrano-main-nav a:hover::after{left:10%;right:10%}
+@media(max-width:720px){.lubrano-main-nav{gap:1rem;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}.lubrano-main-nav::-webkit-scrollbar{display:none}.lubrano-main-nav a{white-space:nowrap;font-size:.62rem}}
