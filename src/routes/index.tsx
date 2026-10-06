@@ -22,6 +22,11 @@ import {
 } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.webp";
+import stuzzicheriaVisual from "@/assets/category-stuzzicheria.webp";
+import patateVisual from "@/assets/category-patate.webp";
+import paniniVisual from "@/assets/category-panini.webp";
+import braceVisual from "@/assets/category-brace.webp";
+import dolciVisual from "@/assets/category-dolci.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { translateMenuText } from "@/lib/menu-translations";
 import {
@@ -36,13 +41,14 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
 const categoryVisuals: Record<string, string> = {
-  stuzzicheria: "/assets/category-stuzzicheria.webp",
-  patate: "/assets/category-stuzzicheria.webp",
-  hamburger: "/assets/category-burger.webp",
-  panini: "/assets/category-burger.webp",
-  braceria: "/assets/category-brace.webp",
-  carne: "/assets/category-brace.webp",
-  dolci: "/assets/category-dolci.webp",
+  stuzzicheria: stuzzicheriaVisual,
+  patate: patateVisual,
+  hamburger: paniniVisual,
+  panini: paniniVisual,
+  brace: braceVisual,
+  braceria: braceVisual,
+  carne: braceVisual,
+  dolci: dolciVisual,
 };
 
 export const Route = createFileRoute("/")({
@@ -393,10 +399,10 @@ function MenuPage() {
               <button key={c.id} ref={(element) => { categoryRefs.current[c.id] = element; }} type="button" onClick={() => setCategoryId(c.id)} aria-current={c.id === active?.id ? "page" : undefined} className={`lubrano-category-pill ${c.id === active?.id ? "is-active" : ""}`}>
                 <span className="lubrano-category-thumb">
                   <img
-                    src={categoryVisuals[c.id] ?? "/assets/menu-bg.webp"}
+                    src={categoryVisuals[c.id] ?? bgImage}
                     alt=""
                     loading="lazy"
-                    onError={(event) => { event.currentTarget.src = "/assets/menu-bg.webp"; }}
+                    onError={(event) => { event.currentTarget.src = bgImage; }}
                   />
                 </span>
                 <span>{menuLabels.categories[c.id]?.name ?? c.name}</span>
@@ -433,7 +439,7 @@ function MenuPage() {
           <div key={active?.id ?? "empty"} className="mt-8 anim-menu-change">
             {active && (
               <section className="lubrano-category-hero">
-                <img src={categoryVisuals[active.id] ?? "/assets/menu-bg.webp"} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/menu-bg.webp"; }} />
+                <img src={categoryVisuals[active.id] ?? bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = "/assets/menu-bg.webp"; }} />
                 <div className="lubrano-category-hero-overlay" />
                 <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
                   <span className="lubrano-eyebrow">{macro === "food" ? "DALLA CUCINA" : "DAL BANCO"}</span>
