@@ -396,7 +396,7 @@ export async function deleteAdminSession(id: string) {
   await mysqlExecute("DELETE FROM admin_sessions WHERE id = ?", [id]);
 }
 
-export async function listChatMessages(limit = 100) {
+export async function listChatMessages(adminUserId: string, limit = 100) {
   const safeLimit = Math.max(1, Math.min(200, Math.trunc(limit)));
   return mysqlQuery<{
     id: string;
@@ -406,8 +406,9 @@ export async function listChatMessages(limit = 100) {
     metadata: string;
     created_at: Date;
   }>(
-    "SELECT id, admin_user_id, role, message, metadata, created_at FROM chat_messages ORDER BY created_at DESC LIMIT " +
+    "SELECT id, admin_user_id, role, message, metadata, created_at FROM chat_messages WHERE admin_user_id = ? ORDER BY created_at DESC LIMIT " +
       safeLimit,
+    [adminUserId],
   );
 }
 
