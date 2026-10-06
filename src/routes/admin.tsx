@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Check,
   ChevronRight,
@@ -10,6 +10,7 @@ import {
   Menu as MenuIcon,
   RotateCcw,
   Send,
+  Upload,
   ShieldCheck,
   Sparkles,
   Wifi,
@@ -52,6 +53,7 @@ function AdminPage() {
   const [preview, setPreview] = useState<Awaited<ReturnType<typeof previewAdminCommand>> | null>(null);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState("");
 
   const data = sessionQuery.data;
   const authenticated = data?.authenticated === true;
@@ -178,6 +180,69 @@ function AdminPage() {
                   autoComplete="current-password"
                 />
               </label>
+            </div>
+
+            <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="flex items-center gap-3">
+                <div className="grid size-10 place-items-center rounded-xl bg-accent/10 text-accent">
+                  <Upload className="size-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
+                    Foto speciale
+                  </p>
+                  <p className="mt-1 text-xs text-white/40">
+                    JPG, PNG o WebP · massimo 2 MB
+                  </p>
+                </div>
+              </div>
+              <label className="mt-4 flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white/75 hover:bg-white/10">
+                Seleziona immagine
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="sr-only"
+                  onChange={async (event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (!file) return;
+                    setBusy(true);
+                    setUploadMessage("");
+                    try {
+                      const form = new FormData();
+                      form.append("image", file);
+                      const response = await fetch("/api/admin/upload", {
+                        method: "POST",
+                        body: form,
+                      });
+                      const payload = (await response.json()) as { ok?: boolean; url?: string; message?: string };
+                      if (!response.ok || !payload.ok || !payload.url) {
+                        setUploadMessage(payload.message ?? "Upload non riuscito.");
+                        return;
+                      }
+                      setCommand((current) => {
+                        if (/^speciale\s*\|/i.test(current)) {
+                          const parts = current.split("|").map((value) => value.trim());
+                          parts[3] = parts[3] || "0";
+                          parts[4] = payload.url ?? "";
+                          return parts.join(" | ");
+                        }
+                        return "speciale | Titolo | Descrizione | 0 | " + payload.url;
+                      });
+                      setUploadMessage("✅ Foto caricata. Ora completa il comando speciale.");
+                    } catch {
+                      setUploadMessage("Upload non riuscito.");
+                    } finally {
+                      setBusy(false);
+                    }
+                  }}
+                />
+              </label>
+              {uploadMessage && (
+                <p className="mt-2 text-xs text-white/45" aria-live="polite">
+                  {uploadMessage}
+                </p>
+              )}
             </div>
 
             {message && (
@@ -410,7 +475,7 @@ function InfoCard({
   title,
   body,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   body: string;
 }) {
