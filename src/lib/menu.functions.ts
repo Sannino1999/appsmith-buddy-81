@@ -161,14 +161,16 @@ export const translateCategory = createServerFn({ method: "POST" })
     const entries = menu.categories.flatMap((menuCategory) =>
       menuCategory.groups.flatMap((g) =>
         g.items.map((item) => {
-        const o = overrideMap.get(item.key);
-        return {
-          key: item.key,
-          name: o?.name ?? item.name,
-          description: o?.description ?? item.description,
-        };
-      }),
+          const o = overrideMap.get(item.key);
+          return {
+            key: item.key,
+            name: o?.name ?? item.name,
+            description: o?.description ?? item.description,
+          };
+        }),
+      ),
     );
+
     const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
 
     const cached = isMySqlConfigured()
