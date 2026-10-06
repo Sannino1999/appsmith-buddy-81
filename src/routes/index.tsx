@@ -118,7 +118,50 @@ function MenuPage() {
   const special = liveMenuQuery.data?.special ?? null;
   const wifiPassword = wifiQuery.data ?? null;
 
-  const categories = menu.categories.filter((c) => c.macro === macro);
+  const publicCategories = useMemo(() => {
+    const liveCategories = liveMenuQuery.data?.categories ?? [];
+    const liveById = new Map(liveCategories.map((category) => [category.id, category]));
+    const baseCategories = menu.categories
+      .map((category) => {
+        const live = liveById.get(category.id);
+        if (live && !live.available) return null;
+        return {
+          ...category,
+          name: live?.name ?? category.name,
+          macro: live?.macro ?? category.macro,
+        };
+      })
+      .filter((category): category is MenuCategory => category !== null);
+
+    const baseIds = new Set(baseCategories.map((category) => category.id));
+    const customCategories = liveCategories
+      .filter((category) => category.custom && !baseIds.has(category.id))
+      .map((category) => ({
+        id: category.id,
+        macro: category.macro,
+        name: category.name,
+        eyebrow: null,
+        groups: [
+          {
+            name: "",
+            items: (liveMenuQuery.data?.customItems ?? [])
+              .filter((item) => item.category_id === category.id)
+              .map((item) => ({
+                key: item.item_key,
+                name: item.name,
+                description: item.description,
+                price_eur: item.price_eur,
+                tags: [],
+                available: item.available,
+              })),
+          },
+        ],
+      }));
+
+    return [...baseCategories, ...customCategories];
+  }, [liveMenuQuery.data, menu.categories]);
+
+  const categories = publicCategories.filter((c) => c.macro === macro);
   const active: MenuCategory | undefined =
     categories.find((c) => c.id === categoryId) ?? categories[0];
 
@@ -143,7 +186,7 @@ function MenuPage() {
 
   const allItems = useMemo(
     () =>
-      menu.categories.flatMap((category) =>
+      publicCategories.flatMap((category) =>
         category.groups.flatMap((group) =>
           group.items.map((item) => {
             const override = overrides.get(item.key);
@@ -160,7 +203,7 @@ function MenuPage() {
           }),
         ),
       ),
-    [menu.categories, overrides],
+    [publicCategories, overrides],
   );
 
   const normalizedQuery = query.trim().toLocaleLowerCase("it");
