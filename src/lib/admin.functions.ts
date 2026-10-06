@@ -112,6 +112,7 @@ export const adminChangePassword = createServerFn({ method: "POST" })
     const passwordHash = await bcrypt.hash(data.newPassword, 12);
     await updateAdminPassword(admin.id, passwordHash);
     await insertAuditLog({
+      actor: admin.username ?? admin.id,
       adminUserId: admin.id,
       action: "Cambia password admin",
       itemKey: null,
