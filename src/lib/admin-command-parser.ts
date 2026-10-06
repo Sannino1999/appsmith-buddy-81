@@ -159,34 +159,6 @@ function parseCreateItem(body: string, menu: Menu): ParsedCommand {
   };
 }
 
-function resolveItem(menu: Menu, needle: string): ParsedCommand["action"] extends never ? never : {
-  action: "set_price";
-  itemKey: string;
-  label: string;
-} | { action: "set_available"; itemKey: string; label: string; available: boolean } | { action: "reset_item"; itemKey: string; label: string } | { action: "ambiguous"; reason: string; candidates: { key: string; name: string; category: string }[] } | { action: "unknown"; reason: string } {
-  const matches = findItems(menu, needle);
-  const first = matches[0];
-  if (matches.length !== 1 || !first) {
-    return matches.length
-      ? ambiguous(
-          "Ho trovato più voci compatibili.",
-          matches.map((item) => ({
-            key: item.key,
-            name: item.name,
-            category: item.category,
-          })),
-        )
-      : { action: "unknown", reason: "Voce non trovata." };
-  }
-
-  return {
-    action: "set_price",
-    itemKey: first.key,
-    label: first.name,
-    priceEur: 0,
-  };
-}
-
 export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   const raw = input.trim();
   const lower = normalize(raw);
