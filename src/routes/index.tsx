@@ -493,7 +493,17 @@ function MenuPage() {
 
         <section id="contatti" className="lubrano-venue anim-fade-up">
           <div className="lubrano-venue-copy"><span className="lubrano-eyebrow">{info.eyebrow}</span><h2>{info.title}</h2><p>{VENUE.address}</p><a href={VENUE.phoneHref}>{VENUE.phone}</a></div>
-          <div className="lubrano-hours"><span>{info.hours}</span><div><b>{info.monday}</b><strong>{info.closed}</strong></div><div><b>{info.openDays}</b><strong>{info.openHours}</strong></div></div>
+          <div className="lubrano-hours">
+            <span>{info.hours}</span>
+            <div className="lubrano-hours-grid">
+              {info.days.map((entry) => (
+                <div key={entry.day} className={entry.closed ? "is-closed" : ""}>
+                  <b>{entry.day}</b>
+                  <strong>{entry.hours}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2"><a href={VENUE.phoneHref} className="lubrano-cta lubrano-cta-primary"><Phone className="size-5" />{info.call}</a><a href={VENUE.mapsUrl} target="_blank" rel="noreferrer" className="lubrano-cta"><MapPin className="size-5" />{info.directions}</a></div>
         </section>
 
