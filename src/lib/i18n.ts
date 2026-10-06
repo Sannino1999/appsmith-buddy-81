@@ -10,6 +10,16 @@ export const LANGUAGES = [
 
 export type LangCode = (typeof LANGUAGES)[number]["code"];
 
+export const NAVIGATION: Record<LangCode, { menu: string; special: string; services: string; contact: string; install: string; book: string }> = {
+  it: { menu: "Menù", special: "Specialità", services: "Servizi", contact: "Contatti", install: "Installa il menù", book: "Prenota un tavolo" },
+  en: { menu: "Menu", special: "Specials", services: "Services", contact: "Contact", install: "Install menu", book: "Book a table" },
+  es: { menu: "Menú", special: "Especialidades", services: "Servicios", contact: "Contacto", install: "Instalar menú", book: "Reservar mesa" },
+  fr: { menu: "Menu", special: "Spécialités", services: "Services", contact: "Contact", install: "Installer le menu", book: "Réserver une table" },
+  de: { menu: "Menü", special: "Empfehlungen", services: "Services", contact: "Kontakt", install: "Menü installieren", book: "Tisch reservieren" },
+  pt: { menu: "Menu", special: "Especialidades", services: "Serviços", contact: "Contactos", install: "Instalar menu", book: "Reservar mesa" },
+  zh: { menu: "菜单", special: "招牌推荐", services: "服务", contact: "联系", install: "安装菜单", book: "预订餐桌" },
+};
+
 export const LANG_NAMES: Record<LangCode, string> = {
   it: "Italian",
   en: "English",
