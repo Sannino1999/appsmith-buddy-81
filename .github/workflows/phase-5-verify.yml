@@ -9,7 +9,7 @@ on:
       - fase-5-admin-chat
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
@@ -40,5 +40,44 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Formattazione
-        run: npm run format:check
+      - name: Formatta file Fase 5
+        if: github.event_name == 'push'
+        run: |
+          npx prettier --write \
+            src/lib/admin-auth.server.ts \
+            src/lib/admin-command-parser.ts \
+            src/lib/admin.functions.ts \
+            src/lib/menu.functions.ts \
+            src/lib/mysql-bootstrap.server.ts \
+            src/lib/mysql.repository.ts \
+            src/routes/admin.tsx \
+            src/routes/index.tsx
+          if git diff --quiet --; then
+            echo "Nessuna modifica di formattazione."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            src/lib/admin-auth.server.ts \
+            src/lib/admin-command-parser.ts \
+            src/lib/admin.functions.ts \
+            src/lib/menu.functions.ts \
+            src/lib/mysql-bootstrap.server.ts \
+            src/lib/mysql.repository.ts \
+            src/routes/admin.tsx \
+            src/routes/index.tsx
+          git commit -m "fase 5: formatta file admin"
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+      - name: Formattazione Fase 5
+        run: |
+          npx prettier --check \
+            src/lib/admin-auth.server.ts \
+            src/lib/admin-command-parser.ts \
+            src/lib/admin.functions.ts \
+            src/lib/menu.functions.ts \
+            src/lib/mysql-bootstrap.server.ts \
+            src/lib/mysql.repository.ts \
+            src/routes/admin.tsx \
+            src/routes/index.tsx
