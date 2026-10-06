@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Lubrano Pub & Braceria" },
       { name: "generator", content: "DigitGS" },
-      { name: "theme-color", content: "#17110f" },
+      { name: "theme-color", content: "#8e1833" },
       { property: "og:title", content: "Lubrano Pub & Braceria — Menù digitale" },
       {
         property: "og:description",
@@ -102,6 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icon-192.svg" },
     ],
   }),
   shellComponent: RootShell,
@@ -112,7 +113,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <head>
         <HeadContent />
       </head>

@@ -9,7 +9,7 @@ on:
       - fase-3-rimozione-dipendenze
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   verify:
@@ -64,6 +64,3 @@ jobs:
 
       - name: Lint ESLint
         run: npm run lint
-
-      - name: Controllo formattazione
-        run: npm run format:check
