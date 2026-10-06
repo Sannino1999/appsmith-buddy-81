@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -451,6 +451,9 @@ function MenuPage() {
           <p className="font-bold uppercase tracking-[0.2em] text-white/75">{menu.restaurant.name} · {menu.restaurant.subtitle}</p>
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
           <p className="mt-3 text-[0.7rem]">Realizzato da <span className="font-semibold text-[#ff315b]">DigitGS</span></p>
+          <Link to="/admin" className="mt-4 inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white/35 transition hover:border-[#ff315b]/30 hover:bg-[#ff315b]/5 hover:text-white/70">
+            Area riservata
+          </Link>
         </footer>
       </div>
 
