@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+# Fase 5: pipeline di verifica separata dal deploy Hostinger.
 
 jobs:
   verify:
