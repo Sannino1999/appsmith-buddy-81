@@ -158,8 +158,9 @@ export const translateCategory = createServerFn({ method: "POST" })
     const overrides = isMySqlConfigured() ? await listMenuOverrides() : [];
     const overrideMap = new Map(overrides.map((o) => [o.item_key, o]));
 
-    const entries = category.groups.flatMap((g) =>
-      g.items.map((item) => {
+    const entries = menu.categories.flatMap((menuCategory) =>
+      menuCategory.groups.flatMap((g) =>
+        g.items.map((item) => {
         const o = overrideMap.get(item.key);
         return {
           key: item.key,
