@@ -1,0 +1,20 @@
+{
+  "name": "Lubrano Pub & Braceria",
+  "short_name": "Lubrano Pub",
+  "description": "Menù digitale di Lubrano Pub & Braceria.",
+  "lang": "it",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#17110f",
+  "background_color": "#17110f",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
