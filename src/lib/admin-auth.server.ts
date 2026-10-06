@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { randomBytes } from "crypto";
+import { createHash, randomBytes } from "crypto";
 import {
   getCookie,
   getRequestHeader,
@@ -23,6 +23,10 @@ const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000;
 
 const attempts = new Map<string, number[]>();
+
+function hashSessionToken(token: string) {
+  return createHash("sha256").update(token).digest("hex");
+}
 
 function now() {
   return Date.now();
@@ -108,7 +112,7 @@ export async function authenticateAdmin(input: unknown) {
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(now() + SESSION_TTL_SECONDS * 1000);
   await createAdminSession({
-    id: token,
+    id: hashSessionToken(token),
     adminUserId: admin.id,
     expiresAt,
     ipAddress: clientKey(),
@@ -132,7 +136,7 @@ export async function getCurrentAdmin() {
   const token = readSessionToken();
   if (!token) return null;
 
-  const session = await getAdminSession(token);
+  const session = await getAdminSession(hashSessionToken(token));
   if (!session) {
     clearSessionCookie();
     return null;
@@ -140,7 +144,7 @@ export async function getCurrentAdmin() {
 
   const admin = await getAdminById(session.admin_user_id);
   if (!admin || !admin.is_active) {
-    await deleteAdminSession(token);
+    await deleteAdminSession(hashSessionToken(token));
     clearSessionCookie();
     return null;
   }
@@ -162,7 +166,7 @@ export async function requireAdmin() {
 
 export async function logoutAdmin() {
   const token = readSessionToken();
-  if (token) await deleteAdminSession(token);
+  if (token) await deleteAdminSession(hashSessionToken(token));
   clearSessionCookie();
   return { ok: true as const };
 }
