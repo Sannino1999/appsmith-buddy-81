@@ -226,9 +226,8 @@ function MenuPage() {
       normalizedQuery
         ? allItems.filter(
             (item) =>
-              item.name.toLocaleLowerCase("it").includes(normalizedQuery) ||
-              (item.description ?? "").toLocaleLowerCase("it").includes(normalizedQuery) ||
-              item.categoryName.toLocaleLowerCase("it").includes(normalizedQuery),
+              item.name.toLocaleLowerCase(lang).includes(normalizedQuery) ||
+              (item.description ?? "").toLocaleLowerCase(lang).includes(normalizedQuery),
           )
         : [],
     [allItems, normalizedQuery],
@@ -246,8 +245,9 @@ function MenuPage() {
             const tr = translations[item.key];
             return {
               ...item,
-              name: tr?.name ?? o?.name ?? item.name,
-              description: tr?.description ?? o?.description ?? item.description,
+              name: tr?.name ?? translateMenuText(o?.name ?? item.name, lang) ?? (o?.name ?? item.name),
+              description:
+                tr?.description ?? translateMenuText(o?.description ?? item.description, lang),
               price_eur: o?.price_eur ?? item.price_eur,
               available: o?.available ?? true,
               tags: item.tags.map((tag) => menuLabels.tags[tag] ?? tag),
