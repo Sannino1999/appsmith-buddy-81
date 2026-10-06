@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { createServerFn } from "@tanstack/react-start";
 import { setResponseHeader } from "@tanstack/react-start/server";
 import { randomUUID } from "crypto";
@@ -26,6 +27,7 @@ import {
   upsertCategoryOverride,
   upsertMenuOverride,
   upsertSpecial,
+  updateAdminPassword,
   setSetting,
   deactivateAllSpecials,
 } from "./mysql.repository";
@@ -80,6 +82,43 @@ export const adminLogout = createServerFn({ method: "POST" }).handler(async () =
   ensureDatabase();
   return logoutAdmin();
 });
+
+const changePasswordInput = z.object({
+  currentPassword: z.string().min(1).max(72),
+  newPassword: z.string().min(12).max(72),
+});
+
+export const adminChangePassword = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => changePasswordInput.parse(data))
+  .handler(async ({ data }) => {
+    const admin = await getCurrentAdmin();
+    if (!admin) throw new Response("Unauthorized", { status: 401 });
+    ensureDatabase();
+
+    const stored = await getAdminById(admin.id);
+    if (!stored?.password_hash || !(await bcrypt.compare(data.currentPassword, stored.password_hash))) {
+      return { ok: false as const, message: "La password attuale non è corretta." };
+    }
+
+    if (data.newPassword === data.currentPassword) {
+      return { ok: false as const, message: "La nuova password deve essere diversa dalla precedente." };
+    }
+
+    if (bcrypt.truncates(data.newPassword)) {
+      return { ok: false as const, message: "La nuova password è troppo lunga per il metodo di cifratura." };
+    }
+
+    const passwordHash = await bcrypt.hash(data.newPassword, 12);
+    await updateAdminPassword(admin.id, passwordHash);
+    await insertAuditLog({
+      adminUserId: admin.id,
+      action: "Cambia password admin",
+      itemKey: null,
+      details: JSON.stringify({ type: "password_change", before: "[REDACTED]", after: "[REDACTED]" }),
+    });
+
+    return { ok: true as const, message: "Password aggiornata correttamente." };
+  });
 
 export const adminSession = createServerFn({ method: "GET" }).handler(async () => {
   setResponseHeader("Cache-Control", "private, no-store");
