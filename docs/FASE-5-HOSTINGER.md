@@ -11,6 +11,10 @@ Nel pannello della Node.js App su Hostinger aggiungere temporaneamente:
 
 La password deve rispettare il limite bcrypt di 72 byte. Non inserirla nel repository.
 
+### Se hai perso la password admin
+
+Puoi mantenere lo username `admin` e impostare temporaneamente `ADMIN_BOOTSTRAP_RESET_PASSWORD` nelle variabili ambiente della Node.js App su Hostinger. Riavvia l'applicazione, accedi con la nuova password, poi **rimuovi subito** `ADMIN_BOOTSTRAP_RESET_PASSWORD` e riavvia di nuovo. La password non viene registrata nei log.
+
 Eseguire un redeploy/restart dell'app. Al primo avvio, se `admin_users` non contiene ancora quell'username, l'app crea l'utente come ruolo `admin` e salva solo l'hash bcrypt.
 
 Dopo avere verificato l'accesso a `/admin`, rimuovere `ADMIN_BOOTSTRAP_USERNAME` e `ADMIN_BOOTSTRAP_PASSWORD` dalle variabili Hostinger e riavviare l'app. L'utente esistente non viene cancellato quando queste variabili vengono rimosse.
