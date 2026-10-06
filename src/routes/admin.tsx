@@ -10,7 +10,6 @@ import {
   Menu as MenuIcon,
   RotateCcw,
   Send,
-  Upload,
   ShieldCheck,
   Sparkles,
   Wifi,
@@ -230,81 +229,6 @@ function AdminPage() {
               <div className="grid size-11 place-items-center rounded-full bg-accent/10 text-accent">
                 <Sparkles className="size-5" />
               </div>
-            <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-[#8ff5cf]/10 bg-black/20 p-3">
-              <div className="flex items-center gap-3">
-                <img src="/lubrano-logo.png" alt="" className="size-14 rounded-full object-cover ring-1 ring-[#8ff5cf]/20" width={128} height={128} />
-                <div>
-                  <p className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-accent">Area riservata</p>
-                  <p className="mt-1 text-sm text-white/55">Gestisci il menù e pubblica le modifiche.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <div className="flex items-center gap-3">
-                <div className="grid size-10 place-items-center rounded-xl bg-accent/10 text-accent">
-                  <Upload className="size-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
-                    Foto speciale
-                  </p>
-                  <p className="mt-1 text-xs text-white/40">JPG, PNG o WebP · massimo 2 MB</p>
-                </div>
-              </div>
-              <label className="mt-4 flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white/75 hover:bg-white/10">
-                Seleziona immagine
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  className="sr-only"
-                  onChange={async (event) => {
-                    const file = event.target.files?.[0];
-                    event.target.value = "";
-                    if (!file) return;
-                    setBusy(true);
-                    setUploadMessage("");
-                    try {
-                      const form = new FormData();
-                      form.append("image", file);
-                      const response = await fetch("/api/admin/upload", {
-                        method: "POST",
-                        body: form,
-                      });
-                      const payload = (await response.json()) as {
-                        ok?: boolean;
-                        url?: string;
-                        message?: string;
-                      };
-                      if (!response.ok || !payload.ok || !payload.url) {
-                        setUploadMessage(payload.message ?? "Upload non riuscito.");
-                        return;
-                      }
-                      setCommand((current) => {
-                        if (/^speciale\s*\|/i.test(current)) {
-                          const parts = current.split("|").map((value) => value.trim());
-                          parts[3] = parts[3] || "0";
-                          parts[4] = payload.url ?? "";
-                          return parts.join(" | ");
-                        }
-                        return "speciale | Titolo | Descrizione | 0 | " + payload.url;
-                      });
-                      setUploadMessage("✅ Foto caricata. Ora completa il comando speciale.");
-                    } catch {
-                      setUploadMessage("Upload non riuscito.");
-                    } finally {
-                      setBusy(false);
-                    }
-                  }}
-                />
-              </label>
-              {uploadMessage && (
-                <p className="mt-2 text-xs text-white/45" aria-live="polite">
-                  {uploadMessage}
-                </p>
-              )}
-            </div>
-
               <div>
                 <p className="text-[0.62rem] font-bold uppercase tracking-[0.25em] text-accent">
                   Chat guidata
@@ -440,6 +364,53 @@ function AdminPage() {
                 {message}
               </div>
             )}
+          </div>
+
+          <div className="mt-5 rounded-2xl border border-[#ff315b]/20 bg-[#160d10]/50 p-4">
+            <div className="flex items-center gap-3">
+              <div className="grid size-10 place-items-center rounded-xl bg-[#ff315b]/10 text-[#ff315b]">
+                <ShieldCheck className="size-5" />
+              </div>
+              <div>
+                <p className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-[#ff315b]">Gestione immagini</p>
+                <p className="mt-1 text-sm text-white/55">Carica una foto per lo speciale del mese.</p>
+              </div>
+            </div>
+            <label className="mt-4 flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white/75 hover:bg-white/10">
+              Seleziona foto · JPG PNG WebP · max 2 MB
+              <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={async (event) => {
+                const file = event.target.files?.[0];
+                event.target.value = "";
+                if (!file) return;
+                setBusy(true);
+                setUploadMessage("");
+                try {
+                  const form = new FormData();
+                  form.append("image", file);
+                  const response = await fetch("/api/admin/upload", { method: "POST", body: form });
+                  const payload = (await response.json()) as { ok?: boolean; url?: string; message?: string };
+                  if (!response.ok || !payload.ok || !payload.url) {
+                    setUploadMessage(payload.message ?? "Upload non riuscito.");
+                    return;
+                  }
+                  setCommand((current) => {
+                    if (/^speciale\s*\|/i.test(current)) {
+                      const parts = current.split("|").map((value) => value.trim());
+                      parts[3] = parts[3] || "0";
+                      parts[4] = payload.url ?? "";
+                      return parts.join(" | ");
+                    }
+                    return "speciale | Titolo | Descrizione | 0 | " + payload.url;
+                  });
+                  setUploadMessage("Foto caricata. Completa il comando speciale e conferma.");
+                } catch {
+                  setUploadMessage("Upload non riuscito.");
+                } finally {
+                  setBusy(false);
+                }
+              }} />
+            </label>
+            {uploadMessage && <p className="mt-2 text-xs text-white/45" aria-live="polite">{uploadMessage}</p>}
           </div>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
