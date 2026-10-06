@@ -375,13 +375,14 @@ async function ensureBootstrapAdmin() {
   );
   const passwordHash = await bcrypt.hash(passwordToUse, 12);
 
-  if (existing.length > 0) {
+  const existingAdminId = existing[0]?.id;
+  if (existingAdminId) {
     if (resetPassword) {
       await mysqlExecute(
         `UPDATE admin_users
          SET password_hash = ?, is_active = 1, role = 'admin', updated_at = CURRENT_TIMESTAMP(3)
          WHERE id = ?`,
-        [passwordHash, existing[0]?.id],
+        [passwordHash, existingAdminId],
       );
       console.log(`[db] bootstrap admin password reset: ${username}`);
     }
