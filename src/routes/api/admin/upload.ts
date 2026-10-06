@@ -25,7 +25,7 @@ export const Route = createFileRoute("/api/admin/upload")({
 
         const contentType = request.headers.get("content-type") ?? "";
         if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
-          return new Response(JSON.stringify({ ok: false, message: "Content-Type non valido." }, { status: 415 });
+          return Response.json({ ok: false, message: "Content-Type non valido." }, { status: 415 });
         }
 
         const form = await request.formData();
