@@ -305,9 +305,9 @@ export const VENUE = {
  phone: "081-18273748",
  phoneHref: "tel:+3908118273748",
  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Calata+Trinit%C3%A0+Maggiore+51+Napoli",
- reviewUrl: "https://share.google/zfypnSXd01WtotAVc",
+ googleReviewUrl: "https://www.google.com/search?q=recensione+lubrano+pub+link",
+ tripadvisorUrl: "https://www.tripadvisor.it/Restaurant_Review-g187785-d12643906-Reviews-Lubrano_Pub-Naples_Province_of_Naples_Campania.html",
  instagramUrl: "https://www.instagram.com/lubranopubnapoli/",
- whatsappUrl: "https://wa.me/3908118273748",
  wifiPassword: null as string | null,
 };
 
@@ -315,9 +315,9 @@ export const SERVICES: Record<
  LangCode,
  {
  title: string;
- review: string;
+ reviewGoogle: string;
+ reviewTripadvisor: string;
  instagram: string;
- whatsapp: string;
  wifi: string;
  wifiAsk: string;
  copied: string;
@@ -328,9 +328,9 @@ export const SERVICES: Record<
 > = {
  it: {
  title: "Lubrano con te",
- review: "Lascia una recensione",
+ reviewGoogle: "Recensione su Google",
+ reviewTripadvisor: "Recensione su Tripadvisor",
  instagram: "Seguici su Instagram",
- whatsapp: "Scrivici su WhatsApp",
  wifi: "Wi-Fi",
  wifiAsk: "Password disponibile al banco",
  copied: "Password copiata",
@@ -341,9 +341,9 @@ export const SERVICES: Record<
  },
  en: {
  title: "Stay with Lubrano",
- review: "Leave a review",
+ reviewGoogle: "Review us on Google",
+ reviewTripadvisor: "Review us on Tripadvisor",
  instagram: "Follow us on Instagram",
- whatsapp: "Message us on WhatsApp",
  wifi: "Wi-Fi",
  wifiAsk: "Password available at the counter",
  copied: "Password copied",
@@ -354,9 +354,9 @@ export const SERVICES: Record<
  },
  es: {
  title: "Conecta con Lubrano",
- review: "Deja una reseña",
+ reviewGoogle: "Reseña en Google",
+ reviewTripadvisor: "Reseña en Tripadvisor",
  instagram: "Síguenos en Instagram",
- whatsapp: "Escríbenos por WhatsApp",
  wifi: "Wi-Fi",
  wifiAsk: "Contraseña disponible en la barra",
  copied: "Contraseña copiada",
@@ -367,9 +367,9 @@ export const SERVICES: Record<
  },
  fr: {
  title: "Restez avec Lubrano",
- review: "Laisser un avis",
+ reviewGoogle: "Avis sur Google",
+ reviewTripadvisor: "Avis sur Tripadvisor",
  instagram: "Suivez-nous sur Instagram",
- whatsapp: "Écrivez-nous sur WhatsApp",
  wifi: "Wi-Fi",
  wifiAsk: "Mot de passe disponible au comptoir",
  copied: "Mot de passe copié",
@@ -380,9 +380,9 @@ export const SERVICES: Record<
  },
  de: {
  title: "Lubrano erleben",
- review: "Bewertung abgeben",
+ reviewGoogle: "Auf Google bewerten",
+ reviewTripadvisor: "Auf Tripadvisor bewerten",
  instagram: "Folgen Sie uns auf Instagram",
- whatsapp: "WhatsApp-Nachricht",
  wifi: "WLAN",
  wifiAsk: "Passwort an der Theke erhältlich",
  copied: "Passwort kopiert",
@@ -393,9 +393,9 @@ export const SERVICES: Record<
  },
  pt: {
  title: "Fique com o Lubrano",
- review: "Deixe uma avaliação",
+ reviewGoogle: "Avaliar no Google",
+ reviewTripadvisor: "Avaliar no Tripadvisor",
  instagram: "Siga-nos no Instagram",
- whatsapp: "Fale connosco no WhatsApp",
  wifi: "Wi-Fi",
  wifiAsk: "Senha disponível no balcão",
  copied: "Senha copiada",
@@ -405,9 +405,9 @@ export const SERVICES: Record<
  },
  zh: {
  title: "关注 Lubrano",
- review: "留下评价",
+ reviewGoogle: "在 Google 上评价",
+ reviewTripadvisor: "在 Tripadvisor 上评价",
  instagram: "关注 Instagram",
- whatsapp: "WhatsApp 联系我们",
  wifi: "无线网络",
  wifiAsk: "请向吧台索取密码",
  copied: "密码已复制",
