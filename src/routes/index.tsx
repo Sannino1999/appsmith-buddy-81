@@ -22,12 +22,6 @@ import {
 } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.webp";
-import categoryStuzzicheria from "@/assets/category-stuzzicheria.webp";
-import categoryPatate from "@/assets/category-patate.webp";
-import categoryPanini from "@/assets/category-panini.webp";
-import categoryBurger from "@/assets/category-burger.webp";
-import categoryBrace from "@/assets/category-brace.webp";
-import categoryDolci from "@/assets/category-dolci.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { translateMenuText } from "@/lib/menu-translations";
 import {
@@ -42,22 +36,22 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
 const categoryVisuals: Record<string, string> = {
-  stuzzicheria: categoryStuzzicheria,
-  patate: categoryPatate,
-  panini: categoryPanini,
-  hamburger: categoryBurger,
-  brace: categoryBrace,
-  braceria: categoryBrace,
-  carne: categoryBrace,
-  insalate: categoryBrace,
-  contorni: categoryPatate,
-  dolci: categoryDolci,
-  birre_spina: bgImage,
-  birre_bottiglia: bgImage,
-  bibite: bgImage,
-  vini_rossi: categoryBrace,
-  vini_bianchi: bgImage,
-  altre_bevande: categoryDolci,
+  stuzzicheria: "/category-stuzzicheria.webp",
+  patate: "/category-patate.webp",
+  panini: "/category-panini.webp",
+  hamburger: "/category-burger.webp",
+  brace: "/category-brace.webp",
+  braceria: "/category-brace.webp",
+  carne: "/category-brace.webp",
+  insalate: "/category-brace.webp",
+  contorni: "/category-patate.webp",
+  dolci: "/category-dolci.webp",
+  birre_spina: "/menu-bg.webp",
+  birre_bottiglia: "/menu-bg.webp",
+  bibite: "/menu-bg.webp",
+  vini_rossi: "/category-brace.webp",
+  vini_bianchi: "/menu-bg.webp",
+  altre_bevande: "/category-dolci.webp",
 };
 
 export const Route = createFileRoute("/")({
@@ -425,7 +419,7 @@ function MenuPage() {
                     src={categoryVisuals[c.id] ?? bgImage}
                     alt=""
                     loading="lazy"
-                    onError={(event) => { event.currentTarget.src = bgImage; }}
+                    onError={(event) => { event.currentTarget.src = "/menu-bg.webp"; }}
                   />
                 </span>
                 <span>{menuLabels.categories[c.id]?.name ?? c.name}</span>
