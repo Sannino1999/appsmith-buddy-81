@@ -314,7 +314,7 @@ function MenuPage() {
           <div className="lubrano-topbar">
             <div className="lubrano-brandline lubrano-brandline-main">
               <span className="lubrano-status">MENÙ DIGITALE</span>
-              <span className="lubrano-kicker">PUB · BRACERIA · NAPOLI</span>
+              <span className="lubrano-kicker">PUB BRACERIA NAPOLI</span>
             </div>
             <div className="lubrano-topbar-actions flex items-center gap-2">
               <QrButton onClick={() => setQrOpen(true)} />
