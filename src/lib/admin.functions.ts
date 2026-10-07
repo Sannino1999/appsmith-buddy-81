@@ -210,7 +210,7 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
 
     const parsed = parseAdminCommand(data.command, baseMenu);
     const commandText = safeCommandText(data.command, parsed);
-    const readOnly = parsed.action === "show_history";
+    const readOnly = parsed.action === "show_history" || parsed.action === "show_active_changes";
     if (!readOnly) {
       const pending = pendingConfirmations.get(admin.id);
       const validPending =
@@ -263,6 +263,27 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
               .slice(0, 10)
               .map((entry) => "• " + entry.action + (entry.item_key ? " — " + entry.item_key : ""))
               .join("\n");
+      await insertChatMessage({ adminUserId: admin.id, role: "assistant", message });
+      return { ok: true as const, message, parsed };
+    }
+
+    if (parsed.action === "show_active_changes") {
+      const overrides = await listMenuOverrides();
+      const message =
+        overrides.length === 0
+          ? "Non ci sono modifiche attive al menu."
+          : "Modifiche attive:\\n" +
+            overrides
+              .slice(0, 30)
+              .map((entry) => {
+                const parts = [
+                  entry.name ? entry.name : entry.item_key,
+                  entry.price_eur !== null ? entry.price_eur.toFixed(2) + "€" : null,
+                  entry.available === false ? "NON DISPONIBILE" : null,
+                ].filter(Boolean);
+                return "• " + parts.join(" — ");
+              })
+              .join("\\n");
       await insertChatMessage({ adminUserId: admin.id, role: "assistant", message });
       return { ok: true as const, message, parsed };
     }
