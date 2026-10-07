@@ -28,6 +28,7 @@ export type ParsedCommand =
   | { action: "undo_last" }
   | { action: "show_history" }
   | { action: "show_active_changes" }
+  | { action: "show_removed_items" }
   | { action: "delete_item"; itemKey: string; label: string }
   | { action: "unknown"; reason: string }
   | {
@@ -225,6 +226,13 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   }
   if (lower === "storico" || lower === "modifiche") {
     return { action: "show_history" };
+  }
+  if (
+    lower === "prodotti rimossi" ||
+    lower === "prodotti eliminati" ||
+    lower === "mostra prodotti rimossi"
+  ) {
+    return { action: "show_removed_items" };
   }
   if (
     lower === "modifiche attive" ||
