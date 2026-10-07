@@ -35,23 +35,11 @@ import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, type Lan
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
-const categoryVisuals: Record<string, string> = {
-  stuzzicheria: "/category-stuzzicheria.webp",
-  patate: "/category-patate.webp",
-  panini: "/category-panini.webp",
-  hamburger: "/category-burger.webp",
-  brace: "/category-brace.webp",
-  braceria: "/category-brace.webp",
-  carne: "/category-brace.webp",
-  insalate: "/category-brace.webp",
-  contorni: "/category-patate.webp",
-  dolci: "/category-dolci.webp",
-  birre_spina: "/menu-bg.webp",
-  birre_bottiglia: "/menu-bg.webp",
-  bibite: "/menu-bg.webp",
-  vini_rossi: "/category-brace.webp",
-  vini_bianchi: "/menu-bg.webp",
-  altre_bevande: "/category-dolci.webp",
+const categoryIcons: Record<string, string> = {
+  stuzzicheria: "🍟", patate: "🥔", panini: "🥪", hamburger: "🍔",
+  brace: "🔥", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
+  dolci: "🍰", birre_spina: "🍺", birre_bottiglia: "🍻", bibite: "🥤", vini_rossi: "🍷",
+  vini_bianchi: "🥂", altre_bevande: "🍹",
 };
 
 export const Route = createFileRoute("/")({
@@ -159,7 +147,24 @@ function MenuPage() {
       })
       .filter((category): category is MenuCategory => category !== null);
 
-    const baseIds = new Set(baseCategories.map((category) => category.id));
+    const customItemsByCategory = new Map<string, typeof liveMenuQuery.data.customItems>();
+    for (const item of liveMenuQuery.data?.customItems ?? []) {
+      const list = customItemsByCategory.get(item.category_id) ?? [];
+      list.push(item);
+      customItemsByCategory.set(item.category_id, list);
+    }
+    const mergedBaseCategories = baseCategories.map((category) => {
+      const extras = customItemsByCategory.get(category.id) ?? [];
+      if (extras.length === 0) return category;
+      const mapped = extras.map((item) => ({
+        key: item.item_key, name: item.name, description: item.description, price_eur: item.price_eur, tags: [], available: item.available,
+      }));
+      const firstGroup = category.groups[0];
+      return firstGroup
+        ? { ...category, groups: [{ ...firstGroup, items: [...firstGroup.items, ...mapped] }, ...category.groups.slice(1)] }
+        : { ...category, groups: [{ name: "", items: mapped }] };
+    });
+    const baseIds = new Set(mergedBaseCategories.map((category) => category.id));
     const customCategories = liveCategories
       .filter((category) => category.custom && !baseIds.has(category.id))
       .map((category) => ({
@@ -184,7 +189,7 @@ function MenuPage() {
         ],
       }));
 
-    return [...baseCategories, ...customCategories];
+    return [...mergedBaseCategories, ...customCategories];
   }, [liveMenuQuery.data, menu.categories]);
 
   const categories = publicCategories.filter((c) => c.macro === macro);
@@ -222,19 +227,11 @@ function MenuPage() {
     requestAnimationFrame(() => searchInputRef.current?.focus());
   }, [searchOpen]);
 
-  useEffect(() => {
-    categoryRefs.current[categoryId]?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  }, [categoryId]);
-
   const allItems = useMemo(
     () =>
       publicCategories.flatMap((category) =>
         category.groups.flatMap((group) =>
-          group.items.map((item) => {
+          group.items.filter((item) => overrides.get(item.key)?.available !== false).map((item) => {
             const override = overrides.get(item.key);
             return {
               ...item,
@@ -308,37 +305,6 @@ function MenuPage() {
       <div className="lubrano-backdrop fixed inset-0 -z-10" aria-hidden />
       <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-3 sm:px-6 lg:px-8">
         <header className="lubrano-header anim-fade-up">
-          <div className="lubrano-utility">
-            <div className="lubrano-utility-links">
-              <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer"><MapPin className="size-3.5" /> {VENUE.address}</a>
-              <span><Clock3 className="size-3.5" /> {info.openDays} · {info.openHours}</span>
-              <a href={VENUE.phoneHref}><Phone className="size-3.5" /> {VENUE.phone}</a>
-            </div>
-            <div className="lubrano-utility-links">
-              <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
-              <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp Lubrano"><MessageCircle className="size-4" /></a>
-              <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" aria-label="Recensioni Lubrano"><Star className="size-4" /></a>
-              {installPrompt && (
-                <button
-                  type="button"
-                  className="lubrano-book-button"
-                  onClick={async () => {
-                    const prompt = installPrompt as Event & {
-                      prompt?: () => Promise<void>;
-                      userChoice?: Promise<{ outcome: "accepted" | "dismissed" }>;
-                    };
-                    if (!prompt.prompt) return;
-                    await prompt.prompt();
-                    const choice = await prompt.userChoice;
-                    if (!choice || choice.outcome === "accepted") setInstallPrompt(null);
-                  }}
-                >
-                  <Download className="size-3.5" /> {nav.install}
-                </button>
-              )}
-              <a href={VENUE.phoneHref} className="lubrano-book-button"><CalendarDays className="size-3.5" /> {nav.book}</a>
-            </div>
-          </div>
           <nav className="lubrano-main-nav" aria-label="Navigazione">
             <a href="#menu">{nav.menu}</a>
             <a href="#speciale">{nav.special}</a>
@@ -384,7 +350,39 @@ function MenuPage() {
             <div className="lubrano-logo-frame">
               <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo lubrano-logo-original" width={512} height={512} />
             </div>
+          <
+          <div className="lubrano-utility">
+            <div className="lubrano-utility-links">
+              <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer"><MapPin className="size-3.5" /> {VENUE.address}</a>
+              <span><Clock3 className="size-3.5" /> {info.openDays} · {info.openHours}</span>
+              <a href={VENUE.phoneHref}><Phone className="size-3.5" /> {VENUE.phone}</a>
+            </div>
+            <div className="lubrano-utility-links">
+              <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
+              <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp Lubrano"><MessageCircle className="size-4" /></a>
+              <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" aria-label="Recensioni Lubrano"><Star className="size-4" /></a>
+              {installPrompt && (
+                <button
+                  type="button"
+                  className="lubrano-book-button"
+                  onClick={async () => {
+                    const prompt = installPrompt as Event & {
+                      prompt?: () => Promise<void>;
+                      userChoice?: Promise<{ outcome: "accepted" | "dismissed" }>;
+                    };
+                    if (!prompt.prompt) return;
+                    await prompt.prompt();
+                    const choice = await prompt.userChoice;
+                    if (!choice || choice.outcome === "accepted") setInstallPrompt(null);
+                  }}
+                >
+                  <Download className="size-3.5" /> {nav.install}
+                </button>
+              )}
+              <a href={VENUE.phoneHref} className="lubrano-book-button"><CalendarDays className="size-3.5" /> {nav.book}</a>
+            </div>
           </div>
+/div>
         </header>
 
         <section className={`lubrano-search-panel anim-fade-up ${searchOpen ? "is-open" : ""}`} aria-label="Ricerca nel menù">
@@ -414,14 +412,7 @@ function MenuPage() {
           <nav className="lubrano-category-strip" aria-label="Categorie">
             {categories.map((c) => (
               <button key={c.id} ref={(element) => { categoryRefs.current[c.id] = element; }} type="button" onClick={() => setCategoryId(c.id)} aria-current={c.id === active?.id ? "page" : undefined} className={`lubrano-category-pill ${c.id === active?.id ? "is-active" : ""}`}>
-                <span className="lubrano-category-thumb">
-                  <img
-                    src={categoryVisuals[c.id] ?? bgImage}
-                    alt=""
-                    loading="lazy"
-                    onError={(event) => { event.currentTarget.style.display = "none"; }}
-                  />
-                </span>
+                <span className="lubrano-category-emoji" aria-hidden="true">{categoryIcons[c.id] ?? "🍽️"}</span>
                 <span>{menuLabels.categories[c.id]?.name ?? c.name}</span>
               </button>
             ))}
@@ -477,7 +468,11 @@ function MenuPage() {
                           <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-start justify-between gap-3"><h3 className="lubrano-dish-name">{item.name}</h3><span className="lubrano-price">{formatPrice(item.price_eur)}</span></div>
-                            {item.description && <p className={`mt-2 text-sm leading-relaxed ${active?.id === "patate" ? "font-semibold text-[#8ff5cf]" : "text-white/58"}`}>{item.description}</p>}
+                            {item.description && (
+                              <p className={`mt-2 text-sm leading-relaxed ${item.key === "aggiunta_fonduta_di_cheddar_formaggio_e_provola" ? "lubrano-potato-supplement" : "text-white/58"}`}>
+                                {item.description}
+                              </p>
+                            )}
                             <div className="mt-3 flex flex-wrap gap-1.5">
                               {!item.available && <span className="rounded-full border border-[#ff315b]/50 bg-[#ff315b]/10 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-[#ff315b]">{t.unavailable}</span>}
                               {item.tags.map((tag) => <span key={tag} className="rounded-full bg-white/[0.05] px-2.5 py-1 text-[0.64rem] text-white/45">{tag}</span>)}
