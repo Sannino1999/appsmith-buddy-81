@@ -67,7 +67,7 @@ Per il menu digitale consiglio:
 
 **`menu.lubranopub.com`**
 
-È più pulito di acquistare un secondo dominio solo per il menu e mantiene il brand principale. Le fonti pubbliche attuali riportano `lubranopub.com` come sito del locale. citeturn641140search2turn641140search3
+È più pulito di acquistare un secondo dominio solo per il menu e mantiene il brand principale. Le fonti pubbliche attuali riportano `lubranopub.com` come sito del locale.
 
 Configurazione consigliata finale:
 
