@@ -132,6 +132,7 @@ function hash(text: string) {
 export type TranslationMap = Record<string, { name: string; description: string | null }>;
 
 const LANG_CODES = LANGUAGES.map((l) => l.code) as [LangCode, ...LangCode[]];
+const TRANSLATION_VERSION = "2026-10-07-menu-v3";
 
 function hasTranslatedDescription(
   source: { description: string | null },
@@ -171,7 +172,7 @@ export const translateCategory = createServerFn({ method: "POST" })
       ),
     );
 
-    const hashes = new Map(entries.map((e) => [e.key, hash(`${e.name}|${e.description ?? ""}`)]));
+    const hashes = new Map(entries.map((e) => [e.key, hash(`${TRANSLATION_VERSION}|${e.name}|${e.description ?? ""}`)]));
 
     const cached = isMySqlConfigured()
       ? await getTranslationCache(
