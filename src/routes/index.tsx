@@ -20,7 +20,6 @@ import {
   X,
 } from "lucide-react";
 
-import bgImage from "@/assets/menu-bg.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { translateMenuText } from "@/lib/menu-translations";
 import {
@@ -35,6 +34,17 @@ import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, type Lan
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
+const bgImage = "/assets/menu-bg.jpg";
+const categoryHeroImages: Record<string, string> = {
+  stuzzicheria: "/assets/category-stuzzicheria.webp",
+  patate: "/assets/category-patate.webp",
+  panini: "/assets/category-panini.webp",
+  hamburger: "/assets/category-burger.webp",
+  brace: "/assets/category-brace.webp",
+  braceria: "/assets/category-brace.webp",
+  carne: "/assets/category-brace.webp",
+  dolci: "/assets/category-dolci.webp",
+};
 const categoryIcons: Record<string, string> = {
   stuzzicheria: "🍟", patate: "🥔", panini: "🍔", hamburger: "🍔",
   brace: "🥩", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
@@ -353,13 +363,12 @@ function MenuPage() {
           </div>
 
           <div className="lubrano-utility">
-            <div className="lubrano-utility-links">
+            <div className="lubrano-utility-links lubrano-utility-info">
               <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer"><MapPin className="size-3.5" /> {VENUE.address}</a>
               <span><Clock3 className="size-3.5" /> {info.openDays} · {info.openHours}</span>
               <a href={VENUE.phoneHref}><Phone className="size-3.5" /> {VENUE.phone}</a>
             </div>
-            <div className="lubrano-utility-links">
-              <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
+            <div className="lubrano-utility-links lubrano-utility-actions">
               {installPrompt && (
                 <button
                   type="button"
@@ -443,8 +452,10 @@ function MenuPage() {
         ) : (
           <div key={active?.id ?? "empty"} className="mt-8 anim-menu-change">
             {active && (
-              <section className="lubrano-category-hero">
-                <img src={bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = bgImage; }} />
+              <section
+                className="lubrano-category-hero"
+                style={{ backgroundImage: `url("${categoryHeroImages[active.id] ?? bgImage}")` }}
+              >
                 <div className="lubrano-category-hero-overlay" />
                 <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
                   <span className="lubrano-eyebrow">{menuLabels.sectionEyebrows[macro === "food" ? "food" : "drinks"]}</span>
@@ -527,7 +538,11 @@ function MenuPage() {
               ))}
             </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2"><a href={VENUE.phoneHref} className="lubrano-cta lubrano-cta-primary"><Phone className="size-5" />{info.call}</a><a href={VENUE.mapsUrl} target="_blank" rel="noreferrer" className="lubrano-cta"><MapPin className="size-5" />{info.directions}</a></div>
+          <div className="lubrano-contact-actions">
+            <a href={VENUE.phoneHref} className="lubrano-cta lubrano-cta-primary"><Phone className="size-5" />{info.call}</a>
+            <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer" className="lubrano-cta"><MapPin className="size-5" />{info.directions}</a>
+            <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" className="lubrano-cta lubrano-instagram-cta"><Instagram className="size-5" />Instagram</a>
+          </div>
         </section>
 
         <footer className="lubrano-footer">
