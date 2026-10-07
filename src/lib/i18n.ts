@@ -41,6 +41,8 @@ type UIStrings = {
 
 type MenuLabelTranslations = {
   macros: Record<string, string>;
+  macroSubtitles: Record<string, string>;
+  sectionEyebrows: { food: string; drinks: string };
   categories: Record<string, { name: string; eyebrow: string | null }>;
   groups: Record<string, string>;
   tags: Record<string, string>;
@@ -108,6 +110,8 @@ export const UI: Record<LangCode, UIStrings> = {
 export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  it: {
  macros: { food: "Cibo", drinks: "Bevande" },
+  macroSubtitles: { food: "Burger · Brace · Cucina", drinks: "Birre · Drink · Soft" },
+  sectionEyebrows: { food: "Dalla cucina", drinks: "Dal banco" },
  categories: {
  stuzzicheria: { name: " Stuzzicheria", eyebrow: null },
  patate: { name: " Le patate", eyebrow: null },
@@ -128,6 +132,8 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  },
  en: {
  macros: { food: "Food", drinks: "Drinks" },
+  macroSubtitles: { food: "Burgers · Grill · Kitchen", drinks: "Beer · Drinks · Soft" },
+  sectionEyebrows: { food: "From the kitchen", drinks: "From the bar" },
  categories: {
  stuzzicheria: { name: " Snacks", eyebrow: null },
  patate: { name: " Potatoes", eyebrow: null },
@@ -154,6 +160,8 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  },
  es: {
  macros: { food: "Comida", drinks: "Bebidas" },
+  macroSubtitles: { food: "Hamburguesas · Parrilla · Cocina", drinks: "Cervezas · Cócteles · Refrescos" },
+  sectionEyebrows: { food: "De la cocina", drinks: "De la barra" },
  categories: {
  stuzzicheria: { name: " Aperitivos", eyebrow: null },
  patate: { name: " Patatas", eyebrow: null },
@@ -180,6 +188,8 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  },
  fr: {
  macros: { food: "Cuisine", drinks: "Boissons" },
+  macroSubtitles: { food: "Burgers · Grill · Cuisine", drinks: "Bières · Cocktails · Softs" },
+  sectionEyebrows: { food: "En cuisine", drinks: "Au bar" },
  categories: {
  stuzzicheria: { name: " À grignoter", eyebrow: null },
  patate: { name: " Pommes de terre", eyebrow: null },
@@ -206,6 +216,8 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  },
  de: {
  macros: { food: "Speisen", drinks: "Getränke" },
+  macroSubtitles: { food: "Burger · Grill · Küche", drinks: "Bier · Drinks · Alkoholfrei" },
+  sectionEyebrows: { food: "Aus der Küche", drinks: "Von der Bar" },
  categories: {
  stuzzicheria: { name: " Snacks", eyebrow: null },
  patate: { name: " Kartoffeln", eyebrow: null },
@@ -232,6 +244,8 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  },
  pt: {
  macros: { food: "Comida", drinks: "Bebidas" },
+  macroSubtitles: { food: "Hambúrgueres · Grelhados · Cozinha", drinks: "Cervejas · Cocktails · Soft drinks" },
+  sectionEyebrows: { food: "Da cozinha", drinks: "Do bar" },
  categories: {
  stuzzicheria: { name: " Petiscos", eyebrow: null },
  patate: { name: " Batatas", eyebrow: null },
@@ -258,6 +272,8 @@ export const MENU_LABELS: Record<LangCode, MenuLabelTranslations> = {
  },
  zh: {
  macros: { food: "餐点", drinks: "饮品" },
+  macroSubtitles: { food: "汉堡 · 烧烤 · 厨房", drinks: "啤酒 · 鸡尾酒 · 软饮" },
+  sectionEyebrows: { food: "来自厨房", drinks: "来自酒吧" },
  categories: {
  stuzzicheria: { name: " 小吃", eyebrow: null },
  patate: { name: " 薯类", eyebrow: null },
