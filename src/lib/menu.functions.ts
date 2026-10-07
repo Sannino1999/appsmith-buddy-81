@@ -19,6 +19,7 @@ export type Override = {
   description: string | null;
   price_eur: number | null;
   available: boolean;
+  deleted: boolean;
 };
 
 export type MenuSpecial = {
@@ -159,7 +160,7 @@ export const translateCategory = createServerFn({ method: "POST" })
     const overrides = isMySqlConfigured() ? await listMenuOverrides() : [];
     const overrideMap = new Map(overrides.map((o) => [o.item_key, o]));
 
-    const entries = menu.categories.flatMap((menuCategory) =>
+    const baseEntries = menu.categories.flatMap((menuCategory) =>
       menuCategory.groups.flatMap((g) =>
         g.items.map((item) => {
           const o = overrideMap.get(item.key);
@@ -171,6 +172,14 @@ export const translateCategory = createServerFn({ method: "POST" })
         }),
       ),
     );
+
+    const liveData = isMySqlConfigured() ? await getLiveMenuDataFromMysql() : null;
+    const customEntries = (liveData?.customItems ?? []).map((item) => ({
+      key: item.item_key,
+      name: item.name,
+      description: item.description,
+    }));
+    const entries = [...baseEntries, ...customEntries];
 
     const hashes = new Map(entries.map((e) => [e.key, hash(`${TRANSLATION_VERSION}|${e.name}|${e.description ?? ""}`)]));
 
