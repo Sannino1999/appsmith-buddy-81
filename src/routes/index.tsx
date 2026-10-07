@@ -448,7 +448,7 @@ function MenuPage() {
           <div key={active?.id ?? "empty"} className="mt-8 anim-menu-change">
             {active && (
               <section className="lubrano-category-hero">
-                <img src={categoryVisuals[active.id] ?? bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = bgImage; }} />
+                <img src={bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = bgImage; }} />
                 <div className="lubrano-category-hero-overlay" />
                 <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
                   <span className="lubrano-eyebrow">{menuLabels.sectionEyebrows[macro === "food" ? "food" : "drinks"]}</span>
