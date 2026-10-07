@@ -15,7 +15,6 @@ import {
   Phone,
   Search,
   Star,
-  Utensils,
   Wifi,
   X,
 } from "lucide-react";
@@ -41,6 +40,22 @@ const categoryIcons: Record<string, string> = {
   dolci: "🍰", birre_spina: "🍺", birre_bottiglia: "🍻", bibite: "🥤", vini_rossi: "🍷",
   vini_bianchi: "🥂", altre_bevande: "🍹",
 };
+
+function GoogleBrandIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+    </svg>
+  );
+}
+
+function TripadvisorBrandIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M12.006 4.295c-2.67 0-5.338.784-7.645 2.353H0l1.963 2.135a5.997 5.997 0 0 0 4.04 10.43 5.976 5.976 0 0 0 4.075-1.6L12 19.705l1.922-2.09a5.972 5.972 0 0 0 4.072 1.598 6 6 0 0 0 6-5.998 5.982 5.982 0 0 0-1.957-4.432L24 6.648h-4.35a13.573 13.573 0 0 0-7.644-2.353zM12 6.255c1.531 0 3.063.303 4.504.903C13.943 8.138 12 10.43 12 13.1c0-2.671-1.942-4.962-4.504-5.942A11.72 11.72 0 0 1 12 6.256zM6.002 9.157a4.059 4.059 0 1 1 0 8.118 4.059 4.059 0 0 1 0-8.118zm11.992.002a4.057 4.057 0 1 1 .003 8.115 4.057 4.057 0 0 1-.003-8.115zm-11.992 1.93a2.128 2.128 0 0 1 0 4.256 2.128 2.128 0 0 1 0-4.256zm11.992 0a2.128 2.128 0 1 1 0 4.256 2.128 2.128 0 0 1 0-4.256z"/>
+    </svg>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -428,7 +443,7 @@ function MenuPage() {
                 {searchResults.map((item) => (
                   <button key={item.key} type="button" onClick={() => { const target = menu.categories.find((category) => category.id === item.categoryId); if (!target) return; setMacro(target.macro); setCategoryId(target.id); }} className="lubrano-dish-card text-left">
                     <div className="flex items-start gap-4">
-                      <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
+                      <div className="lubrano-dish-icon lubrano-category-dish-icon" aria-hidden="true">{categoryIcons[item.categoryId] ?? "🍽️"}</div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-3"><h3 className="lubrano-dish-name">{item.name}</h3><span className="lubrano-price">{formatPrice(item.price_eur)}</span></div>
                         <p className="mt-1 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[#ff315b]/75">{menuLabels.categories[item.categoryId]?.name ?? item.categoryName}</p>
@@ -464,7 +479,7 @@ function MenuPage() {
                     {g.items.map((item) => (
                       <li key={item.key} className={`lubrano-dish-card ${item.available ? "" : "is-unavailable"} ${item.key.endsWith(":aggiunta_fonduta_di_cheddar_formaggio_e_provola") ? "lubrano-potato-supplement-card" : ""}`}>
                         <div className="flex items-start gap-3">
-                          <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
+                          <div className="lubrano-dish-icon lubrano-category-dish-icon" aria-hidden="true">{categoryIcons[active.id] ?? "🍽️"}</div>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-start justify-between gap-3"><h3 className="lubrano-dish-name">{item.name}</h3><span className="lubrano-price">{formatPrice(item.price_eur)}</span></div>
                             {item.description && (
@@ -508,8 +523,8 @@ function MenuPage() {
         <section id="servizi" className="lubrano-services anim-fade-up">
           <div className="lubrano-section-heading"><span>★</span><h2>{services.title}</h2></div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.reviewGoogle}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
-            <a href={VENUE.tripadvisorUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.reviewTripadvisor}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-service-card lubrano-review-google"><GoogleBrandIcon className="lubrano-review-brand-icon" /><span>{services.reviewGoogle}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <a href={VENUE.tripadvisorUrl} target="_blank" rel="noreferrer" className="lubrano-service-card lubrano-review-tripadvisor"><TripadvisorBrandIcon className="lubrano-review-brand-icon" /><span>{services.reviewTripadvisor}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
             <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Instagram className="size-5 text-[#ff315b]" /><span>{services.instagram}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
             <button type="button" onClick={() => setWifiOpen(true)} className="lubrano-service-card text-left" aria-haspopup="dialog"><Wifi className="size-5 text-[#ff315b]" /><span className="min-w-0 flex-1">{services.wifi}<small className="mt-1 block truncate text-xs font-normal text-white/35">{wifiPassword ? "Lubrano-Guest · tocca per mostrare" : services.wifiAsk}</small></span></button>
           </div>
