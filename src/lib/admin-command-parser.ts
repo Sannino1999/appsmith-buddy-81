@@ -27,6 +27,7 @@ export type ParsedCommand =
   | { action: "set_wifi"; password: string }
   | { action: "undo_last" }
   | { action: "show_history" }
+  | { action: "show_active_changes" }
   | { action: "unknown"; reason: string }
   | {
       action: "ambiguous";
@@ -223,6 +224,14 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
   }
   if (lower === "storico" || lower === "modifiche") {
     return { action: "show_history" };
+  }
+  if (
+    lower === "modifiche attive" ||
+    lower === "mostra modifiche attive" ||
+    lower === "cosa ho modificato" ||
+    lower === "stato modifiche"
+  ) {
+    return { action: "show_active_changes" };
   }
   if (lower.startsWith("speciale |")) {
     return parseSpecial(raw.slice(raw.indexOf("|") + 1));
