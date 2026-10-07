@@ -2,6 +2,8 @@ import type { Menu } from "./menu";
 
 export type ParsedCommand =
   | { action: "set_price"; itemKey: string; priceEur: number; label: string }
+  | { action: "set_name"; itemKey: string; name: string; label: string }
+  | { action: "set_description"; itemKey: string; description: string; label: string }
   | { action: "set_available"; itemKey: string; available: boolean; label: string }
   | { action: "set_description"; itemKey: string; description: string; label: string }
   | { action: "reset_item"; itemKey: string; label: string }
@@ -282,6 +284,42 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
       priceEur,
       label: match.name,
     };
+  }
+
+  const nameMatch = raw.match(/^\\s*nome\\s+(.+?)\\s*\\|\\s*(.+?)\\s*$/i);
+  if (nameMatch) {
+    const needle = nameMatch[1] ?? "";
+    const name = nameMatch[2]?.trim() ?? "";
+    if (name.length < 2 || name.length > 120) {
+      return { action: "unknown", reason: "Il nuovo nome deve contenere da 2 a 120 caratteri." };
+    }
+    const matches = findItems(menu, needle);
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous("Ho trovato più voci compatibili.", matches.map((item) => ({ key: item.key, name: item.name, category: item.category })))
+        : { action: "unknown", reason: "Voce non trovata." };
+    }
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+    return { action: "set_name", itemKey: match.key, name, label: match.name };
+  }
+
+  const descriptionMatch = raw.match(/^\\s*descrizione\\s+(.+?)\\s*\\|\\s*(.+?)\\s*$/i);
+  if (descriptionMatch) {
+    const needle = descriptionMatch[1] ?? "";
+    const description = descriptionMatch[2]?.trim() ?? "";
+    if (description.length < 2 || description.length > 1000) {
+      return { action: "unknown", reason: "La descrizione deve contenere da 2 a 1000 caratteri." };
+    }
+    const matches = findItems(menu, needle);
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous("Ho trovato più voci compatibili.", matches.map((item) => ({ key: item.key, name: item.name, category: item.category })))
+        : { action: "unknown", reason: "Voce non trovata." };
+    }
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+    return { action: "set_description", itemKey: match.key, description, label: match.name };
   }
 
   const availabilityMatch = raw.match(
