@@ -1972,3 +1972,53 @@
     width:min(130px,37vw)!important;
   }
 }
+
+
+/* Final category/product icon polish */
+.lubrano-category-hero{
+  min-height:170px!important;
+}
+.lubrano-category-hero .relative.z-10{
+  min-height:170px!important;
+  padding:1.15rem 1.35rem!important;
+}
+.lubrano-category-title{
+  line-height:.95;
+}
+.lubrano-category-dish-icon{
+  font-family:var(--font-body);
+  font-size:1.25rem;
+  line-height:1;
+  color:#fff;
+}
+.lubrano-review-brand-icon{
+  width:1.5rem;
+  height:1.5rem;
+  flex:0 0 1.5rem;
+}
+.lubrano-review-google .lubrano-review-brand-icon{color:#4285f4}
+.lubrano-review-tripadvisor .lubrano-review-brand-icon{color:#34a853}
+@media(max-width:720px){
+  .lubrano-category-hero{
+    min-height:155px!important;
+    border-radius:18px;
+  }
+  .lubrano-category-hero .relative.z-10{
+    min-height:155px!important;
+    padding:.9rem 1rem!important;
+    justify-content:flex-end!important;
+  }
+  .lubrano-category-title{
+    font-size:clamp(1.65rem,8vw,2.35rem)!important;
+  }
+  .lubrano-category-dish-icon{
+    width:2.15rem!important;
+    height:2.15rem!important;
+    font-size:1.15rem!important;
+  }
+  .lubrano-review-brand-icon{
+    width:1.35rem;
+    height:1.35rem;
+    flex-basis:1.35rem;
+  }
+}
