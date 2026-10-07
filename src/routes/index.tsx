@@ -463,7 +463,7 @@ function MenuPage() {
                   {g.name && <div className="lubrano-section-heading"><span>{String(gi + 1).padStart(2, "0")}</span><h2>{g.name}</h2></div>}
                   <ul className="grid gap-3 md:grid-cols-2">
                     {g.items.map((item) => (
-                      <li key={item.key} className={`lubrano-dish-card ${item.available ? "" : "is-unavailable"}`}>
+                      <li key={item.key} className={`lubrano-dish-card ${item.available ? "" : "is-unavailable"} ${item.key === "aggiunta_fonduta_di_cheddar_formaggio_e_provola" ? "lubrano-potato-supplement-card" : ""}`}>
                         <div className="flex items-start gap-3">
                           <div className="lubrano-dish-icon"><Utensils className="size-4" /></div>
                           <div className="min-w-0 flex-1">
