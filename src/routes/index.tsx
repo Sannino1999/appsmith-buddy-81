@@ -36,8 +36,8 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
 const categoryIcons: Record<string, string> = {
-  stuzzicheria: "🍟", patate: "🥔", panini: "🥪", hamburger: "🍔",
-  brace: "🔥", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
+  stuzzicheria: "🍟", patate: "🥔", panini: "🍔", hamburger: "🍔",
+  brace: "🥩", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
   dolci: "🍰", birre_spina: "🍺", birre_bottiglia: "🍻", bibite: "🥤", vini_rossi: "🍷",
   vini_bianchi: "🥂", altre_bevande: "🍹",
 };
@@ -309,15 +309,14 @@ function MenuPage() {
           <nav className="lubrano-main-nav" aria-label="Navigazione">
             <a href="#menu">{nav.menu}</a>
             <a href="#speciale">{nav.special}</a>
-            <a href="#servizi">{nav.services}</a>
             <a href="#contatti">{nav.contact}</a>
           </nav>
           <div className="lubrano-topbar">
             <div className="lubrano-brandline lubrano-brandline-main">
+              <span className="lubrano-status">MENÙ DIGITALE</span>
               <span className="lubrano-kicker">PUB · BRACERIA · NAPOLI</span>
-              <span className="lubrano-status"><span className="lubrano-status-dot" /> MENÙ DIGITALE</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="lubrano-topbar-actions flex items-center gap-2">
               <QrButton onClick={() => setQrOpen(true)} />
               <button type="button" aria-label={t.search} onClick={() => { setSearchOpen((v) => !v); setQuery(""); }} className="lubrano-icon-button">
                 {searchOpen ? <X className="size-4" /> : <Search className="size-4" />}
