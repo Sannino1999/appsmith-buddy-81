@@ -2,6 +2,75 @@ import type { LangCode } from "./i18n";
 
 type Dictionary = Record<string, string>;
 
+const COMMON_TERMS: Record<Exclude<LangCode, "it">, Dictionary> = {
+  en: {
+    "contorno": "side dish", "contorni": "side dishes", "patatine": "French fries", "patata": "potato", "patate": "potatoes",
+    "verdura": "vegetables", "verdure": "vegetables", "rucola": "rocket", "pomodoro": "tomato", "pomodorini": "cherry tomatoes",
+    "basilico": "basil", "cipolla": "onion", "cipolle": "onions", "carne": "meat", "caciocavallo": "caciocavallo",
+    "burrata": "burrata", "mascarpone": "mascarpone", "funghi": "mushrooms", "melanzane": "eggplant", "zucchine": "zucchini",
+    "carciofi": "artichokes", "crema": "cream", "pistacchio": "pistachio", "mandorle": "almonds", "tostate": "toasted",
+    "prosciutto": "ham", "parmigiano": "Parmesan", "bacon": "bacon", "salsa": "sauce", "frutti di bosco": "berries",
+    "caramello": "caramel", "con": "with", "senza": "without", "alla brace": "grilled", "grigliata": "grilled",
+    "grigliato": "grilled", "impasto": "dough", "olive": "olives", "nachos": "nachos", "peperoni": "peppers",
+    "jalapegnos": "jalapeños", "jalapenos": "jalapeños", "uova": "eggs", "uovo": "egg", "formaggio": "cheese",
+  },
+  es: {
+    "contorno": "guarnición", "contorni": "guarniciones", "patatine": "patatas fritas", "patata": "patata", "patate": "patatas",
+    "verdura": "verduras", "verdure": "verduras", "rucola": "rúcula", "pomodoro": "tomate", "pomodorini": "tomates cherry",
+    "basilico": "albahaca", "cipolla": "cebolla", "cipolle": "cebollas", "carne": "carne", "caciocavallo": "caciocavallo",
+    "burrata": "burrata", "mascarpone": "mascarpone", "funghi": "champiñones", "melanzane": "berenjena", "zucchine": "calabacín",
+    "carciofi": "alcachofas", "crema": "crema", "pistacchio": "pistacho", "mandorle": "almendras", "tostate": "tostadas",
+    "prosciutto": "jamón", "parmigiano": "parmesano", "bacon": "beicon", "salsa": "salsa", "frutti di bosco": "frutos rojos",
+    "caramello": "caramelo", "con": "con", "senza": "sin", "alla brace": "a la parrilla", "olive": "aceitunas",
+    "nachos": "nachos", "jalapegnos": "jalapeños", "jalapenos": "jalapeños", "uova": "huevos", "uovo": "huevo",
+    "formaggio": "queso",
+  },
+  fr: {
+    "contorno": "accompagnement", "contorni": "accompagnements", "patatine": "frites", "patata": "pomme de terre", "patate": "pommes de terre",
+    "verdura": "légumes", "verdure": "légumes", "rucola": "roquette", "pomodoro": "tomate", "pomodorini": "tomates cerises",
+    "basilico": "basilic", "cipolla": "oignon", "cipolle": "oignons", "carne": "viande", "caciocavallo": "caciocavallo",
+    "burrata": "burrata", "mascarpone": "mascarpone", "funghi": "champignons", "melanzane": "aubergine", "zucchine": "courgette",
+    "carciofi": "artichauts", "crema": "crème", "pistacchio": "pistache", "mandorle": "amandes", "tostate": "grillées",
+    "prosciutto": "jambon", "parmigiano": "parmesan", "bacon": "bacon", "salsa": "sauce", "frutti di bosco": "fruits rouges",
+    "caramello": "caramel", "con": "avec", "senza": "sans", "alla brace": "grillé", "olive": "olives",
+    "nachos": "nachos", "jalapegnos": "jalapeños", "jalapenos": "jalapeños", "uova": "œufs", "uovo": "œuf",
+    "formaggio": "fromage",
+  },
+  de: {
+    "contorno": "Beilage", "contorni": "Beilagen", "patatine": "Pommes frites", "patata": "Kartoffel", "patate": "Kartoffeln",
+    "verdura": "Gemüse", "verdure": "Gemüse", "rucola": "Rucola", "pomodoro": "Tomate", "pomodorini": "Kirschtomaten",
+    "basilico": "Basilikum", "cipolla": "Zwiebel", "cipolle": "Zwiebeln", "carne": "Fleisch", "caciocavallo": "Caciocavallo",
+    "burrata": "Burrata", "mascarpone": "Mascarpone", "funghi": "Champignons", "melanzane": "Aubergine", "zucchine": "Zucchini",
+    "carciofi": "Artischocken", "crema": "Creme", "pistacchio": "Pistazie", "mandorle": "Mandeln", "tostate": "geröstet",
+    "prosciutto": "Schinken", "parmigiano": "Parmesan", "bacon": "Bacon", "salsa": "Sauce", "frutti di bosco": "Beeren",
+    "caramello": "Karamell", "con": "mit", "senza": "ohne", "alla brace": "gegrillt", "olive": "Oliven",
+    "nachos": "Nachos", "jalapegnos": "Jalapeños", "jalapenos": "Jalapeños", "uova": "Eier", "uovo": "Ei",
+    "formaggio": "Käse",
+  },
+  pt: {
+    "contorno": "acompanhamento", "contorni": "acompanhamentos", "patatine": "batatas fritas", "patata": "batata", "patate": "batatas",
+    "verdura": "legumes", "verdure": "legumes", "rucola": "rúcula", "pomodoro": "tomate", "pomodorini": "tomates-cereja",
+    "basilico": "manjericão", "cipolla": "cebola", "cipolle": "cebolas", "carne": "carne", "caciocavallo": "caciocavallo",
+    "burrata": "burrata", "mascarpone": "mascarpone", "funghi": "cogumelos", "melanzane": "beringela", "zucchine": "curgete",
+    "carciofi": "alcachofras", "crema": "creme", "pistacchio": "pistácio", "mandorle": "amêndoas", "tostate": "tostadas",
+    "prosciutto": "presunto", "parmigiano": "parmesão", "bacon": "bacon", "salsa": "molho", "frutti di bosco": "frutos vermelhos",
+    "caramello": "caramelo", "con": "com", "senza": "sem", "alla brace": "grelhado", "olive": "azeitonas",
+    "nachos": "nachos", "jalapegnos": "jalapeños", "jalapenos": "jalapeños", "uova": "ovos", "uovo": "ovo",
+    "formaggio": "queijo",
+  },
+  zh: {
+    "contorno": "配菜", "contorni": "配菜", "patatine": "薯条", "patata": "土豆", "patate": "土豆",
+    "verdura": "蔬菜", "verdure": "蔬菜", "rucola": "芝麻菜", "pomodoro": "番茄", "pomodorini": "小番茄",
+    "basilico": "罗勒", "cipolla": "洋葱", "cipolle": "洋葱", "carne": "肉类", "caciocavallo": "卡乔卡瓦洛奶酪",
+    "burrata": "布拉塔奶酪", "mascarpone": "马斯卡彭奶酪", "funghi": "蘑菇", "melanzane": "茄子", "zucchine": "西葫芦",
+    "carciofi": "洋蓟", "crema": "奶油", "pistacchio": "开心果", "mandorle": "杏仁", "tostate": "烘烤",
+    "prosciutto": "火腿", "parmigiano": "帕玛森奶酪", "bacon": "培根", "salsa": "酱料", "frutti di bosco": "莓果",
+    "caramello": "焦糖", "con": "配", "senza": "不含", "alla brace": "炭火烤制", "olive": "橄榄",
+    "nachos": "玉米片", "jalapegnos": "墨西哥辣椒", "jalapenos": "墨西哥辣椒", "uova": "鸡蛋", "uovo": "鸡蛋",
+    "formaggio": "奶酪",
+  },
+};
+
 const DICTIONARIES: Record<Exclude<LangCode, "it">, Dictionary> = {
   en: {
     "Arrosticini di scottona": "Scottona beef skewers",
@@ -513,7 +582,7 @@ function replaceWhole(source: string, from: string, to: string) {
 
 export function translateMenuText(source: string | null, lang: LangCode) {
   if (!source || lang === "it") return source;
-  const dictionary = DICTIONARIES[lang];
+  const dictionary = { ...COMMON_TERMS[lang], ...DICTIONARIES[lang] };
   let value = source;
 
   const entries = Object.entries(dictionary).sort(([a], [b]) => b.length - a.length);
