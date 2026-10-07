@@ -419,7 +419,7 @@ function MenuPage() {
                     src={categoryVisuals[c.id] ?? bgImage}
                     alt=""
                     loading="lazy"
-                    onError={(event) => { event.currentTarget.src = "/menu-bg.webp"; }}
+                    onError={(event) => { event.currentTarget.style.display = "none"; }}
                   />
                 </span>
                 <span>{menuLabels.categories[c.id]?.name ?? c.name}</span>
