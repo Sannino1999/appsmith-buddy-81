@@ -266,7 +266,10 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
     const commandMenu = await buildAdminCommandMenu();
     const parsed = parseAdminCommand(data.command, commandMenu);
     const commandText = safeCommandText(data.command, parsed);
-    const readOnly = parsed.action === "show_history" || parsed.action === "show_active_changes";
+    const readOnly =
+      parsed.action === "show_history" ||
+      parsed.action === "show_active_changes" ||
+      parsed.action === "show_removed_items";
     if (!readOnly) {
       const pending = pendingConfirmations.get(admin.id);
       const validPending =
