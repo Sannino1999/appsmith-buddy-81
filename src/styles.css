@@ -1759,7 +1759,7 @@
 @media(max-width:720px){
   .lubrano-topbar{
     display:flex!important;
-    flex-direction:column-reverse!important;
+    flex-direction:column!important;
     align-items:stretch!important;
     gap:.55rem!important;
     padding:.55rem .65rem .7rem!important;
