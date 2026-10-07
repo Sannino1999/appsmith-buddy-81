@@ -1,0 +1,1 @@
+export const appConfig={name:'Perfect Line',legalName:'ASD Perfect Line',city:'Portici',address:'Via Armando Diaz, 33, 80055 Portici (NA)',currency:'EUR',defaultExpiryWarningDays:7} as const;
