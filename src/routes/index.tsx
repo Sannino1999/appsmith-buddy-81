@@ -177,7 +177,7 @@ function MenuPage() {
           {
             name: "",
             items: (liveMenuQuery.data?.customItems ?? [])
-              .filter((item) => item.category_id === category.id)
+              .filter((item) => item.category_id === category.id && item.available)
               .map((item) => ({
                 key: item.item_key,
                 name: item.name,
@@ -270,6 +270,7 @@ function MenuPage() {
       .map((g) => ({
         name: menuLabels.groups[g.name] ?? g.name,
         items: g.items
+          .filter((item) => overrides.get(item.key)?.available !== false)
           .map((item) => {
             const o = overrides.get(item.key);
             const tr = translations[item.key];
@@ -351,7 +352,8 @@ function MenuPage() {
             <div className="lubrano-logo-frame">
               <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo lubrano-logo-original" width={512} height={512} />
             </div>
-          <
+          </div>
+
           <div className="lubrano-utility">
             <div className="lubrano-utility-links">
               <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer"><MapPin className="size-3.5" /> {VENUE.address}</a>
@@ -383,9 +385,7 @@ function MenuPage() {
               <a href={VENUE.phoneHref} className="lubrano-book-button"><CalendarDays className="size-3.5" /> {nav.book}</a>
             </div>
           </div>
-/div>
         </header>
-
         <section className={`lubrano-search-panel anim-fade-up ${searchOpen ? "is-open" : ""}`} aria-label="Ricerca nel menù">
           <div className="lubrano-search-inner">
             <Search className="size-5 shrink-0 text-[#ff315b]" aria-hidden />
