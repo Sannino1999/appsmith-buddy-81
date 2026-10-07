@@ -1254,3 +1254,29 @@
     font-size:.56rem;
   }
 }
+
+
+/* Mobile readability refinements */
+@media(max-width:720px){
+  .lubrano-topbar-actions > :first-child{
+    display:inline-flex!important;
+  }
+  .lubrano-contact-actions .lubrano-instagram-cta{
+    min-height:56px;
+    font-size:.82rem;
+  }
+  .lubrano-instagram-cta svg{
+    width:1.4rem;
+    height:1.4rem;
+  }
+}
+@media(max-width:430px){
+  .lubrano-utility-actions{
+    grid-row:1;
+    align-self:center;
+  }
+  .lubrano-utility-info{
+    grid-row:1;
+    align-self:center;
+  }
+}
