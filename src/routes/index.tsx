@@ -363,7 +363,6 @@ function MenuPage() {
             <div className="lubrano-utility-links">
               <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
               <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp Lubrano"><MessageCircle className="size-4" /></a>
-              <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" aria-label="Recensioni Lubrano"><Star className="size-4" /></a>
               {installPrompt && (
                 <button
                   type="button"
@@ -510,9 +509,9 @@ function MenuPage() {
         <section id="servizi" className="lubrano-services anim-fade-up">
           <div className="lubrano-section-heading"><span>★</span><h2>{services.title}</h2></div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <a href={VENUE.reviewUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.review}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.reviewGoogle}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
+            <a href={VENUE.tripadvisorUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Star className="size-5 text-[#ff315b]" /><span>{services.reviewTripadvisor}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
             <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><Instagram className="size-5 text-[#ff315b]" /><span>{services.instagram}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
-            <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" className="lubrano-service-card"><MessageCircle className="size-5 text-[#ff315b]" /><span>{services.whatsapp}</span><ExternalLink className="ml-auto size-4 text-white/25" /></a>
             <button type="button" onClick={() => setWifiOpen(true)} className="lubrano-service-card text-left" aria-haspopup="dialog"><Wifi className="size-5 text-[#ff315b]" /><span className="min-w-0 flex-1">{services.wifi}<small className="mt-1 block truncate text-xs font-normal text-white/35">{wifiPassword ? "Lubrano-Guest · tocca per mostrare" : services.wifiAsk}</small></span></button>
           </div>
           <div className="lubrano-allergen"><strong>{services.allergenTitle}</strong><span>{services.allergenBody}</span></div>
