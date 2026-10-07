@@ -993,3 +993,83 @@
 .lubrano-potato-supplement-card .lubrano-potato-supplement{
   color:#f5c84b!important;
 }
+
+
+/* Final requested visual hierarchy */
+.lubrano-topbar{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:.8rem 1rem;
+}
+.lubrano-brandline-main{
+  grid-column:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:.22rem;
+  min-width:0;
+  text-align:center;
+}
+.lubrano-brandline-main .lubrano-status{
+  order:1;
+  border:0;
+  padding:0;
+  color:rgba(143,245,207,.72);
+  font-size:.56rem;
+  letter-spacing:.22em;
+}
+.lubrano-brandline-main .lubrano-status::before{display:none}
+.lubrano-brandline-main .lubrano-kicker{
+  order:2;
+  color:#fff;
+  font-size:.82rem;
+  letter-spacing:.2em;
+  line-height:1.15;
+  white-space:nowrap;
+}
+.lubrano-topbar-actions{
+  grid-column:3;
+  justify-self:end;
+}
+.lubrano-hero{
+  width:min(calc(100% - 2rem), 980px);
+  margin-inline:auto;
+  min-height:310px;
+  padding:1.35rem 1rem 1.5rem;
+}
+.lubrano-logo-frame{width:min(215px,52vw)}
+.lubrano-category-emoji[aria-hidden="true"]{font-variant-emoji:emoji}
+.lubrano-potato-supplement-card .lubrano-dish-name,
+.lubrano-potato-supplement-card .lubrano-potato-supplement{
+  color:#f5c84b!important;
+}
+@media(max-width:720px){
+  .lubrano-topbar{
+    grid-template-columns:1fr auto;
+    padding:.65rem .75rem;
+  }
+  .lubrano-brandline-main{
+    grid-column:1;
+    grid-row:1;
+  }
+  .lubrano-topbar-actions{
+    grid-column:2;
+    grid-row:1;
+  }
+  .lubrano-brandline-main .lubrano-kicker{
+    font-size:.68rem;
+    letter-spacing:.14em;
+  }
+  .lubrano-brandline-main .lubrano-status{
+    font-size:.5rem;
+  }
+  .lubrano-hero{
+    width:min(calc(100% - 1rem), 720px);
+    min-height:275px;
+    padding:.95rem .75rem 1.15rem;
+  }
+  .lubrano-logo-frame{width:min(185px,50vw)}
+}
