@@ -458,17 +458,11 @@ function MenuPage() {
         ) : (
           <div key={active?.id ?? "empty"} className="mt-8 anim-menu-change">
             {active && (
-              <section
-                className="lubrano-category-hero"
-                
-              >
-                <div className="lubrano-category-hero-overlay" />
-                <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
-                  <span className="lubrano-eyebrow">{menuLabels.sectionEyebrows[macro === "food" ? "food" : "drinks"]}</span>
-                  <h2 className="lubrano-category-title">{menuLabels.categories[active.id]?.name ?? active.name}</h2>
-                  <div className="mt-3 h-px w-16 bg-[#ff315b]" />
-                </div>
-              </section>
+              <div className="lubrano-category-heading">
+                <span className="lubrano-eyebrow">{menuLabels.sectionEyebrows[macro === "food" ? "food" : "drinks"]}</span>
+                <h2 className="lubrano-category-title">{menuLabels.categories[active.id]?.name ?? active.name}</h2>
+                <div className="lubrano-category-rule" />
+              </div>
             )}
             <div className="mt-9">
               {groups.length === 0 && <p className="text-center text-white/45">{t.noResults}</p>}
