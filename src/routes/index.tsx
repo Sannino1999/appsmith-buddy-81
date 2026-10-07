@@ -30,6 +30,7 @@ import {
   getPublicMenu,
   getPublicWifiPassword,
   translateCategory,
+  type CustomItem,
 } from "@/lib/menu.functions";
 import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
@@ -147,7 +148,7 @@ function MenuPage() {
       })
       .filter((category): category is MenuCategory => category !== null);
 
-    const customItemsByCategory = new Map<string, typeof liveMenuQuery.data.customItems>();
+    const customItemsByCategory = new Map<string, CustomItem[]>();
     for (const item of liveMenuQuery.data?.customItems ?? []) {
       const list = customItemsByCategory.get(item.category_id) ?? [];
       list.push(item);
