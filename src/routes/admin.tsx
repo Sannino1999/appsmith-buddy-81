@@ -41,6 +41,7 @@ const EXAMPLES = [
   "wifi | nuova-password",
   "storico",
   "modifiche attive",
+  "prodotti rimossi",
   "annulla ultima azione",
 ];
 
