@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export function Sidebar(){return <aside className="sidebar"><div className="brand">Perfect Line<small>Gestionale · ASD</small></div><nav className="nav"><Link href="/">Dashboard</Link><Link href="/clienti">Clienti</Link><Link href="/abbonamenti">Abbonamenti</Link><Link href="/scadenze">Scadenze</Link></nav></aside>}
