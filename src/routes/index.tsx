@@ -341,6 +341,7 @@ function MenuPage() {
           </div>
 
           <div className="lubrano-hero">
+            <div className="lubrano-mobile-brandline">PUB BRACERIA NAPOLI</div>
             <div className="lubrano-hero-copy">
               <span className="lubrano-eyebrow">BENVENUTI DA</span>
               <h1 className="lubrano-hero-title">Lubrano</h1>
