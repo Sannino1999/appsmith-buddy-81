@@ -312,10 +312,6 @@ function MenuPage() {
             <a href="#contatti">{nav.contact}</a>
           </nav>
           <div className="lubrano-topbar">
-            <div className="lubrano-brandline lubrano-brandline-main">
-              <span className="lubrano-status">MENÙ DIGITALE</span>
-              <span className="lubrano-kicker">PUB BRACERIA NAPOLI</span>
-            </div>
             <div className="lubrano-topbar-actions flex items-center gap-2">
               <QrButton onClick={() => setQrOpen(true)} />
               <button type="button" aria-label={t.search} onClick={() => { setSearchOpen((v) => !v); setQuery(""); }} className="lubrano-icon-button">
@@ -337,6 +333,10 @@ function MenuPage() {
                   </ul>
                 )}
               </div>
+            </div>
+            <div className="lubrano-brandline lubrano-brandline-main">
+              <span className="lubrano-status">MENÙ DIGITALE</span>
+              <span className="lubrano-kicker">PUB BRACERIA NAPOLI</span>
             </div>
           </div>
 
@@ -404,7 +404,7 @@ function MenuPage() {
         </section>
 
         <div className="lubrano-category-wrap anim-fade-up stagger-2">
-          <div className="lubrano-category-label">ESPLORA</div>
+          <div className="lubrano-category-label"><span>ESPLORA</span><small>SCORRI LE CATEGORIE →</small></div>
           <nav className="lubrano-category-strip" aria-label="Categorie">
             {categories.map((c) => (
               <button key={c.id} ref={(element) => { categoryRefs.current[c.id] = element; }} type="button" onClick={() => setCategoryId(c.id)} aria-current={c.id === active?.id ? "page" : undefined} className={`lubrano-category-pill ${c.id === active?.id ? "is-active" : ""}`}>
