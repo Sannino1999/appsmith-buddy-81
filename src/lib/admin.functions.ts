@@ -7,7 +7,7 @@ import { z } from "zod";
 import { authenticateAdmin, getCurrentAdmin, logoutAdmin } from "./admin-auth.server";
 import { assertCapability } from "./admin-permissions";
 import { parseAdminCommand, type ParsedCommand } from "./admin-command-parser";
-import { baseMenu } from "./menu";
+import { baseMenu, type Menu } from "./menu";
 import {
   createCustomCategory,
   createCustomItem,
@@ -47,6 +47,58 @@ function ensureDatabase() {
   }
 }
 
+function buildAdminCommandMenu(): Promise<Menu> {
+  if (!isMySqlConfigured()) return Promise.resolve(baseMenu);
+  return getLiveMenuDataFromMysql().then((live) => {
+    const categories = baseMenu.categories.map((category) => {
+      const customItems = live.customItems
+        .filter((item) => item.category_id === category.id)
+        .map((item) => ({
+          key: item.item_key,
+          name: item.name,
+          description: item.description,
+          price_eur: item.price_eur,
+          tags: [],
+          available: item.available,
+        }));
+      if (customItems.length === 0) return category;
+      const firstGroup = category.groups[0];
+      if (firstGroup) {
+        return {
+          ...category,
+          groups: [
+            { ...firstGroup, items: [...firstGroup.items, ...customItems] },
+            ...category.groups.slice(1),
+          ],
+        };
+      }
+      return { ...category, groups: [{ name: "", items: customItems }] };
+    });
+    const customCategories = live.categories
+      .filter((category) => category.custom)
+      .map((category) => ({
+        id: category.id,
+        macro: category.macro,
+        name: category.name,
+        eyebrow: null,
+        groups: [{
+          name: "",
+          items: live.customItems
+            .filter((item) => item.category_id === category.id)
+            .map((item) => ({
+              key: item.item_key,
+              name: item.name,
+              description: item.description,
+              price_eur: item.price_eur,
+              tags: [],
+              available: item.available,
+            })),
+        }],
+      }));
+    return { ...baseMenu, categories: [...categories, ...customCategories] };
+  });
+}
+
 function itemFromKey(itemKey: string) {
   for (const category of baseMenu.categories) {
     for (const group of category.groups) {
@@ -65,6 +117,7 @@ function snapshotOverride(value: Awaited<ReturnType<typeof getMenuOverride>>) {
     description: value.description,
     price_eur: value.price_eur,
     available: value.available,
+    deleted: value.deleted,
   };
 }
 
@@ -178,7 +231,8 @@ export const previewAdminCommand = createServerFn({ method: "POST" })
     assertCapability(admin.role, "edit");
     ensureDatabase();
 
-    const parsed = parseAdminCommand(data.command, baseMenu);
+    const commandMenu = await buildAdminCommandMenu();
+    const parsed = parseAdminCommand(data.command, commandMenu);
     const requiresConfirmation = !["unknown", "ambiguous", "show_history"].includes(parsed.action);
     if (requiresConfirmation) {
       pendingConfirmations.set(admin.id, {
@@ -208,7 +262,8 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
     assertCapability(admin.role, "edit");
     ensureDatabase();
 
-    const parsed = parseAdminCommand(data.command, baseMenu);
+    const commandMenu = await buildAdminCommandMenu();
+    const parsed = parseAdminCommand(data.command, commandMenu);
     const commandText = safeCommandText(data.command, parsed);
     const readOnly = parsed.action === "show_history" || parsed.action === "show_active_changes";
     if (!readOnly) {
@@ -343,6 +398,15 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
             itemKey: before.item_key,
           });
         }
+      } else if (details.undoAction === "custom_item_delete") {
+        const before = details.before as { id: string; itemKey: string; label: string } | null;
+        if (before?.id) {
+          const live = await buildAdminCommandMenu();
+          const source = live.categories.flatMap((category) => category.groups.flatMap((group) => group.items)).find((item) => item.key === before.itemKey);
+          if (!source) {
+            throw new Error("Il prodotto eliminato non è più disponibile per il ripristino automatico.");
+          }
+        }
       } else if (details.undoAction === "custom_item") {
         const after = details.after as { id: string } | null;
         if (after?.id) await deleteCustomItem(after.id);
@@ -376,6 +440,52 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
     const action = parsed.action;
     let itemKey: string | null = null;
     let details: Record<string, unknown> = { command: commandText };
+
+    if (parsed.action === "delete_item") {
+      const existingCustom = parsed.itemKey.startsWith("custom:")
+        ? parsed.itemKey.slice("custom:".length)
+        : null;
+      if (existingCustom) {
+        await deleteCustomItem(existingCustom);
+        itemKey = parsed.itemKey;
+        message = "🗑️ Piatto eliminato dal menù: " + parsed.label;
+        details = {
+          ...details,
+          undoAction: "custom_item_delete",
+          before: { itemKey: parsed.itemKey, id: existingCustom, label: parsed.label },
+          after: null,
+        };
+      } else {
+        const target = await getMenuOverride(parsed.itemKey);
+        const base = itemFromKey(parsed.itemKey)?.item;
+        if (!base) return { ok: false as const, message: "Voce non trovata.", parsed };
+        itemKey = parsed.itemKey;
+        await upsertMenuOverride({
+          item_key: parsed.itemKey,
+          name: target?.name ?? null,
+          description: target?.description ?? null,
+          price_eur: target?.price_eur ?? base.price_eur,
+          available: false,
+          deleted: true,
+        });
+        message = "🗑️ Piatto eliminato dal menù: " + base.name;
+        details = {
+          ...details,
+          undoAction: "item_override",
+          before: snapshotOverride(target),
+          after: snapshotOverride(await getMenuOverride(parsed.itemKey)),
+        };
+      }
+      await insertAuditLog({
+        actor: admin.username ?? admin.id,
+        adminUserId: admin.id,
+        action: "delete_item",
+        itemKey,
+        details,
+      });
+      await insertChatMessage({ adminUserId: admin.id, role: "assistant", message });
+      return { ok: true as const, message, parsed };
+    }
 
     if (
       parsed.action === "set_price" ||
