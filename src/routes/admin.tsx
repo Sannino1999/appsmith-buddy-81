@@ -37,6 +37,7 @@ const EXAMPLES = [
   "speciale | Burger del mese | Manzo, cheddar e bacon | 14,50",
   "wifi | nuova-password",
   "storico",
+  "modifiche attive",
   "annulla ultima azione",
 ];
 
