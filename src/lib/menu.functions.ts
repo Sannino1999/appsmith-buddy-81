@@ -19,7 +19,6 @@ export type Override = {
   description: string | null;
   price_eur: number | null;
   available: boolean;
-  deleted: boolean;
 };
 
 export type MenuSpecial = {
