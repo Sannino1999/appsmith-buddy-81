@@ -9,7 +9,6 @@ export type MysqlOverride = {
   description: string | null;
   price_eur: number | null;
   available: boolean;
-  deleted: boolean;
 };
 
 export type MysqlMenuSpecial = {
@@ -58,7 +57,7 @@ export type MysqlAdminUser = {
 };
 
 type BoolLike = boolean | number;
-type OverrideRow = MysqlOverride & { available: BoolLike; deleted: BoolLike };
+type OverrideRow = MysqlOverride & { available: BoolLike };
 type CategoryOverrideRow = { category_id: string; name: string | null; available: BoolLike };
 type CustomCategoryRow = {
   id: string;
@@ -91,7 +90,6 @@ function mapOverride(row: OverrideRow): MysqlOverride {
     description: row.description,
     price_eur: row.price_eur === null ? null : Number(row.price_eur),
     available: toBool(row.available),
-    deleted: toBool(row.deleted),
   };
 }
 
@@ -170,7 +168,7 @@ export async function getLiveMenuDataFromMysql(): Promise<MysqlLiveMenuData> {
   const [overrideRows, categoryOverrideRows, customCategoryRows, customItemRows, specialRows] =
     await Promise.all([
       mysqlQuery<OverrideRow>(
-        "SELECT item_key, name, description, price_eur, available, deleted FROM menu_overrides",
+        "SELECT item_key, name, description, price_eur, available FROM menu_overrides",
       ),
       mysqlQuery<CategoryOverrideRow>(
         "SELECT category_id, name, available FROM menu_category_overrides",
@@ -254,16 +252,15 @@ export async function getMenuOverride(itemKey: string) {
 
 export async function upsertMenuOverride(row: MysqlOverride) {
   await mysqlExecute(
-    `INSERT INTO menu_overrides (item_key, name, description, price_eur, available, deleted, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3))
+    `INSERT INTO menu_overrides (item_key, name, description, price_eur, available, updated_at)
+     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3))
      ON DUPLICATE KEY UPDATE
        name = VALUES(name),
        description = VALUES(description),
        price_eur = VALUES(price_eur),
        available = VALUES(available),
-       deleted = VALUES(deleted),
        updated_at = CURRENT_TIMESTAMP(3)`,
-    [row.item_key, row.name, row.description, row.price_eur, row.available ? 1 : 0, row.deleted ? 1 : 0],
+    [row.item_key, row.name, row.description, row.price_eur, row.available ? 1 : 0],
   );
 }
 
