@@ -1734,3 +1734,98 @@
 .lubrano-category-hero > img{
   background-image:none!important;
 }
+
+
+/* Final designer pass — mobile hierarchy and readability */
+.lubrano-category-label{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.8rem;
+}
+.lubrano-category-label small{
+  font-size:.52rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.28);
+}
+.lubrano-category-pill.is-active{
+  border-color:rgba(255,49,91,.65)!important;
+  background:linear-gradient(135deg,rgba(142,24,51,.92),rgba(74,13,27,.9))!important;
+  color:#fff!important;
+  box-shadow:0 10px 28px rgba(142,24,51,.28), inset 0 1px rgba(255,255,255,.07);
+}
+@media(max-width:720px){
+  .lubrano-topbar{
+    display:flex!important;
+    flex-direction:column-reverse!important;
+    align-items:stretch!important;
+    gap:.55rem!important;
+    padding:.55rem .65rem .7rem!important;
+  }
+  .lubrano-brandline-main{
+    width:100%!important;
+    min-height:38px;
+  }
+  .lubrano-brandline-main .lubrano-status{
+    font-size:.48rem!important;
+    letter-spacing:.18em!important;
+  }
+  .lubrano-brandline-main .lubrano-kicker{
+    font-size:.72rem!important;
+    letter-spacing:.12em!important;
+    white-space:nowrap!important;
+  }
+  .lubrano-topbar-actions{
+    order:2!important;
+    width:100%!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:.45rem!important;
+  }
+  .lubrano-topbar-actions > *{
+    flex:0 0 auto!important;
+  }
+  .lubrano-topbar-actions .lubrano-qr-button,
+  .lubrano-topbar-actions .lubrano-icon-button{
+    width:46px!important;
+    min-width:46px!important;
+    min-height:46px!important;
+  }
+  .lubrano-topbar-actions .lubrano-lang-button{
+    min-width:72px!important;
+    min-height:46px!important;
+  }
+  .lubrano-hero{
+    min-height:245px!important;
+    padding:.8rem .65rem 1rem!important;
+  }
+  .lubrano-logo-frame{
+    width:min(175px,48vw)!important;
+  }
+  .lubrano-hero-copy{
+    padding:.15rem 0 .45rem!important;
+  }
+  .lubrano-hero-title{
+    font-size:clamp(3rem,14vw,4.8rem)!important;
+  }
+  .lubrano-hero-note{
+    font-size:.78rem!important;
+    line-height:1.55!important;
+  }
+  .lubrano-category-label small{
+    display:block;
+  }
+}
+@media(max-width:380px){
+  .lubrano-category-label small{
+    font-size:.47rem;
+    letter-spacing:.08em;
+  }
+  .lubrano-brandline-main .lubrano-kicker{
+    font-size:.66rem!important;
+    letter-spacing:.085em!important;
+  }
+}
