@@ -358,6 +358,7 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
 
     if (
       parsed.action === "set_price" ||
+      parsed.action === "set_name" ||
       parsed.action === "set_available" ||
       parsed.action === "set_description" ||
       parsed.action === "reset_item"
@@ -380,15 +381,18 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
           available: target?.available ?? true,
         };
         if (parsed.action === "set_price") row.price_eur = parsed.priceEur;
+        if (parsed.action === "set_name") row.name = parsed.name;
         if (parsed.action === "set_available") row.available = parsed.available;
         if (parsed.action === "set_description") row.description = parsed.description;
         await upsertMenuOverride(row);
         message =
           parsed.action === "set_price"
             ? "✅ Prezzo aggiornato: " + base.name
-            : parsed.action === "set_available"
-              ? (parsed.available ? "✅ Disponibile: " : "🚫 Non disponibile: ") + base.name
-              : "✅ Descrizione aggiornata: " + base.name;
+            : parsed.action === "set_name"
+              ? "✅ Nome aggiornato: " + (parsed.name as string)
+              : parsed.action === "set_available"
+                ? (parsed.available ? "✅ Disponibile: " : "🚫 Non disponibile: ") + base.name
+                : "✅ Descrizione aggiornata: " + base.name;
       }
 
       details = {
