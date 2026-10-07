@@ -331,6 +331,22 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
     return { action: "set_description", itemKey: match.key, description, label: match.name };
   }
 
+  if (lower.startsWith("rimuovi dal menu ")) {
+    const needle = raw.slice(raw.indexOf(" ") + 1).trim();
+    const matches = findItems(menu, needle);
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous(
+            "Ho trovato più voci compatibili.",
+            matches.map((item) => ({ key: item.key, name: item.name, category: item.category })),
+          )
+        : { action: "unknown", reason: "Voce non trovata." };
+    }
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+    return { action: "delete_item", itemKey: match.key, label: match.name };
+  }
+
   if (lower.startsWith("elimina piatto |")) {
     const needle = raw.slice(raw.indexOf("|") + 1).trim();
     const matches = findItems(menu, needle);
