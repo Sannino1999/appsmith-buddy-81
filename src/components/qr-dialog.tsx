@@ -119,7 +119,7 @@ export function QrButton({ onClick }: { onClick: () => void }) {
       aria-label="QR Code"
       variant="outline"
       size="icon"
-      className="menu-control min-h-11 min-w-11 bg-background/60"
+      className="menu-control lubrano-qr-button min-h-11 min-w-11 bg-background/60"
     >
       <QrCode className="size-4" />
     </Button>
