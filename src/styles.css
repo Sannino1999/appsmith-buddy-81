@@ -900,3 +900,36 @@
   .lubrano-category-hero>img{opacity:.47}
   .lubrano-category-title{font-size:clamp(1.9rem,10vw,2.8rem)}
 }
+
+/* Requested header hierarchy and stable category controls. */
+.lubrano-header{display:flex;flex-direction:column}
+.lubrano-main-nav{order:1}
+.lubrano-topbar{order:2}
+.lubrano-hero{order:3;min-height:350px}
+.lubrano-utility{order:4;width:100%;margin-top:.8rem}
+.lubrano-logo-frame{width:min(245px,58vw)}
+.lubrano-category-emoji{
+  display:grid;
+  flex:0 0 2.7rem;
+  width:2.7rem;
+  height:2.7rem;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.04);
+  font-size:1.5rem;
+  line-height:1;
+}
+.lubrano-category-thumb{display:none!important}
+.lubrano-potato-supplement{
+  color:#f5c84b!important;
+  font-weight:800!important;
+  text-shadow:0 0 12px rgba(245,200,75,.16);
+}
+@media(max-width:720px){
+  .lubrano-hero{min-height:300px}
+  .lubrano-logo-frame{width:min(205px,55vw)}
+  .lubrano-utility{display:flex!important;flex-direction:column;align-items:stretch}
+  .lubrano-category-emoji{flex-basis:2.35rem;width:2.35rem;height:2.35rem;font-size:1.3rem}
+  .lubrano-category-pill{flex-basis:178px!important;width:178px!important;min-width:178px!important}
+}
