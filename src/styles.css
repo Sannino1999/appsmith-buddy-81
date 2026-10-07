@@ -2022,3 +2022,62 @@
     flex-basis:1.35rem;
   }
 }
+
+
+/* Compact selected-category heading: no oversized repeated banner. */
+.lubrano-category-heading{
+  margin-top:1.35rem;
+  margin-bottom:.9rem;
+  padding:.2rem .35rem .35rem;
+}
+.lubrano-category-heading .lubrano-eyebrow{
+  display:block;
+  margin-bottom:.2rem;
+}
+.lubrano-category-heading .lubrano-category-title{
+  margin:0;
+  font-size:clamp(1.65rem,4vw,2.35rem);
+  line-height:1;
+}
+.lubrano-category-rule{
+  width:3.5rem;
+  height:2px;
+  margin-top:.7rem;
+  background:#ff315b;
+}
+.lubrano-venue-copy p{
+  text-decoration:none!important;
+  border-bottom:0!important;
+  text-underline-offset:initial!important;
+}
+.lubrano-venue-copy p,
+.lubrano-venue-copy p::before,
+.lubrano-venue-copy p::after{
+  text-decoration:none!important;
+  content:none!important;
+}
+.lubrano-venue-copy a{
+  text-decoration:none!important;
+}
+@media(max-width:720px){
+  .lubrano-category-heading{
+    margin-top:1rem;
+    margin-bottom:.65rem;
+    padding-inline:.25rem;
+  }
+  .lubrano-category-heading .lubrano-eyebrow{
+    font-size:.5rem!important;
+    letter-spacing:.18em;
+  }
+  .lubrano-category-heading .lubrano-category-title{
+    font-size:clamp(1.5rem,7.5vw,2.1rem)!important;
+  }
+  .lubrano-category-rule{
+    margin-top:.5rem;
+    width:2.8rem;
+  }
+  .lubrano-venue-copy p{
+    font-size:.95rem!important;
+    line-height:1.45;
+  }
+}
