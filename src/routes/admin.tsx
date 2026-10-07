@@ -31,6 +31,8 @@ export const Route = createFileRoute("/admin")({
 
 const EXAMPLES = [
   "prezzo Perfect Burger 12",
+  "nome Perfect Burger | Nuovo nome",
+  "descrizione Perfect Burger | Nuova descrizione",
   "esaurito patate porchetta",
   "speciale | Burger del mese | Manzo, cheddar e bacon | 14,50",
   "wifi | nuova-password",
