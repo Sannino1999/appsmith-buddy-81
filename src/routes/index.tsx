@@ -12,7 +12,6 @@ import {
   Globe,
   Instagram,
   MapPin,
-  MessageCircle,
   Phone,
   Search,
   Star,
@@ -362,7 +361,6 @@ function MenuPage() {
             </div>
             <div className="lubrano-utility-links">
               <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram Lubrano"><Instagram className="size-4" /></a>
-              <a href={VENUE.whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp Lubrano"><MessageCircle className="size-4" /></a>
               {installPrompt && (
                 <button
                   type="button"
