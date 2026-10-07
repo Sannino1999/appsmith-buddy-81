@@ -822,3 +822,81 @@
     padding-inline:1rem;
   }
 }
+
+
+/* Final mobile category rail: compact cards, real touch scrolling, visible edge affordance. */
+.lubrano-category-wrap{position:relative;min-width:0}
+.lubrano-category-pill{position:relative;isolation:isolate}
+.lubrano-category-pill::before{
+  content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;
+  background:linear-gradient(90deg,rgba(9,7,8,.96),rgba(16,8,11,.82) 55%,rgba(16,8,11,.58));
+}
+.lubrano-category-thumb img{display:block;background:#120a0d}
+.lubrano-category-hero{min-height:250px}
+.lubrano-category-hero>img{opacity:.52;filter:saturate(.95) contrast(1.03)}
+.lubrano-category-hero-overlay{
+  background:linear-gradient(90deg,rgba(5,5,5,.96),rgba(18,8,11,.72) 58%,rgba(5,5,5,.4));
+}
+@media(max-width:720px){
+  .lubrano-category-wrap{
+    overflow:hidden;
+    padding-bottom:.05rem;
+  }
+  .lubrano-category-strip{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    gap:.55rem;
+    padding:.2rem 1rem .5rem!important;
+    margin:0;
+    touch-action:pan-x!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:1rem;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  .lubrano-category-strip::-webkit-scrollbar{display:none}
+  .lubrano-category-pill{
+    flex:0 0 min(78vw,220px)!important;
+    width:min(78vw,220px)!important;
+    min-width:min(78vw,220px)!important;
+    min-height:72px;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    border-radius:16px;
+  }
+  .lubrano-category-thumb{
+    flex:0 0 46px!important;
+    width:46px!important;
+    height:46px!important;
+  }
+  .lubrano-category-wrap::after{
+    content:"›";
+    position:absolute;
+    right:.45rem;
+    top:50%;
+    transform:translateY(-10%);
+    width:32px;height:32px;
+    display:grid;place-items:center;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:50%;
+    background:rgba(9,7,8,.76);
+    color:rgba(255,255,255,.9);
+    box-shadow:0 10px 24px rgba(0,0,0,.34);
+    pointer-events:none;
+    z-index:5;
+  }
+  .lubrano-category-hero{
+    min-height:215px;
+    border-radius:21px;
+  }
+  .lubrano-category-hero>img{opacity:.47}
+  .lubrano-category-title{font-size:clamp(1.9rem,10vw,2.8rem)}
+}
