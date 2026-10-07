@@ -35,16 +35,6 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
 const bgImage = "/assets/menu-bg.jpg";
-const categoryHeroImages: Record<string, string> = {
-  stuzzicheria: "/assets/category-stuzzicheria.webp",
-  patate: "/assets/category-patate.webp",
-  panini: "/assets/category-panini.webp",
-  hamburger: "/assets/category-burger.webp",
-  brace: "/assets/category-brace.webp",
-  braceria: "/assets/category-brace.webp",
-  carne: "/assets/category-brace.webp",
-  dolci: "/assets/category-dolci.webp",
-};
 const categoryIcons: Record<string, string> = {
   stuzzicheria: "🍟", patate: "🥔", panini: "🍔", hamburger: "🍔",
   brace: "🥩", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
@@ -454,7 +444,7 @@ function MenuPage() {
             {active && (
               <section
                 className="lubrano-category-hero"
-                style={{ backgroundImage: `url("${categoryHeroImages[active.id] ?? bgImage}")` }}
+                
               >
                 <div className="lubrano-category-hero-overlay" />
                 <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
