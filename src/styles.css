@@ -1907,3 +1907,68 @@
     font-size:clamp(2.5rem,12.2vw,4rem)!important;
   }
 }
+
+
+/* Mobile final brand placement: Pub Braceria Napoli belongs above the logo. */
+.lubrano-mobile-brandline{display:none}
+@media(max-width:720px){
+  .lubrano-topbar .lubrano-brandline-main{
+    display:none!important;
+  }
+  .lubrano-topbar{
+    padding:.45rem .65rem .55rem!important;
+    gap:.45rem!important;
+  }
+  .lubrano-topbar-actions{
+    min-height:44px!important;
+  }
+  .lubrano-hero{
+    min-height:205px!important;
+    padding:.45rem .6rem .65rem!important;
+    gap:.12rem!important;
+  }
+  .lubrano-mobile-brandline{
+    display:block!important;
+    order:0;
+    margin:0 auto .15rem;
+    text-align:center;
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.12em;
+    line-height:1.15;
+    color:rgba(255,255,255,.9);
+    text-transform:uppercase;
+  }
+  .lubrano-logo-frame{
+    width:min(142px,39vw)!important;
+  }
+  .lubrano-hero-copy{
+    order:3;
+    padding:0!important;
+  }
+  .lubrano-hero-title{
+    margin-top:.1rem!important;
+    font-size:clamp(2.55rem,12vw,4rem)!important;
+  }
+  .lubrano-hero-subtitle{
+    margin:.25rem 0 0!important;
+    font-size:.86rem!important;
+  }
+  .lubrano-hero-note{
+    margin:.25rem auto 0!important;
+    font-size:.7rem!important;
+    line-height:1.4!important;
+  }
+}
+@media(max-width:380px){
+  .lubrano-hero{
+    min-height:192px!important;
+  }
+  .lubrano-mobile-brandline{
+    font-size:.62rem;
+    letter-spacing:.09em;
+  }
+  .lubrano-logo-frame{
+    width:min(130px,37vw)!important;
+  }
+}
