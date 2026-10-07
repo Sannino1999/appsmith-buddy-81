@@ -28,6 +28,7 @@ export type ParsedCommand =
   | { action: "undo_last" }
   | { action: "show_history" }
   | { action: "show_active_changes" }
+  | { action: "delete_item"; itemKey: string; label: string }
   | { action: "unknown"; reason: string }
   | {
       action: "ambiguous";
@@ -294,7 +295,7 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
     };
   }
 
-  const nameMatch = raw.match(/^\\s*nome\\s+(.+?)\\s*\\|\\s*(.+?)\\s*$/i);
+  const nameMatch = raw.match(/^\s*nome\s+(.+?)\s*\|\s*(.+?)\s*$/i);
   if (nameMatch) {
     const needle = nameMatch[1] ?? "";
     const name = nameMatch[2]?.trim() ?? "";
@@ -328,6 +329,37 @@ export function parseAdminCommand(input: string, menu: Menu): ParsedCommand {
     const match = matches[0];
     if (!match) return { action: "unknown", reason: "Voce non trovata." };
     return { action: "set_description", itemKey: match.key, description, label: match.name };
+  }
+
+  if (lower.startsWith("elimina piatto |")) {
+    const needle = raw.slice(raw.indexOf("|") + 1).trim();
+    const matches = findItems(menu, needle);
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous(
+            "Ho trovato più voci compatibili.",
+            matches.map((item) => ({ key: item.key, name: item.name, category: item.category })),
+          )
+        : { action: "unknown", reason: "Voce non trovata." };
+    }
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+    return { action: "delete_item", itemKey: match.key, label: match.name };
+  }
+  if (lower.startsWith("elimina ")) {
+    const needle = raw.slice(raw.indexOf(" ") + 1).trim();
+    const matches = findItems(menu, needle);
+    if (matches.length !== 1) {
+      return matches.length
+        ? ambiguous(
+            "Ho trovato più voci compatibili.",
+            matches.map((item) => ({ key: item.key, name: item.name, category: item.category })),
+          )
+        : { action: "unknown", reason: "Voce non trovata." };
+    }
+    const match = matches[0];
+    if (!match) return { action: "unknown", reason: "Voce non trovata." };
+    return { action: "delete_item", itemKey: match.key, label: match.name };
   }
 
   const availabilityMatch = raw.match(
