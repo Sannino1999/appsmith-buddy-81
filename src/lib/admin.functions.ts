@@ -20,6 +20,8 @@ import {
   getCategoryOverride,
   getLatestAuditLogForAdmin,
   getMenuOverride,
+  getCustomItemByKey,
+  getLiveMenuDataFromMysql,
   insertAuditLog,
   insertChatMessage,
   listAuditLog,
@@ -117,7 +119,6 @@ function snapshotOverride(value: Awaited<ReturnType<typeof getMenuOverride>>) {
     description: value.description,
     price_eur: value.price_eur,
     available: value.available,
-    deleted: value.deleted,
   };
 }
 
@@ -233,7 +234,7 @@ export const previewAdminCommand = createServerFn({ method: "POST" })
 
     const commandMenu = await buildAdminCommandMenu();
     const parsed = parseAdminCommand(data.command, commandMenu);
-    const requiresConfirmation = !["unknown", "ambiguous", "show_history"].includes(parsed.action);
+    const requiresConfirmation = !["unknown", "ambiguous", "show_history", "show_active_changes"].includes(parsed.action);
     if (requiresConfirmation) {
       pendingConfirmations.set(admin.id, {
         command: data.command,
@@ -399,13 +400,23 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
           });
         }
       } else if (details.undoAction === "custom_item_delete") {
-        const before = details.before as { id: string; itemKey: string; label: string } | null;
+        const before = details.before as {
+          id: string;
+          item_key: string;
+          category_id: string;
+          name: string;
+          description: string | null;
+          price_eur: number | null;
+        } | null;
         if (before?.id) {
-          const live = await buildAdminCommandMenu();
-          const source = live.categories.flatMap((category) => category.groups.flatMap((group) => group.items)).find((item) => item.key === before.itemKey);
-          if (!source) {
-            throw new Error("Il prodotto eliminato non è più disponibile per il ripristino automatico.");
-          }
+          await createCustomItem({
+            id: before.id,
+            itemKey: before.item_key,
+            categoryId: before.category_id,
+            name: before.name,
+            description: before.description,
+            priceEur: before.price_eur,
+          });
         }
       } else if (details.undoAction === "custom_item") {
         const after = details.after as { id: string } | null;
@@ -446,13 +457,15 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
         ? parsed.itemKey.slice("custom:".length)
         : null;
       if (existingCustom) {
+        const beforeCustom = await getCustomItemByKey(parsed.itemKey);
+        if (!beforeCustom) return { ok: false as const, message: "Piatto extra non trovato.", parsed };
         await deleteCustomItem(existingCustom);
         itemKey = parsed.itemKey;
         message = "🗑️ Piatto eliminato dal menù: " + parsed.label;
         details = {
           ...details,
           undoAction: "custom_item_delete",
-          before: { itemKey: parsed.itemKey, id: existingCustom, label: parsed.label },
+          before: beforeCustom,
           after: null,
         };
       } else {
@@ -466,7 +479,6 @@ export const executeAdminCommand = createServerFn({ method: "POST" })
           description: target?.description ?? null,
           price_eur: target?.price_eur ?? base.price_eur,
           available: false,
-          deleted: true,
         });
         message = "🗑️ Piatto eliminato dal menù: " + base.name;
         details = {
