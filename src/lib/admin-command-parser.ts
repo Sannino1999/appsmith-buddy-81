@@ -5,7 +5,6 @@ export type ParsedCommand =
   | { action: "set_name"; itemKey: string; name: string; label: string }
   | { action: "set_description"; itemKey: string; description: string; label: string }
   | { action: "set_available"; itemKey: string; available: boolean; label: string }
-  | { action: "set_description"; itemKey: string; description: string; label: string }
   | { action: "reset_item"; itemKey: string; label: string }
   | { action: "set_category_available"; categoryId: string; available: boolean; label: string }
   | { action: "reset_category"; categoryId: string; label: string }
