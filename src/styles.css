@@ -1829,3 +1829,81 @@
     letter-spacing:.085em!important;
   }
 }
+
+
+/* Final smartphone sizing — keep desktop layout untouched. */
+@media (max-width:720px){
+  .lubrano-header{
+    width:100%;
+  }
+  .lubrano-topbar{
+    padding:.45rem .65rem .6rem!important;
+    gap:.45rem!important;
+  }
+  .lubrano-brandline-main{
+    min-height:34px!important;
+  }
+  .lubrano-brandline-main .lubrano-status{
+    font-size:.44rem!important;
+    letter-spacing:.16em!important;
+  }
+  .lubrano-brandline-main .lubrano-kicker{
+    font-size:.66rem!important;
+    letter-spacing:.085em!important;
+  }
+  .lubrano-topbar-actions{
+    min-height:44px!important;
+    gap:.4rem!important;
+  }
+  .lubrano-topbar-actions .lubrano-qr-button,
+  .lubrano-topbar-actions .lubrano-icon-button{
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
+  }
+  .lubrano-topbar-actions .lubrano-lang-button{
+    min-width:68px!important;
+    min-height:44px!important;
+    height:44px!important;
+  }
+  .lubrano-hero{
+    min-height:220px!important;
+    padding:.55rem .6rem .8rem!important;
+    gap:.2rem!important;
+  }
+  .lubrano-logo-frame{
+    width:min(148px,41vw)!important;
+    aspect-ratio:1!important;
+    margin-inline:auto!important;
+  }
+  .lubrano-hero-copy{
+    max-width:100%!important;
+    padding:0 0 .25rem!important;
+  }
+  .lubrano-hero-title{
+    font-size:clamp(2.7rem,12.8vw,4.4rem)!important;
+    line-height:.82!important;
+  }
+  .lubrano-hero-subtitle{
+    margin:.35rem 0 0!important;
+    font-size:.9rem!important;
+  }
+  .lubrano-hero-note{
+    max-width:22rem!important;
+    margin:.35rem auto 0!important;
+    font-size:.72rem!important;
+    line-height:1.45!important;
+  }
+}
+@media (max-width:380px){
+  .lubrano-logo-frame{
+    width:min(136px,39vw)!important;
+  }
+  .lubrano-hero{
+    min-height:205px!important;
+  }
+  .lubrano-hero-title{
+    font-size:clamp(2.5rem,12.2vw,4rem)!important;
+  }
+}
