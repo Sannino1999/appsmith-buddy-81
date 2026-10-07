@@ -22,6 +22,12 @@ import {
 } from "lucide-react";
 
 import bgImage from "@/assets/menu-bg.webp";
+import categoryStuzzicheria from "@/assets/category-stuzzicheria.webp";
+import categoryPatate from "@/assets/category-patate.webp";
+import categoryPanini from "@/assets/category-panini.webp";
+import categoryBurger from "@/assets/category-burger.webp";
+import categoryBrace from "@/assets/category-brace.webp";
+import categoryDolci from "@/assets/category-dolci.webp";
 import { baseMenu, formatPrice, type MenuCategory } from "@/lib/menu";
 import { translateMenuText } from "@/lib/menu-translations";
 import {
@@ -36,14 +42,22 @@ import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
 const categoryVisuals: Record<string, string> = {
-  stuzzicheria: "/assets/category-stuzzicheria.webp",
-  patate: "/assets/category-patate.webp",
-  hamburger: "/assets/category-burger.webp",
-  panini: "/assets/category-panini.webp",
-  brace: "/assets/category-brace.webp",
-  braceria: "/assets/category-brace.webp",
-  carne: "/assets/category-brace.webp",
-  dolci: "/assets/category-dolci.webp",
+  stuzzicheria: categoryStuzzicheria,
+  patate: categoryPatate,
+  panini: categoryPanini,
+  hamburger: categoryBurger,
+  brace: categoryBrace,
+  braceria: categoryBrace,
+  carne: categoryBrace,
+  insalate: categoryBrace,
+  contorni: categoryPatate,
+  dolci: categoryDolci,
+  birre_spina: bgImage,
+  birre_bottiglia: bgImage,
+  bibite: bgImage,
+  vini_rossi: categoryBrace,
+  vini_bianchi: bgImage,
+  altre_bevande: categoryDolci,
 };
 
 export const Route = createFileRoute("/")({
@@ -395,7 +409,7 @@ function MenuPage() {
           {menu.macros.map((m) => (
             <button key={m.id} type="button" onClick={() => pickMacro(m.id)} className={`lubrano-macro-button ${macro === m.id ? "is-active" : ""}`}>
               <span>{menuLabels.macros[m.id] ?? m.label}</span>
-              <small>{m.id === "food" ? "Burger · Brace · Cucina" : "Birre · Drink · Soft"}</small>
+              <small>{menuLabels.macroSubtitles[m.id] ?? (m.id === "food" ? "Burger · Brace · Cucina" : "Birre · Drink · Soft")}</small>
             </button>
           ))}
           </div>
@@ -451,7 +465,7 @@ function MenuPage() {
                 <img src={categoryVisuals[active.id] ?? bgImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.src = bgImage; }} />
                 <div className="lubrano-category-hero-overlay" />
                 <div className="relative z-10 flex min-h-44 flex-col justify-end p-5 sm:min-h-52 sm:p-7">
-                  <span className="lubrano-eyebrow">{macro === "food" ? "DALLA CUCINA" : "DAL BANCO"}</span>
+                  <span className="lubrano-eyebrow">{menuLabels.sectionEyebrows[macro === "food" ? "food" : "drinks"]}</span>
                   <h2 className="lubrano-category-title">{menuLabels.categories[active.id]?.name ?? active.name}</h2>
                   <div className="mt-3 h-px w-16 bg-[#ff315b]" />
                 </div>
