@@ -576,10 +576,6 @@ const DICTIONARIES: Record<Exclude<LangCode, "it">, Dictionary> = {
   },
 };
 
-function replaceWhole(source: string, from: string, to: string) {
-  return source.replace(new RegExp("\\b" + from + "\\b", "gi"), to);
-}
-
 type QualityRule = { from: string; to: string };
 
 const ITALIAN_NORMALIZATIONS: QualityRule[] = [
@@ -588,6 +584,10 @@ const ITALIAN_NORMALIZATIONS: QualityRule[] = [
   { from: "straccetti", to: "strisce" },
   { from: "melenzane", to: "melanzane" },
 ];
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\const QUALITY_RULES: Record<Exclude<LangCode, "it">, QualityRule[]> = {");
+}
 
 const QUALITY_RULES: Record<Exclude<LangCode, "it">, QualityRule[]> = {
   en: [
@@ -722,15 +722,15 @@ function applyQualityRules(value: string, lang: LangCode, categoryId?: string) {
   let output = value;
 
   if (lang === "it") {
-    for (const rule of ITALIAN_NORMALIZATIONS) output = output.split(rule.from).join(rule.to);
+    for (const rule of ITALIAN_NORMALIZATIONS) output = output.replace(new RegExp(escapeRegExp(rule.from), "gi"), rule.to);
     return output.trim();
   }
 
-  for (const rule of QUALITY_RULES[lang]) output = output.split(rule.from).join(rule.to);
+  for (const rule of QUALITY_RULES[lang]) output = output.replace(new RegExp(escapeRegExp(rule.from), "gi"), rule.to);
 
   const categoryRules = categoryId ? CATEGORY_QUALITY_RULES[lang]?.[categoryId] ?? [] : [];
   for (const rule of categoryRules) {
-    output = output.split(rule.from).join(rule.to);
+    output = output.replace(new RegExp(escapeRegExp(rule.from), "gi"), rule.to);
   }
 
   return UNIT_QUALITY_RULES[lang](output).trim();
