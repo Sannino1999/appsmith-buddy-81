@@ -572,3 +572,18 @@ export const INFO: Record<LangCode, InfoStrings> = {
  ],
  },
 };
+
+
+export const REVIEWS: Record<LangCode, {
+  eyebrow: string; title: string; subtitle: string; rateEyebrow: string; rateTitle: string;
+  rateHint: string; selectedLabel: string; starsLabel: string; googleCta: string;
+  carouselLabel: string; googleSource: string;
+}> = {
+  it: { eyebrow: "Dicono di noi", title: "Lasciaci una recensione", subtitle: "Hai apprezzato la tua esperienza? Lascia il tuo feedback direttamente su Google.", rateEyebrow: "La tua esperienza", rateTitle: "Come ti sei trovato?", rateHint: "Seleziona le stelle e poi continua su Google.", selectedLabel: "valutazione selezionata", starsLabel: "stelle", googleCta: "Recensisci su Google", carouselLabel: "Recensioni dei clienti", googleSource: "Recensione Google" },
+  en: { eyebrow: "What guests say", title: "Leave us a review", subtitle: "Enjoyed your experience? Share your feedback directly on Google.", rateEyebrow: "Your experience", rateTitle: "How was your visit?", rateHint: "Choose your stars and continue on Google.", selectedLabel: "rating selected", starsLabel: "stars", googleCta: "Review us on Google", carouselLabel: "Customer reviews", googleSource: "Google review" },
+  es: { eyebrow: "Lo que dicen de nosotros", title: "Déjanos una reseña", subtitle: "¿Te gustó tu experiencia? Comparte tu opinión directamente en Google.", rateEyebrow: "Tu experiencia", rateTitle: "¿Qué te pareció?", rateHint: "Elige las estrellas y continúa en Google.", selectedLabel: "valoración seleccionada", starsLabel: "estrellas", googleCta: "Reseñar en Google", carouselLabel: "Opiniones de clientes", googleSource: "Reseña de Google" },
+  fr: { eyebrow: "Ils parlent de nous", title: "Laissez-nous un avis", subtitle: "Vous avez apprécié votre expérience ? Partagez votre avis directement sur Google.", rateEyebrow: "Votre expérience", rateTitle: "Comment s'est passée votre visite ?", rateHint: "Choisissez vos étoiles puis continuez sur Google.", selectedLabel: "note sélectionnée", starsLabel: "étoiles", googleCta: "Avis sur Google", carouselLabel: "Avis clients", googleSource: "Avis Google" },
+  de: { eyebrow: "Das sagen unsere Gäste", title: "Bewerte uns", subtitle: "Hat dir dein Besuch gefallen? Teile deine Bewertung direkt auf Google.", rateEyebrow: "Dein Erlebnis", rateTitle: "Wie war dein Besuch?", rateHint: "Wähle deine Sterne und öffne anschließend Google.", selectedLabel: "Bewertung ausgewählt", starsLabel: "Sterne", googleCta: "Auf Google bewerten", carouselLabel: "Kundenbewertungen", googleSource: "Google-Bewertung" },
+  pt: { eyebrow: "O que dizem de nós", title: "Deixe-nos uma avaliação", subtitle: "Gostou da experiência? Partilhe a sua opinião diretamente no Google.", rateEyebrow: "A sua experiência", rateTitle: "Como foi a sua visita?", rateHint: "Escolha as estrelas e continue no Google.", selectedLabel: "classificação selecionada", starsLabel: "estrelas", googleCta: "Avaliar no Google", carouselLabel: "Avaliações dos clientes", googleSource: "Avaliação Google" },
+  zh: { eyebrow: "客人评价", title: "留下您的评价", subtitle: "喜欢这次用餐体验吗？欢迎直接在 Google 分享您的评价。", rateEyebrow: "您的体验", rateTitle: "这次用餐感觉如何？", rateHint: "选择星级，然后前往 Google。", selectedLabel: "已选择评分", starsLabel: "颗星", googleCta: "在 Google 上评价", carouselLabel: "顾客评价", googleSource: "Google 评价" },
+};
