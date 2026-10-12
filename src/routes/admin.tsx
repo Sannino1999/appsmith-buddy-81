@@ -305,7 +305,7 @@ function AdminPage() {
 
             <div className="mt-5 space-y-3">
               {COMMAND_GROUPS.map((group) => (
-                <section key={group.title} className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                <section key={group.title} className="lubrano-admin-command-group rounded-2xl border border-white/8 bg-black/20 p-3">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="display-caps text-base text-white">{group.title}</h3>
@@ -318,7 +318,7 @@ function AdminPage() {
                         key={example}
                         type="button"
                         onClick={() => setCommand(example)}
-                        className="menu-control flex min-h-10 w-full items-center rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2 text-left text-xs leading-relaxed text-white/70 hover:border-accent/20 hover:bg-white/[0.06] hover:text-white"
+                        className="lubrano-admin-command flex min-h-10 w-full items-center rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2 text-left text-xs leading-relaxed text-white/70 hover:border-accent/20 hover:bg-white/[0.06] hover:text-white"
                       >
                         <span className="mr-2 text-accent">›</span>
                         <span className="min-w-0">{example}</span>
