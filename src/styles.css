@@ -2081,3 +2081,50 @@
     line-height:1.45;
   }
 }
+
+
+/* Language selector — graphical flags */
+.lubrano-lang-button{
+  min-width:3.4rem;
+  min-height:2.75rem;
+  justify-content:center;
+  font-size:1.2rem;
+}
+.lubrano-language-flag{
+  display:inline-flex;
+  width:1.65rem;
+  height:1.35rem;
+  align-items:center;
+  justify-content:center;
+  font-size:1.18rem;
+  line-height:1;
+}
+@media(max-width:720px){
+  .lubrano-lang-button{
+    min-width:3.05rem!important;
+    min-height:44px!important;
+    padding-inline:.55rem!important;
+  }
+  .lubrano-language-flag{
+    font-size:1.15rem;
+  }
+}
+
+/* Admin console — clearer editing workflow */
+.lubrano-admin-command-group{
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(0,0,0,.14));
+}
+.lubrano-admin-command-group + .lubrano-admin-command-group{
+  margin-top:.15rem;
+}
+.lubrano-admin-command{
+  transition:border-color .18s ease,background .18s ease,transform .18s ease;
+}
+.lubrano-admin-command:hover{
+  transform:translateY(-1px);
+}
+@media(min-width:900px){
+  .lubrano-admin-command-group{
+    padding:1rem!important;
+  }
+}
