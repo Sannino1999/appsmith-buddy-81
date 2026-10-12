@@ -112,7 +112,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/lubrano-logo.png" },
       { rel: "canonical", href: "https://lubranopubnapoli.com/" },
     ],
-    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
