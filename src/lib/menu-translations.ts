@@ -586,7 +586,7 @@ const ITALIAN_NORMALIZATIONS: QualityRule[] = [
 ];
 
 function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\const QUALITY_RULES: Record<Exclude<LangCode, "it">, QualityRule[]> = {");
+  return value.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&");
 }
 
 const QUALITY_RULES: Record<Exclude<LangCode, "it">, QualityRule[]> = {
