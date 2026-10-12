@@ -29,7 +29,7 @@ import {
   translateCategory,
   type CustomItem,
 } from "@/lib/menu.functions";
-import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, type LangCode } from "@/lib/i18n";
+import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, REVIEWS, type LangCode } from "@/lib/i18n";
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
@@ -89,6 +89,8 @@ function MenuPage() {
   const [specialClosed, setSpecialClosed] = useState(false);
   const [wifiOpen, setWifiOpen] = useState(false);
   const [wifiCopied, setWifiCopied] = useState(false);
+  const [introVisible, setIntroVisible] = useState(true);
+  const [selectedRating, setSelectedRating] = useState(0);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -229,6 +231,18 @@ function MenuPage() {
   }, [categoryId]);
 
   useEffect(() => {
+    try {
+      if (sessionStorage.getItem("lubrano-intro-seen") === "1") {
+        setIntroVisible(false);
+        return;
+      }
+      sessionStorage.setItem("lubrano-intro-seen", "1");
+    } catch {}
+    const timer = window.setTimeout(() => setIntroVisible(false), 1650);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     const handleBeforeInstall = (event: Event) => {
       event.preventDefault();
       setInstallPrompt(event);
@@ -253,8 +267,8 @@ function MenuPage() {
               categoryId: category.id,
               categoryName: category.name,
               groupName: group.name,
-              name: translateMenuText(override?.name ?? item.name, lang) ?? item.name,
-              description: translateMenuText(override?.description ?? item.description, lang),
+              name: translateMenuText(override?.name ?? item.name, lang, category.id) ?? item.name,
+              description: translateMenuText(override?.description ?? item.description, lang, category.id),
               price_eur: override?.price_eur ?? item.price_eur,
               available: override?.available ?? item.available,
             };
@@ -317,6 +331,13 @@ function MenuPage() {
 
   return (
     <div className="lubrano-shell relative min-h-screen overflow-x-clip">
+      {introVisible && (
+        <div className="lubrano-intro" role="status" aria-label="Lubrano Pub">
+          <div className="lubrano-intro-logo-wrap">
+            <img src={localLogo} alt="Lubrano Pub & Braceria" className="lubrano-intro-logo" width={512} height={512} />
+          </div>
+        </div>
+      )}
       <div className="menu-backdrop fixed inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }} aria-hidden />
       <div className="lubrano-backdrop fixed inset-0 -z-10" aria-hidden />
       <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-3 sm:px-6 lg:px-8">
@@ -523,6 +544,57 @@ function MenuPage() {
             <button type="button" onClick={() => setWifiOpen(true)} className="lubrano-service-card text-left" aria-haspopup="dialog"><Wifi className="size-5 text-[#ff315b]" /><span className="min-w-0 flex-1">{services.wifi}<small className="mt-1 block truncate text-xs font-normal text-white/35">{wifiPassword ? "Lubrano-Guest · tocca per mostrare" : services.wifiAsk}</small></span></button>
           </div>
           <div className="lubrano-allergen"><strong>{services.allergenTitle}</strong><span>{services.allergenBody}</span></div>
+        </section>
+
+        <section id="recensioni" className="lubrano-reviews anim-fade-up">
+          <div className="lubrano-reviews-head">
+            <div>
+              <span className="lubrano-eyebrow">{REVIEWS[lang].eyebrow}</span>
+              <h2 className="display-caps">{REVIEWS[lang].title}</h2>
+              <p>{REVIEWS[lang].subtitle}</p>
+            </div>
+            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-review-link">
+              <GoogleBrandIcon className="lubrano-review-brand-icon" />
+              <span>{REVIEWS[lang].googleCta}</span>
+              <ExternalLink className="size-4" />
+            </a>
+          </div>
+          <div className="lubrano-rating-box">
+            <div>
+              <span className="lubrano-eyebrow">{REVIEWS[lang].rateEyebrow}</span>
+              <h3>{REVIEWS[lang].rateTitle}</h3>
+              <p>{selectedRating > 0 ? selectedRating + "/5 · " + REVIEWS[lang].selectedLabel : REVIEWS[lang].rateHint}</p>
+            </div>
+            <div className="lubrano-rating-stars">
+              {[1,2,3,4,5].map((rating) => (
+                <button key={rating} type="button" onClick={() => setSelectedRating(rating)} className={"lubrano-rating-star " + (selectedRating >= rating ? "is-selected" : "")} aria-label={rating + " " + REVIEWS[lang].starsLabel}>
+                  <Star className="size-7 sm:size-8" fill="currentColor" />
+                </button>
+              ))}
+            </div>
+            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-cta lubrano-cta-primary">
+              <GoogleBrandIcon className="size-5" />{REVIEWS[lang].googleCta}
+            </a>
+          </div>
+          <div className="lubrano-review-carousel" aria-label={REVIEWS[lang].carouselLabel}>
+            {[
+              ["Marzia", "Locale accogliente nel centro di Napoli, con panini, carne e antipasti molto apprezzati. Staff disponibile e gentile."],
+              ["Anna", "Una bella esperienza per chi cerca carne di qualità: cordialità, simpatia e professionalità rendono la serata ancora più piacevole."],
+              ["Mattia", "Accoglienza eccellente, carne e panini molto apprezzati e un’atmosfera che fa sentire subito a casa."],
+              ["Irene", "Servizio veloce e personale gentilissimo, con patate fresche, carne di qualità e ampia scelta nel menu."],
+              ["Marco", "Panini abbondanti, ingredienti di qualità e prezzi equilibrati per una posizione centrale a Napoli."]
+            ].map(([author, text]) => (
+              <article key={author} className="lubrano-review-card">
+                <div className="lubrano-review-card-top">
+                  <div className="lubrano-review-avatar">{author.charAt(0)}</div>
+                  <div className="min-w-0"><strong>{author}</strong><span>{REVIEWS[lang].googleSource}</span></div>
+                  <GoogleBrandIcon className="lubrano-review-card-google" />
+                </div>
+                <div className="lubrano-review-card-stars">{[1,2,3,4,5].map((star) => <Star key={star} className="size-4" fill="currentColor" />)}</div>
+                <p>{text}</p>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section id="contatti" className="lubrano-venue anim-fade-up">
