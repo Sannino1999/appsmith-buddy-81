@@ -2406,3 +2406,141 @@
     width:100%;
   }
 }
+
+
+/* Final visual direction — richer photography, no separators, refined motion */
+.lubrano-shell{
+  position:relative;
+  isolation:isolate;
+  background:
+    linear-gradient(180deg,rgba(10,8,9,.72) 0%,rgba(26,9,14,.56) 34%,rgba(8,8,8,.78) 100%),
+    radial-gradient(circle at 15% 20%,rgba(255,129,62,.11),transparent 24%),
+    radial-gradient(circle at 85% 35%,rgba(143,245,207,.09),transparent 24%),
+    url("/assets/menu-bg.webp") center/cover fixed;
+}
+.lubrano-shell::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 25% 10%,rgba(255,70,45,.13),transparent 22%),
+    radial-gradient(circle at 80% 55%,rgba(255,194,93,.10),transparent 26%);
+  mix-blend-mode:screen;
+}
+.menu-backdrop{
+  opacity:.28;
+  filter:saturate(1.15) contrast(1.03);
+}
+.lubrano-backdrop{
+  background:
+    linear-gradient(180deg,rgba(7,6,7,.14),rgba(13,5,8,.28) 42%,rgba(6,6,6,.44)),
+    radial-gradient(circle at 50% 6%,rgba(255,72,52,.15),transparent 28%);
+}
+.lubrano-topbar{
+  border-bottom:0!important;
+}
+.lubrano-brandline-main{
+  border:0!important;
+  text-decoration:none!important;
+}
+.lubrano-brandline-main::before,
+.lubrano-brandline-main::after{
+  display:none!important;
+}
+.lubrano-main-nav{
+  border-bottom:0!important;
+}
+
+/* Motion system */
+@keyframes lubranoFloatIn{
+  from{opacity:0;transform:translateY(12px);filter:blur(3px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+@keyframes lubranoGlowPulse{
+  0%,100%{box-shadow:0 8px 24px rgba(255,49,91,.05)}
+  50%{box-shadow:0 16px 34px rgba(255,49,91,.15)}
+}
+@keyframes lubranoSoftScale{
+  from{opacity:.6;transform:scale(.985)}
+  to{opacity:1;transform:scale(1)}
+}
+.lubrano-category-pill{
+  transition:transform .24s cubic-bezier(.2,.8,.2,1),border-color .24s ease,background .24s ease,box-shadow .24s ease;
+}
+.lubrano-category-pill:hover{
+  transform:translateY(-2px);
+}
+.lubrano-category-pill.is-active{
+  animation:lubranoGlowPulse 3.8s ease-in-out infinite;
+}
+.lubrano-dish-card{
+  animation:lubranoFloatIn .48s cubic-bezier(.2,.78,.2,1) both;
+}
+.lubrano-service-card{
+  transition:transform .24s ease,border-color .24s ease,background .24s ease,box-shadow .24s ease;
+}
+.lubrano-service-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.13)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.18);
+}
+.lubrano-review-card{
+  transition:transform .24s ease,border-color .24s ease;
+}
+.lubrano-review-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.13);
+}
+.lubrano-category-heading{
+  animation:lubranoSoftScale .42s ease both;
+}
+.lubrano-mobile-brandline{
+  animation:lubranoFloatIn .38s ease both;
+}
+
+/* Preserve readability over the photographic backdrop. */
+.lubrano-header,
+.lubrano-category-wrap,
+.lubrano-category-heading,
+.lubrano-dish-card,
+.lubrano-services,
+.lubrano-venue,
+.lubrano-reviews,
+.lubrano-special,
+.lubrano-utility{
+  backdrop-filter:blur(8px);
+}
+@media(max-width:720px){
+  .lubrano-shell{
+    background-attachment:scroll;
+    background-position:center top;
+  }
+  .lubrano-topbar{
+    border-bottom:0!important;
+  }
+  .lubrano-main-nav a{
+    border:0!important;
+    background:rgba(255,255,255,.025)!important;
+  }
+  .lubrano-category-pill.is-active{
+    animation:none;
+  }
+  .lubrano-dish-card{
+    animation-duration:.38s;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .lubrano-category-pill.is-active,
+  .lubrano-dish-card,
+  .lubrano-category-heading,
+  .lubrano-mobile-brandline{
+    animation:none!important;
+  }
+  .lubrano-category-pill:hover,
+  .lubrano-service-card:hover,
+  .lubrano-review-card:hover{
+    transform:none!important;
+  }
+}
