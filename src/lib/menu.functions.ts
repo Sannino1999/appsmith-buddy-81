@@ -132,7 +132,7 @@ function hash(text: string) {
 export type TranslationMap = Record<string, { name: string; description: string | null }>;
 
 const LANG_CODES = LANGUAGES.map((l) => l.code) as [LangCode, ...LangCode[]];
-const TRANSLATION_VERSION = "2026-10-07-menu-v3";
+const TRANSLATION_VERSION = "2026-10-13-menu-v4-quality";
 
 function hasTranslatedDescription(
   source: { description: string | null },
@@ -204,8 +204,8 @@ export const translateCategory = createServerFn({ method: "POST" })
         };
       } else {
         result[entry.key] = {
-          name: translateMenuText(entry.name, lang) ?? entry.name,
-          description: translateMenuText(entry.description, lang),
+          name: translateMenuText(entry.name, lang, entry.key.split(":")[0]) ?? entry.name,
+          description: translateMenuText(entry.description, lang, entry.key.split(":")[0]),
         };
       }
     }
