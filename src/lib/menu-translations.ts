@@ -580,10 +580,170 @@ function replaceWhole(source: string, from: string, to: string) {
   return source.replace(new RegExp("\\b" + from + "\\b", "gi"), to);
 }
 
-export function translateMenuText(source: string | null, lang: LangCode) {
-  if (!source || lang === "it") return source;
-  const dictionary = { ...COMMON_TERMS[lang], ...DICTIONARIES[lang] };
+type QualityRule = { from: string; to: string };
+
+const ITALIAN_NORMALIZATIONS: QualityRule[] = [
+  { from: "straccetti di pollo", to: "strisce di pollo" },
+  { from: "straccetti di manzo", to: "strisce di manzo" },
+  { from: "straccetti", to: "strisce" },
+  { from: "melenzane", to: "melanzane" },
+];
+
+const QUALITY_RULES: Record<Exclude<LangCode, "it">, QualityRule[]> = {
+  en: [
+    { from: "bawith", to: "bacon" },
+    { from: "baavec", to: "bacon" },
+    { from: "bamit", to: "bacon" },
+    { from: "rocket", to: "arugula" },
+    { from: "straccetti di pollo", to: "chicken strips" },
+    { from: "straccetti di manzo", to: "beef strips" },
+    { from: "impanatura", to: "breading" },
+    { from: "scaglie di parmigiano", to: "Parmesan shavings" },
+    { from: "pomodorino", to: "cherry tomato" },
+    { from: "pomodorini", to: "cherry tomatoes" },
+    { from: "anelli di cipolla", to: "onion rings" },
+    { from: "Bacon", to: "bacon" },
+  ],
+  es: [
+    { from: "bawith", to: "beicon" },
+    { from: "baavec", to: "beicon" },
+    { from: "bamit", to: "beicon" },
+    { from: "straccetti di pollo", to: "tiras de pollo" },
+    { from: "straccetti di manzo", to: "tiras de ternera" },
+    { from: "impanatura", to: "empanado" },
+    { from: "scaglie di parmigiano", to: "escamas de parmesano" },
+    { from: "pomodorino", to: "tomate cherry" },
+    { from: "pomodorini", to: "tomates cherry" },
+    { from: "anelli di cipolla", to: "aros de cebolla" },
+  ],
+  fr: [
+    { from: "bawith", to: "bacon" },
+    { from: "baavec", to: "bacon" },
+    { from: "bamit", to: "bacon" },
+    { from: "straccetti di pollo", to: "émincés de poulet" },
+    { from: "straccetti di manzo", to: "émincés de bœuf" },
+    { from: "impanatura", to: "panure" },
+    { from: "scaglie di parmigiano", to: "copeaux de parmesan" },
+    { from: "pomodorino", to: "tomate cerise" },
+    { from: "pomodorini", to: "tomates cerises" },
+    { from: "anelli di cipolla", to: "rondelles d'oignon" },
+  ],
+  de: [
+    { from: "bawith", to: "Speck" },
+    { from: "baavec", to: "Speck" },
+    { from: "bamit", to: "Speck" },
+    { from: "straccetti di pollo", to: "Hähnchenstreifen" },
+    { from: "straccetti di manzo", to: "Rindfleischstreifen" },
+    { from: "impanatura", to: "Panierung" },
+    { from: "scaglie di parmigiano", to: "Parmesanspäne" },
+    { from: "pomodorino", to: "Kirschtomate" },
+    { from: "pomodorini", to: "Kirschtomaten" },
+    { from: "anelli di cipolla", to: "Zwiebelringe" },
+    { from: "bacon", to: "Speck" },
+    { from: "Bacon", to: "Speck" },
+  ],
+  pt: [
+    { from: "bawith", to: "bacon" },
+    { from: "baavec", to: "bacon" },
+    { from: "bamit", to: "bacon" },
+    { from: "straccetti di pollo", to: "tiras de frango" },
+    { from: "straccetti di manzo", to: "tiras de carne de vaca" },
+    { from: "impanatura", to: "panado" },
+    { from: "scaglie di parmigiano", to: "lascas de parmesão" },
+    { from: "pomodorino", to: "tomate-cereja" },
+    { from: "pomodorini", to: "tomates-cereja" },
+    { from: "anelli di cipolla", to: "anéis de cebola" },
+  ],
+  zh: [
+    { from: "bawith", to: "培根" },
+    { from: "baavec", to: "培根" },
+    { from: "bamit", to: "培根" },
+    { from: "straccetti di pollo", to: "鸡肉条" },
+    { from: "straccetti di manzo", to: "牛肉条" },
+    { from: "impanatura", to: "裹粉" },
+    { from: "scaglie di parmigiano", to: "帕玛森奶酪刨片" },
+    { from: "pomodorino", to: "小番茄" },
+    { from: "pomodorini", to: "小番茄" },
+    { from: "anelli di cipolla", to: "洋葱圈" },
+  ],
+};
+
+const CATEGORY_QUALITY_RULES: Partial<Record<Exclude<LangCode, "it">, Record<string, QualityRule[]>>> = {
+  en: {
+    patate: [
+      { from: "potatoes e bawith", to: "French fries with bacon" },
+      { from: "oven-roasted potatoes", to: "baked potatoes" },
+      { from: "potato chips", to: "crispy french fries" },
+      { from: "potatoes", to: "French fries" },
+    ],
+  },
+  fr: {
+    patate: [
+      { from: "pommes de terre et baavec", to: "frites et bacon" },
+      { from: "pommes de terre", to: "frites" },
+      { from: "pomme de terre", to: "frites" },
+    ],
+  },
+  de: {
+    patate: [
+      { from: "Kartoffeln", to: "Pommes frites" },
+      { from: "Kartoffel", to: "Pommes frites" },
+    ],
+  },
+  es: {
+    patate: [
+      { from: "patatas", to: "patatas fritas" },
+      { from: "patata", to: "patata frita" },
+    ],
+  },
+  pt: {
+    patate: [
+      { from: "batatas", to: "batatas fritas" },
+      { from: "batata", to: "batata frita" },
+    ],
+  },
+  zh: {
+    patate: [
+      { from: "土豆", to: "薯条" },
+    ],
+  },
+};
+
+const UNIT_QUALITY_RULES: Record<Exclude<LangCode, "it">, (value: string) => string> = {
+  en: (value) => value.replace(/\bda\s+(\d+)\s*gr\b/gi, "$1 g").replace(/\b(\d+)\s*gr\b/gi, "$1 g"),
+  es: (value) => value.replace(/\bda\s+(\d+)\s*gr\b/gi, "de $1 g").replace(/\b(\d+)\s*gr\b/gi, "$1 g"),
+  fr: (value) => value.replace(/\bda\s+(\d+)\s*gr\b/gi, "de $1 g").replace(/\b(\d+)\s*gr\b/gi, "$1 g"),
+  de: (value) => value.replace(/\bda\s+(\d+)\s*gr\b/gi, "von $1 g").replace(/\b(\d+)\s*gr\b/gi, "$1 g"),
+  pt: (value) => value.replace(/\bda\s+(\d+)\s*gr\b/gi, "de $1 g").replace(/\b(\d+)\s*gr\b/gi, "$1 g"),
+  zh: (value) => value.replace(/\bda\s+(\d+)\s*gr\b/gi, "$1 克").replace(/\b(\d+)\s*gr\b/gi, "$1 克"),
+};
+
+function applyQualityRules(value: string, lang: LangCode, categoryId?: string) {
+  let output = value;
+
+  if (lang === "it") {
+    for (const rule of ITALIAN_NORMALIZATIONS) output = output.split(rule.from).join(rule.to);
+    return output.trim();
+  }
+
+  for (const rule of QUALITY_RULES[lang]) output = output.split(rule.from).join(rule.to);
+
+  const categoryRules = categoryId ? CATEGORY_QUALITY_RULES[lang]?.[categoryId] ?? [] : [];
+  for (const rule of categoryRules) {
+    output = output.split(rule.from).join(rule.to);
+  }
+
+  return UNIT_QUALITY_RULES[lang](output).trim();
+}
+
+export function translateMenuText(source: string | null, lang: LangCode, categoryId?: string) {
+  if (!source) return source;
+  const dictionary = lang === "it" ? {} : { ...COMMON_TERMS[lang], ...DICTIONARIES[lang] };
   let value = source;
+
+  if (lang === "it") {
+    return applyQualityRules(value, lang, categoryId) || source;
+  }
 
   const entries = Object.entries(dictionary).sort(([a], [b]) => b.length - a.length);
   for (const [from, to] of entries) {
@@ -594,5 +754,6 @@ export function translateMenuText(source: string | null, lang: LangCode) {
     value = value.includes(from) ? value.split(from).join(to) : value;
   }
 
-  return value.trim() || source;
+  value = applyQualityRules(value, lang, categoryId);
+  return value || source;
 }
