@@ -80,6 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Lubrano Pub & Braceria" },
       { name: "generator", content: "DigitGS" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       { name: "theme-color", content: "#8e1833" },
       { property: "og:title", content: "Lubrano Pub & Braceria — Menù digitale" },
       {
@@ -87,7 +88,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Sfoglia birre, burger, focacce e cucina di brace nel menù digitale Lubrano.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://lubranopubnapoli.com/" },
+      { property: "og:image", content: "https://lubranopubnapoli.com/lubrano-logo.png" },
+      { property: "og:locale", content: "it_IT" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Lubrano Pub & Braceria — Menù digitale" },
+      { name: "twitter:description", content: "Menù digitale di Lubrano Pub & Braceria a Napoli." },
+      { name: "twitter:image", content: "https://lubranopubnapoli.com/lubrano-logo.png" },
     ],
     links: [
       {
@@ -103,6 +110,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/lubrano-logo.png" },
+      { rel: "canonical", href: "https://lubranopubnapoli.com/" },
+    ],
     ],
   }),
   shellComponent: RootShell,
@@ -116,6 +125,28 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="it">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Restaurant",
+              "@id": "https://lubranopubnapoli.com/#restaurant",
+              name: "Lubrano Pub",
+              alternateName: "Lubrano Pub & Braceria",
+              url: "https://lubranopubnapoli.com/",
+              image: "https://lubranopubnapoli.com/lubrano-logo.png",
+              telephone: "+39 081 18273748",
+              servesCuisine: ["Pub", "Italian", "Grill"],
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Calata Trinità Maggiore 51",
+                addressLocality: "Napoli",
+                addressCountry: "IT",
+              },
+            }),
+          }}
+        />
       </head>
       <body>
         {children}
