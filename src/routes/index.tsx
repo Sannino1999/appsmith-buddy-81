@@ -33,7 +33,7 @@ import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, REVIEWS,
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
-const bgImage = "/assets/menu-bg.jpg";
+const bgImage = "/assets/menu-bg.webp";
 const categoryIcons: Record<string, string> = {
   stuzzicheria: "🍟", patate: "🥔", panini: "🍔", hamburger: "🍔",
   brace: "🥩", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
@@ -44,7 +44,11 @@ const categoryIcons: Record<string, string> = {
 function GoogleBrandIcon({ className = "" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+      <path fill="#4285F4" d="M23.49 12.27c0-.78-.07-1.53-.2-2.25H12v4.26h6.44a5.5 5.5 0 0 1-2.39 3.61v3h3.87c2.27-2.09 3.57-5.17 3.57-8.62z"/>
+      <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.87-3c-1.07.72-2.44 1.15-4.08 1.15-3.14 0-5.8-2.12-6.75-4.97H1.25v3.09A12 12 0 0 0 12 24z"/>
+      <path fill="#FBBC05" d="M5.25 14.27A7.2 7.2 0 0 1 4.87 12c0-.79.14-1.56.38-2.27V6.64H1.25A12 12 0 0 0 0 12c0 1.93.46 3.75 1.25 5.36l4-3.09z"/>
+      <path fill="#EA4335" d="M12 4.76c1.76 0 3.33.61 4.57 1.8l3.42-3.42C17.95 1.14 15.24 0 12 0A12 12 0 0 0 1.25 6.64l4 3.09C6.2 6.88 8.86 4.76 12 4.76z"/>
+      <path fill="#fff" d="M12 9.75h11.29c-.07.17-.14.35-.2.54H12z" opacity=".0"/>
     </svg>
   );
 }
