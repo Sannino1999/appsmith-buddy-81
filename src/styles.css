@@ -2128,3 +2128,79 @@
     padding:1rem!important;
   }
 }
+
+
+/* Final command bar styling */
+.lubrano-topbar-actions .lubrano-icon-button,
+.lubrano-topbar-actions .lubrano-lang-button{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.lubrano-topbar-actions .lubrano-icon-button:hover,
+.lubrano-topbar-actions .lubrano-lang-button:hover{
+  border:0!important;
+  background:rgba(255,255,255,.045)!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+.lubrano-topbar-actions .lubrano-qr-button{
+  border:1px solid rgba(255,255,255,.13)!important;
+  background:rgba(255,255,255,.025)!important;
+}
+.lubrano-topbar-actions .lubrano-lang-button{
+  min-width:2.9rem!important;
+  padding-inline:.5rem!important;
+}
+.lubrano-topbar-actions .lubrano-lang-button > span[aria-hidden="true"]{
+  font-size:1.25rem;
+  line-height:1;
+}
+@media(max-width:720px){
+  .lubrano-main-nav{
+    border-bottom:0!important;
+  }
+  .lubrano-topbar{
+    border-bottom:0!important;
+  }
+  .lubrano-topbar-actions .lubrano-icon-button{
+    width:44px!important;
+    min-width:44px!important;
+    padding:0!important;
+  }
+  .lubrano-topbar-actions .lubrano-lang-button{
+    width:44px!important;
+    min-width:44px!important;
+    padding:0!important;
+  }
+}
+
+/* Intro should reveal the real page while the logo travels to the upper-left. */
+.lubrano-intro{
+  animation:lubranoIntroOut .5s ease 1.05s forwards!important;
+}
+.lubrano-intro-logo-wrap{
+  animation:lubranoIntroLogo 1.45s cubic-bezier(.18,.8,.2,1) forwards!important;
+}
+@keyframes lubranoIntroLogo{
+  0%{transform:scale(.68);opacity:0}
+  16%{transform:scale(1);opacity:1}
+  60%{transform:scale(1);opacity:1}
+  100%{transform:translate(calc(-50vw + 4.25rem),calc(-50vh + 4.25rem)) scale(.16);opacity:0}
+}
+@media(max-width:720px){
+  @keyframes lubranoIntroLogo{
+    0%{transform:scale(.68);opacity:0}
+    16%{transform:scale(1);opacity:1}
+    60%{transform:scale(1);opacity:1}
+    100%{transform:translate(calc(-50vw + 3.4rem),calc(-50vh + 3.4rem)) scale(.13);opacity:0}
+  }
+}
+
+/* Reviews: compact, swipeable, obvious source branding. */
+.lubrano-reviews{
+  scroll-margin-top:1rem;
+}
+.lubrano-review-link .lubrano-review-brand-icon{
+  color:#4285f4;
+}
