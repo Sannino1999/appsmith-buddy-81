@@ -137,6 +137,11 @@ function RootShell({ children }: { children: ReactNode }) {
               image: "https://lubranopubnapoli.com/lubrano-logo.png",
               telephone: "+39 081 18273748",
               servesCuisine: ["Pub", "Italian", "Grill"],
+              priceRange: "€€",
+              sameAs: [
+                "https://www.tripadvisor.it/Restaurant_Review-g187785-d12643906-Reviews-Lubrano_Pub-Naples_Province_of_Naples_Campania.html",
+                "https://www.instagram.com/lubranopubnapoli/",
+              ],
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Calata Trinità Maggiore 51",
