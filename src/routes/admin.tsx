@@ -29,21 +29,45 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-const EXAMPLES = [
-  "prezzo Perfect Burger 12",
-  "nome Perfect Burger | Nuovo nome",
-  "descrizione Perfect Burger | Nuova descrizione",
-  "elimina piatto | Perfect Burger",
-  "aggiungi piatto | Patate | Patate al forno | 6,50 | Patate al forno croccanti",
-  "aggiungi categoria | food | Nuova categoria",
-  "esaurito patate porchetta",
-  "speciale | Burger del mese | Manzo, cheddar e bacon | 14,50",
-  "wifi | nuova-password",
-  "storico",
-  "modifiche attive",
-  "prodotti rimossi",
-  "annulla ultima azione",
-];
+const COMMAND_GROUPS = [
+  {
+    title: "Prodotti",
+    description: "Modifica prezzo, nome, descrizione o disponibilità.",
+    examples: [
+      "prezzo Perfect Burger 12",
+      "nome Perfect Burger | Nuovo nome",
+      "descrizione Perfect Burger | Nuova descrizione",
+      "elimina piatto | Perfect Burger",
+      "esaurito patate porchetta",
+    ],
+  },
+  {
+    title: "Menu e categorie",
+    description: "Aggiungi nuovi prodotti o nuove sezioni del menù.",
+    examples: [
+      "aggiungi piatto | Patate | Patate al forno | 6,50 | Patate al forno croccanti",
+      "aggiungi categoria | food | Nuova categoria",
+    ],
+  },
+  {
+    title: "Speciale e Wi-Fi",
+    description: "Gestisci lo speciale del mese e la password Wi-Fi.",
+    examples: [
+      "speciale | Burger del mese | Manzo, cheddar e bacon | 14,50",
+      "wifi | nuova-password",
+    ],
+  },
+  {
+    title: "Controllo e storico",
+    description: "Consulta le modifiche o prepara un annullamento.",
+    examples: [
+      "storico",
+      "modifiche attive",
+      "prodotti rimossi",
+      "annulla ultima azione",
+    ],
+  },
+] as const;
 
 function AdminPage() {
   const queryClient = useQueryClient();
@@ -279,16 +303,29 @@ function AdminPage() {
               ))}
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-2">
-              {EXAMPLES.map((example) => (
-                <button
-                  key={example}
-                  type="button"
-                  onClick={() => setCommand(example)}
-                  className="menu-control rounded-full border border-white/10 bg-white/5 px-3 py-2 text-left text-xs text-white/70 hover:bg-white/10 hover:text-white"
-                >
-                  {example}
-                </button>
+            <div className="mt-5 space-y-3">
+              {COMMAND_GROUPS.map((group) => (
+                <section key={group.title} className="rounded-2xl border border-white/8 bg-black/20 p-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="display-caps text-base text-white">{group.title}</h3>
+                      <p className="mt-1 text-xs leading-relaxed text-white/40">{group.description}</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 grid gap-2">
+                    {group.examples.map((example) => (
+                      <button
+                        key={example}
+                        type="button"
+                        onClick={() => setCommand(example)}
+                        className="menu-control flex min-h-10 w-full items-center rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2 text-left text-xs leading-relaxed text-white/70 hover:border-accent/20 hover:bg-white/[0.06] hover:text-white"
+                      >
+                        <span className="mr-2 text-accent">›</span>
+                        <span className="min-w-0">{example}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
               ))}
             </div>
 
