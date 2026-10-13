@@ -2751,3 +2751,167 @@
     flex-basis:1.75rem;
   }
 }
+
+
+/* Final compact header + review tabs */
+.lubrano-hero{
+  min-height:260px!important;
+  padding:1.15rem 1rem 1.25rem!important;
+}
+.lubrano-logo-frame{
+  width:min(210px,46vw)!important;
+}
+.lubrano-hero-copy{
+  padding-bottom:.5rem!important;
+}
+.lubrano-review-links-row{
+  display:flex;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:.55rem;
+  margin-top:1rem;
+}
+.lubrano-review-mini-link{
+  display:inline-flex;
+  align-items:center;
+  gap:.58rem;
+  min-width:0;
+  width:min(255px,50%);
+  min-height:58px;
+  padding:.7rem .8rem;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:15px;
+  background:rgba(255,255,255,.035);
+  color:rgba(255,255,255,.82);
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease;
+}
+.lubrano-review-mini-link:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.06);
+  box-shadow:0 12px 26px rgba(0,0,0,.18);
+}
+.lubrano-review-mini-google:hover{
+  border-color:rgba(66,133,244,.32);
+}
+.lubrano-review-mini-tripadvisor:hover{
+  border-color:rgba(52,168,83,.32);
+}
+.lubrano-review-mini-icon{
+  width:1.55rem;
+  height:1.55rem;
+  flex:0 0 1.55rem;
+}
+.lubrano-review-mini-google .lubrano-review-mini-icon{color:inherit}
+.lubrano-review-mini-tripadvisor .lubrano-review-mini-icon{color:#34a853}
+.lubrano-review-mini-link > span{
+  min-width:0;
+  flex:1;
+}
+.lubrano-review-mini-link strong,
+.lubrano-review-mini-link small{
+  display:block;
+}
+.lubrano-review-mini-link strong{
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#fff;
+}
+.lubrano-review-mini-link small{
+  margin-top:.12rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.58rem;
+  color:rgba(255,255,255,.4);
+}
+.lubrano-footer-logo-link{
+  display:inline-block;
+  border-radius:999px;
+  transition:transform .22s ease,filter .22s ease;
+}
+.lubrano-footer-logo-link:hover{
+  transform:scale(1.04);
+  filter:brightness(1.08);
+}
+.lubrano-back-to-top{
+  position:fixed;
+  right:1rem;
+  bottom:1rem;
+  z-index:40;
+  display:grid;
+  width:44px;
+  height:44px;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:50%;
+  background:rgba(10,10,10,.72);
+  color:rgba(255,255,255,.72);
+  box-shadow:0 12px 28px rgba(0,0,0,.25);
+  backdrop-filter:blur(12px);
+  transition:transform .2s ease,background .2s ease,color .2s ease;
+}
+.lubrano-back-to-top:hover{
+  transform:translateY(-2px);
+  background:rgba(142,24,51,.78);
+  color:#fff;
+}
+@media(max-width:720px){
+  .lubrano-hero{
+    min-height:190px!important;
+    padding:.55rem .65rem .75rem!important;
+  }
+  .lubrano-logo-frame{
+    width:min(138px,38vw)!important;
+  }
+  .lubrano-hero-title{
+    font-size:clamp(2.55rem,12vw,4rem)!important;
+  }
+  .lubrano-hero-subtitle{
+    margin-top:.22rem!important;
+    font-size:.82rem!important;
+  }
+  .lubrano-hero-note{
+    margin-top:.25rem!important;
+    max-width:21rem!important;
+    font-size:.68rem!important;
+    line-height:1.4!important;
+  }
+  .lubrano-review-links-row{
+    gap:.45rem;
+  }
+  .lubrano-review-mini-link{
+    width:50%;
+    min-height:54px;
+    padding:.55rem .58rem;
+    gap:.45rem;
+    border-radius:13px;
+  }
+  .lubrano-review-mini-icon{
+    width:1.35rem;
+    height:1.35rem;
+    flex-basis:1.35rem;
+  }
+  .lubrano-review-mini-link strong{
+    font-size:.66rem;
+  }
+  .lubrano-review-mini-link small{
+    font-size:.5rem;
+  }
+  .lubrano-back-to-top{
+    right:.75rem;
+    bottom:.75rem;
+  }
+}
+@media(max-width:380px){
+  .lubrano-hero{
+    min-height:180px!important;
+  }
+  .lubrano-logo-frame{
+    width:min(126px,36vw)!important;
+  }
+  .lubrano-review-mini-link{
+    min-height:50px;
+  }
+}
