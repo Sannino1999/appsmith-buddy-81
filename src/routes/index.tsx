@@ -647,7 +647,9 @@ function MenuPage() {
         </section>
 
         <footer className="lubrano-footer">
-          <img src={localLogo} alt="" className="mx-auto mb-4 size-16 rounded-full object-cover opacity-80" width={512} height={512} />
+          <a href="#top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="lubrano-footer-logo-link" aria-label="Torna all'inizio">
+            <img src={localLogo} alt="Lubrano Pub & Braceria" className="mx-auto mb-4 size-16 rounded-full object-cover opacity-80" width={512} height={512} />
+          </a>
           <p className="font-bold uppercase tracking-[0.2em] text-white/75">{menu.restaurant.name} · {menu.restaurant.subtitle}</p>
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
           <p className="mt-3 text-[0.7rem]">Realizzato da <span className="font-semibold text-[#ff315b]">DigitGS</span></p>
@@ -656,6 +658,17 @@ function MenuPage() {
           </Link>
         </footer>
       </div>
+
+      {showBackToTop && (
+        <button
+          type="button"
+          className="lubrano-back-to-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Torna all'inizio"
+        >
+          <ArrowUp className="size-5" />
+        </button>
+      )}
 
       <QrDialog open={qrOpen} onOpenChange={setQrOpen} url={typeof window !== "undefined" ? window.location.href : ""} restaurantName={baseMenu.restaurant.name} />
 
