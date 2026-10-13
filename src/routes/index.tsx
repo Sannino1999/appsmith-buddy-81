@@ -95,6 +95,7 @@ function MenuPage() {
   const [wifiOpen, setWifiOpen] = useState(false);
   const [wifiCopied, setWifiCopied] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
+  const [selectedRating, setSelectedRating] = useState(0);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -237,13 +238,10 @@ function MenuPage() {
 
   useEffect(() => {
     try {
-      if (sessionStorage.getItem("lubrano-intro-seen") === "1") {
-        setIntroVisible(false);
-        return;
-      }
-      sessionStorage.setItem("lubrano-intro-seen", "1");
+      window.history.scrollRestoration = "manual";
     } catch {}
-    const timer = window.setTimeout(() => setIntroVisible(false), 1650);
+    window.scrollTo(0, 0);
+    const timer = window.setTimeout(() => setIntroVisible(false), 3400);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -404,7 +402,7 @@ function MenuPage() {
               <p className="lubrano-hero-subtitle">Pub & Braceria</p>
               <p className="lubrano-hero-note">Sapori decisi, brace, burger e birre. Scopri il menù e scegli il tuo prossimo preferito.</p>
             </div>
-            <a href="#top" className="lubrano-logo-frame lubrano-logo-link" aria-label="Torna all'inizio">
+            <a href="#top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="lubrano-logo-frame lubrano-logo-link" aria-label="Torna all'inizio">
               <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo lubrano-logo-original" width={512} height={512} />
             </a>
           </div>
@@ -574,15 +572,35 @@ function MenuPage() {
             </div>
           </div>
 
+          <div className="lubrano-review-rating">
+            <span className="lubrano-eyebrow">{REVIEWS[lang].rateEyebrow}</span>
+            <p className="lubrano-review-rating-title">{REVIEWS[lang].rateTitle}</p>
+            <div className="lubrano-rating-stars" role="group" aria-label={REVIEWS[lang].rateTitle}>
+              {[1,2,3,4,5].map((rating) => (
+                <button
+                  key={rating}
+                  type="button"
+                  onClick={() => setSelectedRating(rating)}
+                  aria-pressed={selectedRating === rating}
+                  aria-label={rating + " " + REVIEWS[lang].starsLabel}
+                  className={"lubrano-rating-star " + (selectedRating >= rating ? "is-selected" : "")}
+                >
+                  <Star className="size-7 sm:size-8" fill="currentColor" />
+                </button>
+              ))}
+            </div>
+            <small>{selectedRating > 0 ? selectedRating + "/5 · " + REVIEWS[lang].selectedLabel : REVIEWS[lang].rateHint}</small>
+          </div>
+
           <div className="lubrano-review-links-row">
             <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-review-mini-link lubrano-review-mini-google" aria-label={REVIEWS[lang].googleCta}>
               <GoogleBrandIcon className="lubrano-review-mini-icon" />
               <span><strong>Google</strong><small>{REVIEWS[lang].googleCta}</small></span>
               <ExternalLink className="size-4 text-white/30" />
             </a>
-            <a href={VENUE.tripadvisorUrl} target="_blank" rel="noreferrer" className="lubrano-review-mini-link lubrano-review-mini-tripadvisor" aria-label={services.reviewTripadvisor}>
+            <a href={VENUE.tripadvisorUrl} target="_blank" rel="noreferrer" className="lubrano-review-mini-link lubrano-review-mini-tripadvisor" aria-label={REVIEWS[lang].tripadvisorCta}>
               <TripadvisorBrandIcon className="lubrano-review-mini-icon" />
-              <span><strong>Tripadvisor</strong><small>{services.reviewTripadvisor}</small></span>
+              <span><strong>Tripadvisor</strong><small>{REVIEWS[lang].tripadvisorCta}</small></span>
               <ExternalLink className="size-4 text-white/30" />
             </a>
           </div>
@@ -608,68 +626,3 @@ function MenuPage() {
           </div>
         </section>
 
-        <section id="contatti" className="lubrano-venue anim-fade-up">
-          <div className="lubrano-venue-copy"><span className="lubrano-eyebrow">{info.eyebrow}</span><h2>{info.title}</h2><p>{VENUE.address}</p><a href={VENUE.phoneHref}>{VENUE.phone}</a></div>
-          <div className="lubrano-hours">
-            <span>{info.hours}</span>
-            <div className="lubrano-hours-grid">
-              {info.days.map((entry) => (
-                <div key={entry.day} className={entry.closed ? "is-closed" : ""}>
-                  <b>{entry.day}</b>
-                  <strong>{entry.hours}</strong>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="lubrano-contact-actions">
-            <a href={VENUE.phoneHref} className="lubrano-cta lubrano-cta-primary"><Phone className="size-5" />{info.call}</a>
-            <a href={VENUE.mapsUrl} target="_blank" rel="noreferrer" className="lubrano-cta"><MapPin className="size-5" />{info.directions}</a>
-            <a href={VENUE.instagramUrl} target="_blank" rel="noreferrer" className="lubrano-cta lubrano-instagram-cta"><Instagram className="size-5" />Instagram</a>
-          </div>
-        </section>
-
-        <footer className="lubrano-footer">
-          <a href="#top" className="lubrano-footer-logo-link" aria-label="Torna all'inizio">
-          <img src={localLogo} alt="" className="mx-auto mb-4 size-16 rounded-full object-cover opacity-80" width={512} height={512} />
-          </a>
-          <p className="font-bold uppercase tracking-[0.2em] text-white/75">{menu.restaurant.name} · {menu.restaurant.subtitle}</p>
-          <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
-          <p className="mt-3 text-[0.7rem]">Realizzato da <span className="font-semibold text-[#ff315b]">DigitGS</span></p>
-          <Link to="/admin" className="mt-4 inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white/35 transition hover:border-[#ff315b]/30 hover:bg-[#ff315b]/5 hover:text-white/70">
-            Area riservata
-          </Link>
-        </footer>
-      </div>
-
-      {showBackToTop && (
-        <button
-          type="button"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="lubrano-back-to-top"
-          aria-label="Torna all'inizio"
-          title="Torna all'inizio"
-        >
-          <ArrowUp className="size-4" />
-        </button>
-      )}
-
-      <QrDialog open={qrOpen} onOpenChange={setQrOpen} url={typeof window !== "undefined" ? window.location.href : ""} restaurantName={baseMenu.restaurant.name} />
-
-      {wifiOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" role="presentation" onClick={() => setWifiOpen(false)}>
-          <section role="dialog" aria-modal="true" aria-labelledby="wifi-dialog-title" className="anim-scale w-full max-w-sm rounded-3xl border border-[#ff315b]/25 bg-[#160d10] p-6 shadow-2xl" onClick={(event) => event.stopPropagation()}>
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-full bg-[#ff315b]/10 text-[#ff315b]"><Wifi className="size-5" /></div><div><p className="text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[#ff315b]">Lubrano Guest</p><h2 id="wifi-dialog-title" className="display-caps text-xl text-white">{services.wifi}</h2></div></div>
-              <button type="button" onClick={() => setWifiOpen(false)} className="grid size-10 place-items-center rounded-full text-white/50 hover:bg-white/5 hover:text-white" aria-label="Chiudi Wi-Fi"><X className="size-4" /></button>
-            </div>
-            <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-4">{wifiPassword ? <><p className="text-xs font-bold uppercase tracking-[0.16em] text-white/40">Lubrano-Guest</p><p className="mt-2 break-all rounded-xl bg-black/40 px-3 py-2 font-mono text-base text-white">{wifiPassword}</p></> : <p className="text-sm leading-relaxed text-white/55">{services.wifiAsk}</p>}</div>
-            <button type="button" onClick={async () => { if (!wifiPassword || !navigator.clipboard) return; await navigator.clipboard.writeText(wifiPassword); setWifiCopied(true); window.setTimeout(() => setWifiCopied(false), 1600); }} disabled={!wifiPassword} className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#ff315b] px-5 text-sm font-bold uppercase tracking-[0.14em] text-white disabled:opacity-50">
-              {wifiCopied ? <Check className="size-4" /> : <Copy className="size-4" />}{wifiCopied ? "Copiata" : "Copia password"}
-            </button>
-          </section>
-        </div>
-      )}
-    </div>
-  );
-
-}
