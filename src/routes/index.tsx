@@ -606,13 +606,13 @@ function MenuPage() {
           </div>
 
           <div className="lubrano-review-carousel" aria-label={REVIEWS[lang].carouselLabel}>
-            {[
+            {([
               ["Marzia", "Locale accogliente nel centro di Napoli, con panini, carne e antipasti molto apprezzati. Staff disponibile e gentile."],
               ["Anna", "Una bella esperienza per chi cerca carne di qualità: cordialità, simpatia e professionalità rendono la serata ancora più piacevole."],
               ["Mattia", "Accoglienza eccellente, carne e panini molto apprezzati e un’atmosfera che fa sentire subito a casa."],
               ["Irene", "Servizio veloce e personale gentilissimo, con patate fresche, carne di qualità e ampia scelta nel menu."],
               ["Marco", "Panini abbondanti, ingredienti di qualità e prezzi equilibrati per una posizione centrale a Napoli."]
-            ].map(([author, text]: [string, string]) => (
+            ] as Array<[string, string]>).map(([author, text]) => (
               <article key={author} className="lubrano-review-card">
                 <div className="lubrano-review-card-top">
                   <div className="lubrano-review-avatar">{author.charAt(0)}</div>
