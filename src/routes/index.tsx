@@ -94,7 +94,6 @@ function MenuPage() {
   const [wifiOpen, setWifiOpen] = useState(false);
   const [wifiCopied, setWifiCopied] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
-  const [selectedRating, setSelectedRating] = useState(0);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -565,29 +564,26 @@ function MenuPage() {
               <h2 className="display-caps">{REVIEWS[lang].title}</h2>
               <p>{REVIEWS[lang].subtitle}</p>
             </div>
-            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-review-link">
-              <GoogleBrandIcon className="lubrano-review-brand-icon" />
-              <span>{REVIEWS[lang].googleCta}</span>
-              <ExternalLink className="size-4" />
-            </a>
           </div>
-          <div className="lubrano-rating-box">
-            <div>
-              <span className="lubrano-eyebrow">{REVIEWS[lang].rateEyebrow}</span>
-              <h3>{REVIEWS[lang].rateTitle}</h3>
-              <p>{selectedRating > 0 ? selectedRating + "/5 · " + REVIEWS[lang].selectedLabel : REVIEWS[lang].rateHint}</p>
+
+          <a
+            href={VENUE.googleReviewUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="lubrano-google-review-cta"
+            aria-label={REVIEWS[lang].googleCta}
+          >
+            <div className="lubrano-google-review-stars" aria-hidden="true">
+              {[1,2,3,4,5].map((star) => <Star key={star} className="size-7 sm:size-8" fill="currentColor" />)}
             </div>
-            <div className="lubrano-rating-stars">
-              {[1,2,3,4,5].map((rating) => (
-                <button key={rating} type="button" onClick={() => setSelectedRating(rating)} className={"lubrano-rating-star " + (selectedRating >= rating ? "is-selected" : "")} aria-label={rating + " " + REVIEWS[lang].starsLabel}>
-                  <Star className="size-7 sm:size-8" fill="currentColor" />
-                </button>
-              ))}
+            <div className="lubrano-google-review-cta-copy">
+              <strong>{REVIEWS[lang].googleCta}</strong>
+              <span>{REVIEWS[lang].googleSource}</span>
             </div>
-            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-cta lubrano-cta-primary">
-              <GoogleBrandIcon className="size-5" />{REVIEWS[lang].googleCta}
-            </a>
-          </div>
+            <GoogleBrandIcon className="lubrano-google-review-logo" />
+            <ExternalLink className="size-4 text-white/35" />
+          </a>
+
           <div className="lubrano-review-carousel" aria-label={REVIEWS[lang].carouselLabel}>
             {[
               ["Marzia", "Locale accogliente nel centro di Napoli, con panini, carne e antipasti molto apprezzati. Staff disponibile e gentile."],
