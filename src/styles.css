@@ -2416,7 +2416,7 @@
     linear-gradient(180deg,rgba(10,8,9,.72) 0%,rgba(26,9,14,.56) 34%,rgba(8,8,8,.78) 100%),
     radial-gradient(circle at 15% 20%,rgba(255,129,62,.11),transparent 24%),
     radial-gradient(circle at 85% 35%,rgba(143,245,207,.09),transparent 24%),
-    url("/assets/menu-bg.webp") center/cover fixed;
+    url("/assets/lubrano-menu-bg-2026.webp") center/cover fixed;
 }
 .lubrano-shell::before{
   content:"";
@@ -2553,7 +2553,7 @@
     radial-gradient(circle at 14% 18%,rgba(255,84,43,.20),transparent 28%),
     radial-gradient(circle at 86% 32%,rgba(255,184,75,.16),transparent 25%),
     radial-gradient(circle at 50% 85%,rgba(143,245,207,.10),transparent 24%),
-    url("/assets/menu-bg.webp") center top/cover fixed!important;
+    url("/assets/lubrano-menu-bg-2026.webp") center top/cover fixed!important;
 }
 .menu-backdrop{
   opacity:.5!important;
