@@ -1,4 +1,4 @@
-const CACHE_NAME = "lubrano-pub-v5";
+const CACHE_NAME = "lubrano-pub-v6";
 const STATIC_ASSETS = [
   "/",
   "/manifest.webmanifest",
@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
   "/icon-192.svg",
   "/icon-512.svg",
   "/favicon.png",
-  "/assets/menu-bg.webp",
+  "/assets/lubrano-hero-background.webp",
 ];
 
 self.addEventListener("install", (event) => {
