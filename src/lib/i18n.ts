@@ -305,7 +305,7 @@ export const VENUE = {
  phone: "081-18273748",
  phoneHref: "tel:+3908118273748",
  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Calata+Trinit%C3%A0+Maggiore+51+Napoli",
- googleReviewUrl: "https://www.google.com/search?q=Lubrano+Pub+Calata+Trinit%C3%A0+Maggiore+51+Napoli+recensioni",
+ googleReviewUrl: "https://www.google.com/maps?cid=2462990989652302061&hl=it&gl=it&entry=ttu#reviews",
  tripadvisorUrl: "https://www.tripadvisor.it/Restaurant_Review-g187785-d12643906-Reviews-Lubrano_Pub-Naples_Province_of_Naples_Campania.html",
  instagramUrl: "https://www.instagram.com/lubranopubnapoli/",
  wifiPassword: null as string | null,
