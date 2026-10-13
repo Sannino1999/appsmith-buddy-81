@@ -34,7 +34,7 @@ import { INFO, LANGUAGES, MENU_LABELS, NAVIGATION, SERVICES, UI, VENUE, REVIEWS,
 import { QrDialog, QrButton } from "@/components/qr-dialog";
 
 const localLogo = "/lubrano-logo.png";
-const bgImage = "/assets/menu-bg.jpg";
+const bgImage = "/assets/lubrano-hero-background.webp";
 const categoryIcons: Record<string, string> = {
   stuzzicheria: "🍟", patate: "🥔", panini: "🍔", hamburger: "🍔",
   brace: "🥩", braceria: "🥩", carne: "🥩", insalate: "🥗", contorni: "🍽️",
