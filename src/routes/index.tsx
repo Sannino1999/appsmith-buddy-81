@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CalendarDays,
   Download,
+  ArrowUp,
   Check,
   Clock3,
   Copy,
@@ -95,6 +96,7 @@ function MenuPage() {
   const [wifiCopied, setWifiCopied] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const categoryRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -246,6 +248,13 @@ function MenuPage() {
   }, []);
 
   useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 520);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
     const handleBeforeInstall = (event: Event) => {
       event.preventDefault();
       setInstallPrompt(event);
@@ -333,7 +342,7 @@ function MenuPage() {
   }
 
   return (
-    <div className="lubrano-shell relative min-h-screen overflow-x-clip">
+    <div id="top" className="lubrano-shell relative min-h-screen overflow-x-clip">
       {introVisible && (
         <div className="lubrano-intro" role="status" aria-label="Lubrano Pub">
           <div className="lubrano-intro-logo-wrap">
@@ -395,9 +404,9 @@ function MenuPage() {
               <p className="lubrano-hero-subtitle">Pub & Braceria</p>
               <p className="lubrano-hero-note">Sapori decisi, brace, burger e birre. Scopri il menù e scegli il tuo prossimo preferito.</p>
             </div>
-            <div className="lubrano-logo-frame">
+            <a href="#top" className="lubrano-logo-frame lubrano-logo-link" aria-label="Torna all'inizio">
               <img src={localLogo} alt={`${menu.restaurant.name} ${menu.restaurant.subtitle}`} className="lubrano-logo lubrano-logo-original" width={512} height={512} />
-            </div>
+            </a>
           </div>
 
           <div className="lubrano-utility">
@@ -565,23 +574,18 @@ function MenuPage() {
             </div>
           </div>
 
-          <a
-            href={VENUE.googleReviewUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="lubrano-google-review-cta"
-            aria-label={REVIEWS[lang].googleCta}
-          >
-            <div className="lubrano-google-review-stars" aria-hidden="true">
-              {[1,2,3,4,5].map((star) => <Star key={star} className="size-7 sm:size-8" fill="currentColor" />)}
-            </div>
-            <div className="lubrano-google-review-cta-copy">
-              <strong>{REVIEWS[lang].googleCta}</strong>
-              <span>{REVIEWS[lang].googleSource}</span>
-            </div>
-            <GoogleBrandIcon className="lubrano-google-review-logo" />
-            <ExternalLink className="size-4 text-white/35" />
-          </a>
+          <div className="lubrano-review-links-row">
+            <a href={VENUE.googleReviewUrl} target="_blank" rel="noreferrer" className="lubrano-review-mini-link lubrano-review-mini-google" aria-label={REVIEWS[lang].googleCta}>
+              <GoogleBrandIcon className="lubrano-review-mini-icon" />
+              <span><strong>Google</strong><small>{REVIEWS[lang].googleCta}</small></span>
+              <ExternalLink className="size-4 text-white/30" />
+            </a>
+            <a href={VENUE.tripadvisorUrl} target="_blank" rel="noreferrer" className="lubrano-review-mini-link lubrano-review-mini-tripadvisor" aria-label={services.reviewTripadvisor}>
+              <TripadvisorBrandIcon className="lubrano-review-mini-icon" />
+              <span><strong>Tripadvisor</strong><small>{services.reviewTripadvisor}</small></span>
+              <ExternalLink className="size-4 text-white/30" />
+            </a>
+          </div>
 
           <div className="lubrano-review-carousel" aria-label={REVIEWS[lang].carouselLabel}>
             {[
@@ -625,7 +629,9 @@ function MenuPage() {
         </section>
 
         <footer className="lubrano-footer">
+          <a href="#top" className="lubrano-footer-logo-link" aria-label="Torna all'inizio">
           <img src={localLogo} alt="" className="mx-auto mb-4 size-16 rounded-full object-cover opacity-80" width={512} height={512} />
+          </a>
           <p className="font-bold uppercase tracking-[0.2em] text-white/75">{menu.restaurant.name} · {menu.restaurant.subtitle}</p>
           <p className="mt-2">Prezzi in euro · Coperto € 2,00 · Lista allergeni disponibile al banco</p>
           <p className="mt-3 text-[0.7rem]">Realizzato da <span className="font-semibold text-[#ff315b]">DigitGS</span></p>
@@ -634,6 +640,18 @@ function MenuPage() {
           </Link>
         </footer>
       </div>
+
+      {showBackToTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="lubrano-back-to-top"
+          aria-label="Torna all'inizio"
+          title="Torna all'inizio"
+        >
+          <ArrowUp className="size-4" />
+        </button>
+      )}
 
       <QrDialog open={qrOpen} onOpenChange={setQrOpen} url={typeof window !== "undefined" ? window.location.href : ""} restaurantName={baseMenu.restaurant.name} />
 
