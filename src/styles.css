@@ -2544,3 +2544,210 @@
     transform:none!important;
   }
 }
+
+
+/* FINAL UX PASS: stronger photography + deliberate motion hierarchy */
+.lubrano-shell{
+  background:
+    linear-gradient(180deg,rgba(6,6,7,.22),rgba(18,6,10,.30) 40%,rgba(6,6,7,.48)),
+    radial-gradient(circle at 14% 18%,rgba(255,84,43,.20),transparent 28%),
+    radial-gradient(circle at 86% 32%,rgba(255,184,75,.16),transparent 25%),
+    radial-gradient(circle at 50% 85%,rgba(143,245,207,.10),transparent 24%),
+    url("/assets/menu-bg.webp") center top/cover fixed!important;
+}
+.menu-backdrop{
+  opacity:.5!important;
+  filter:saturate(1.35) contrast(1.05) brightness(1.05)!important;
+}
+.lubrano-backdrop{
+  background:
+    linear-gradient(180deg,rgba(4,4,5,.05),rgba(12,5,8,.10) 45%,rgba(4,4,5,.22))!important;
+}
+.lubrano-topbar,
+.lubrano-main-nav{
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+
+/* 3+ second branded opening */
+.lubrano-intro{
+  animation:lubranoIntroOut .55s ease 2.75s forwards!important;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(142,24,51,.34),transparent 28%),
+    linear-gradient(180deg,#090909,#16090f 55%,#070707)!important;
+}
+.lubrano-intro-logo-wrap{
+  animation:lubranoIntroLogo 3.15s cubic-bezier(.2,.75,.18,1) forwards!important;
+}
+@keyframes lubranoIntroLogo{
+  0%{transform:scale(.62);opacity:0;filter:blur(8px)}
+  13%{transform:scale(1);opacity:1;filter:blur(0)}
+  72%{transform:scale(1);opacity:1}
+  86%{transform:translate(calc(-32vw + 2rem),calc(-38vh + 2rem)) scale(.34);opacity:1}
+  100%{transform:translate(calc(-46vw + 1.75rem),calc(-46vh + 1.75rem)) scale(.16);opacity:0}
+}
+@media(max-width:720px){
+  .lubrano-shell{
+    background-attachment:scroll!important;
+  }
+  .lubrano-intro-logo-wrap{
+    animation:lubranoIntroLogoMobile 3.15s cubic-bezier(.2,.75,.18,1) forwards!important;
+  }
+  @keyframes lubranoIntroLogoMobile{
+    0%{transform:scale(.62);opacity:0;filter:blur(8px)}
+    13%{transform:scale(1);opacity:1;filter:blur(0)}
+    72%{transform:scale(1);opacity:1}
+    86%{transform:translate(calc(-35vw + 1.5rem),calc(-40vh + 1.5rem)) scale(.29);opacity:1}
+    100%{transform:translate(calc(-46vw + 1.35rem),calc(-46vh + 1.35rem)) scale(.13);opacity:0}
+  }
+}
+.lubrano-intro-logo{
+  filter:drop-shadow(0 18px 55px rgba(0,0,0,.55)) drop-shadow(0 0 34px rgba(143,245,207,.14));
+}
+
+/* Make the three navigation controls feel like a designed control bar. */
+.lubrano-main-nav a{
+  overflow:hidden;
+  isolation:isolate;
+  border:0!important;
+  background:transparent!important;
+  transition:color .22s ease,transform .22s ease;
+}
+.lubrano-main-nav a::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(142,24,51,.10));
+  opacity:0;
+  transform:scale(.88);
+  transition:opacity .22s ease,transform .22s ease;
+}
+.lubrano-main-nav a::after{
+  bottom:.22rem!important;
+  height:2px!important;
+  left:50%!important;
+  right:50%!important;
+  transition:left .26s ease,right .26s ease;
+}
+.lubrano-main-nav a:hover,
+.lubrano-main-nav a:focus-visible,
+.lubrano-main-nav a[aria-current="page"]{
+  color:#fff;
+  transform:translateY(-1px);
+}
+.lubrano-main-nav a:hover::before,
+.lubrano-main-nav a:focus-visible::before{
+  opacity:1;
+  transform:scale(1);
+}
+.lubrano-main-nav a:hover::after,
+.lubrano-main-nav a:focus-visible::after{
+  left:22%!important;
+  right:22%!important;
+}
+.lubrano-category-pill{
+  position:relative;
+  overflow:hidden;
+}
+.lubrano-category-pill::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.11) 50%,transparent 75%);
+  transform:translateX(-115%);
+  transition:transform .7s ease;
+  pointer-events:none;
+}
+.lubrano-category-pill:hover::before,
+.lubrano-category-pill.is-active::before{
+  transform:translateX(115%);
+}
+.lubrano-dish-card{
+  will-change:transform;
+  transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
+}
+.lubrano-dish-card:hover{
+  transform:translateY(-3px);
+}
+.lubrano-dish-card:nth-child(2n){
+  animation-delay:.05s;
+}
+.lubrano-dish-card:nth-child(3n){
+  animation-delay:.1s;
+}
+.lubrano-services,
+.lubrano-venue,
+.lubrano-reviews{
+  animation:lubranoFloatIn .6s cubic-bezier(.2,.78,.2,1) both;
+}
+.lubrano-google-review-cta{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:.9rem;
+  margin-top:1.05rem;
+  padding:1rem 1.05rem;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(24,8,12,.65));
+  box-shadow:0 14px 35px rgba(0,0,0,.18);
+  transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
+}
+.lubrano-google-review-cta:hover{
+  transform:translateY(-2px);
+  border-color:rgba(66,133,244,.35);
+  box-shadow:0 18px 44px rgba(0,0,0,.24);
+}
+.lubrano-google-review-stars{
+  display:flex;
+  gap:.06rem;
+  color:#f5b942;
+}
+.lubrano-google-review-cta-copy{
+  min-width:0;
+  flex:1;
+}
+.lubrano-google-review-cta-copy strong,
+.lubrano-google-review-cta-copy span{
+  display:block;
+}
+.lubrano-google-review-cta-copy strong{
+  color:#fff;
+  font-size:.9rem;
+  font-weight:900;
+}
+.lubrano-google-review-cta-copy span{
+  margin-top:.15rem;
+  color:rgba(255,255,255,.40);
+  font-size:.66rem;
+}
+.lubrano-google-review-logo{
+  width:2rem;
+  height:2rem;
+  flex:0 0 2rem;
+}
+
+/* Remove older duplicate rating/CTA visual rules from the old implementation. */
+.lubrano-rating-box{
+  display:none!important;
+}
+.lubrano-review-link{
+  display:none!important;
+}
+@media(max-width:720px){
+  .lubrano-google-review-cta{
+    gap:.65rem;
+    padding:.85rem .8rem;
+  }
+  .lubrano-google-review-stars svg{
+    width:1.2rem;
+    height:1.2rem;
+  }
+  .lubrano-google-review-logo{
+    width:1.75rem;
+    height:1.75rem;
+    flex-basis:1.75rem;
+  }
+}
