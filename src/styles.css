@@ -321,7 +321,13 @@
 
 /* Lubrano Pub — reusable brand/template layer */
 :root{--lubrano-bordeaux:#8e1833;--lubrano-red:#ff315b;--lubrano-mint:#8ff5cf;--lubrano-ink:#0a0b0a;--lubrano-wine:#160d10;--lubrano-cream:#f8f2ea}
-.lubrano-shell{color:var(--lubrano-cream);background:radial-gradient(circle at 50% -10%,rgba(142,24,51,.24),transparent 42%),#0a0b0a}
+.lubrano-shell{
+  color:var(--lubrano-cream);
+  background:
+    linear-gradient(180deg,rgba(4,5,6,.18) 0%,rgba(15,6,10,.24) 42%,rgba(5,5,6,.44) 100%),
+    url("/assets/lubrano-hero-background.webp") center top/cover no-repeat;
+  background-attachment:scroll;
+}
 .lubrano-backdrop{background:radial-gradient(circle at 50% 5%,rgba(255,49,91,.18),transparent 34%),linear-gradient(180deg,rgba(8,9,8,.72),rgba(16,7,10,.9) 40%,rgba(8,9,8,.98))}
 .lubrano-header{position:relative;overflow:hidden;border:1px solid rgba(143,245,207,.12);border-radius:28px;background:linear-gradient(145deg,rgba(14,15,14,.9),rgba(30,9,15,.82));box-shadow:0 30px 90px rgba(0,0,0,.38)}
 .lubrano-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -3077,4 +3083,31 @@
 .lubrano-hero img{
   filter:none!important;
   image-rendering:auto;
+}
+
+
+/* Background must remain visible on every viewport; the old fixed negative-z layer is only decorative. */
+.lubrano-shell{
+  position:relative;
+  min-height:100vh;
+  overflow-x:clip;
+}
+.lubrano-shell::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(255,91,54,.10),transparent 26%),
+    radial-gradient(circle at 82% 36%,rgba(245,180,79,.08),transparent 25%);
+}
+.menu-backdrop{
+  display:none!important;
+}
+@media(min-width:721px){
+  .lubrano-shell{
+    background-attachment:fixed;
+    background-position:center top;
+  }
 }
