@@ -2915,3 +2915,100 @@
     min-height:50px;
   }
 }
+
+
+/* FINAL MOBILE/DESKTOP HEADER & REVIEW POLISH */
+.lubrano-hero{
+  min-height:220px!important;
+}
+.lubrano-logo-frame{
+  width:min(185px,42vw)!important;
+}
+.lubrano-review-rating{
+  display:flex;
+  align-items:center;
+  gap:.8rem 1.1rem;
+  flex-wrap:wrap;
+  margin-top:1rem;
+  padding:.85rem 1rem;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+}
+.lubrano-review-rating-title{
+  margin-top:.15rem;
+  font-size:.85rem;
+  font-weight:800;
+  color:#fff;
+}
+.lubrano-review-rating > small{
+  color:rgba(255,255,255,.38);
+  font-size:.62rem;
+}
+.lubrano-review-rating .lubrano-rating-stars{
+  margin-left:auto;
+}
+.lubrano-review-links-row{
+  display:flex!important;
+  align-items:stretch;
+  gap:.5rem;
+  margin-top:.65rem!important;
+}
+.lubrano-review-mini-link{
+  width:auto!important;
+  min-width:0!important;
+  flex:0 1 240px;
+}
+.lubrano-google-review-cta{
+  display:none!important;
+}
+@media(max-width:720px){
+  .lubrano-hero{
+    min-height:165px!important;
+    padding:.45rem .6rem .65rem!important;
+  }
+  .lubrano-logo-frame{
+    width:min(120px,34vw)!important;
+  }
+  .lubrano-review-rating{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:.35rem;
+    padding:.75rem .8rem;
+  }
+  .lubrano-review-rating .lubrano-rating-stars{
+    margin:0;
+    justify-content:center;
+  }
+  .lubrano-review-links-row{
+    display:grid!important;
+    grid-template-columns:1fr 1fr;
+    gap:.45rem;
+  }
+  .lubrano-review-mini-link{
+    width:100%!important;
+    flex:none!important;
+    min-height:50px!important;
+    padding:.5rem!important;
+  }
+}
+@media(max-width:380px){
+  .lubrano-logo-frame{width:min(110px,32vw)!important}
+}
+
+/* Use the existing restaurant photo backdrop with a clearly visible, warmer treatment. */
+.menu-backdrop{
+  opacity:.62!important;
+  filter:saturate(1.4) brightness(1.12) contrast(1.02)!important;
+}
+.lubrano-backdrop{
+  background:
+    linear-gradient(180deg,rgba(5,5,6,.02),rgba(18,7,11,.10) 48%,rgba(5,5,6,.20))!important;
+}
+
+/* Remove visual divider between top navigation and brand area. */
+.lubrano-header,
+.lubrano-topbar,
+.lubrano-main-nav{
+  border-bottom:0!important;
+}
